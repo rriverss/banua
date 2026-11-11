@@ -151,7 +151,7 @@ const node3 = (ox, oy) =>
     rect(ox + 200, oy + 148, 106, 8, { fill: '#f3e0bd', stroke: '#c9a35b', sw: 0.7 }),
     // кронштейн вентзазора
     rect(ox + 96, oy + 100, 8, 60, { fill: '#d9a568', stroke: '#8a6a44', sw: 0.6 }),
-    lead(ox + 200, oy + 44, ox + 210, oy + 18, 'металлочерепица', 'start'),
+    lead(ox + 200, oy + 44, ox + 210, oy + 18, 'фальц RAL 7021', 'start'),
     lead(ox + 150, oy + 100, ox + 120, oy + 140, 'контробрешётка 50×50', 'start'),
     lead(ox + 96, oy + 126, ox + 24, oy + 170, 'вентзазор 30', 'start'),
     lead(ox + 301, oy + 104, ox + 244, oy + 214, 'лобовая доска', 'start'),
@@ -328,6 +328,7 @@ export function nodesSheet() {
   })
 
   return sheet({
+    num: 7,
     title: 'Узлы 1–6',
     subtitle: 'Для монтажа и контроля качества. Не заменяют рабочую документацию',
     scale: 'б/м',

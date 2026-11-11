@@ -1,5 +1,5 @@
 /**
- * Параметрическая модель бани «Кедр» 6,0 × 4,5 м с террасой 2,5 м.
+ * Параметрическая модель бани «Марго» 6,0 × 4,5 м с террасой 2,5 м.
  * Единственный источник геометрии: 3D-сцена, схемы и ведомость материалов
  * считаются из этих данных, поэтому цифры всегда сходятся между собой.
  *
@@ -10,7 +10,7 @@
 const D2R = Math.PI / 180
 
 export const project = {
-  title: 'Баня «Кедр»',
+  title: 'Баня «Марго»',
   subtitle: '6,0 × 4,5 м + терраса 2,5 м',
   version: '1.0',
   region: 'Московская область',
@@ -20,8 +20,9 @@ export const project = {
     temp: 'расчётная зимняя температура −25 °C',
     soil: 'суглинок/песок, глубина промерзания 1,4 м (уточнить геологией)',
   },
+  style: 'Барнхаус (Barnhouse), как «Марго»: остеклённый фронтон, тёмный фасад, терраса под крышей',
   dims: {
-    L: 6.0, // длина по X
+    L: 6.0, // ширина по X (ширина фронтона)
     D: 4.5, // глубина основного блока по Z
     terrace: 2.5, // вынос террасы
     wallT: 0.2, // наружная стена по осям
@@ -36,19 +37,19 @@ export const project = {
     groundY: -0.55,
   },
   roof: {
-    pitch: 30,
-    ridgeZ: 2.25,
-    overhang: 0.5,
-    gableOverhang: 0.3,
-    surfaceAtWall: 2.96, // верх кровли над стеной Z=0
+    pitch: 25, // уклон как у «Марго» (≈25°)
+    ridgeX: 3.0, // конёк вдоль Z по центру ширины
+    overhang: 0.4, // карнизный свес по X
+    eaveOverhang: 0.35, // свес по фронтону (Z)
+    surfaceAtWall: 2.96, // верх кровли над стеной X=0
     // ridgeY считается ниже
   },
-  terraceRoof: {
-    pitch: 15,
-    z0: 4.5,
-    z1: 7.35,
-    y0: 2.42,
-    overhangX: 0.3,
+  glassWall: {
+    // остеклённый фронтон по оси Z=4.5
+    wall: 'B',
+    frame: 0.06, // сечение стойки витража, м
+    transom: 2.1, // высота нижней ленты остекления
+    mullions: [0.15, 1.2, 2.4, 3.0, 4.5, 5.85],
   },
   piles: {
     dia: 0.108,
@@ -67,34 +68,36 @@ export const project = {
 
 // ----- производные величины кровли -----
 const tanMain = Math.tan(project.roof.pitch * D2R)
-project.roof.ridgeY = project.roof.surfaceAtWall + project.roof.ridgeZ * tanMain
-project.roof.eaveZ = project.roof.ridgeZ - (project.roof.ridgeZ + project.roof.overhang)
-project.roof.eaveBackZ = project.roof.ridgeZ + (project.roof.ridgeZ + project.roof.overhang)
-project.roof.slopeRun = project.roof.ridgeZ + project.roof.overhang
-project.roof.slopeLen = project.roof.slopeRun / Math.cos(project.roof.pitch * D2R)
+const R0 = project.roof
+R0.ridgeY = R0.surfaceAtWall + (project.dims.L / 2) * tanMain
+R0.eaveX = -R0.overhang
+R0.eaveRightX = project.dims.L + R0.overhang
+R0.zBack = -R0.eaveOverhang
+R0.zFront = project.dims.D + project.dims.terrace + R0.eaveOverhang
+R0.slopeRun = project.dims.L / 2 + R0.overhang
+R0.slopeLen = R0.slopeRun / Math.cos(project.roof.pitch * D2R)
+R0.slopeWidth = R0.zFront - R0.zBack
+R0.ridgeLen = R0.zFront - R0.zBack
 
-/** высота верха кровли для координаты z (основная двускатка) */
-export function roofY(z) {
-  const { ridgeY, ridgeZ, pitch } = project.roof
-  return ridgeY - Math.abs(z - ridgeZ) * Math.tan(pitch * D2R)
+/** высота верха кровли для координаты x (конёк вдоль Z) */
+export function roofY(x) {
+  const { ridgeY, ridgeX, pitch } = project.roof
+  return ridgeY - Math.abs(x - ridgeX) * Math.tan(pitch * D2R)
 }
 
-/** высота верха односкатной кровли террасы */
-export function terraceRoofY(z) {
-  const t = project.terraceRoof
-  return t.y0 - Math.max(0, z - t.z0) * Math.tan(t.pitch * D2R)
+/** низ стропильной конструкции (по нижней грани стропила) для координаты x */
+export function roofUnderY(x) {
+  return roofY(x) - 0.36
 }
 
 // ----- окна и двери -----
 export const openings = [
   // окна
   { id: 'ОК-1', kind: 'window', w: 0.5, h: 0.5, sill: 1.35, wall: 'A', u0: 4.55, title: 'окно парной', count: 1 },
-  { id: 'ОК-2', kind: 'window', w: 0.9, h: 1.2, sill: 0.85, wall: 'B', u0: 0.45, title: 'окно комнаты отдыха', count: 1 },
-  { id: 'ОК-3', kind: 'window', w: 0.7, h: 0.7, sill: 1.4, wall: 'B', u0: 4.45, title: 'окно мойки', count: 1 },
   { id: 'ОК-4', kind: 'window', w: 1.2, h: 1.2, sill: 0.9, wall: 'C', u0: 2.85, title: 'окно комнаты отдыха', count: 1 },
   { id: 'ОК-5', kind: 'window', w: 0.7, h: 0.7, sill: 1.4, wall: 'D', u0: 3.3, title: 'окно мойки', count: 1 },
   // двери
-  { id: 'ДВ-1', kind: 'door', w: 0.9, h: 2.0, sill: 0, wall: 'B', u0: 1.75, title: 'входная дверь', count: 1, swingSide: -1, swingFrom: 'u0' },
+  { id: 'ДВ-1', kind: 'door', w: 0.9, h: 2.0, sill: 0, wall: 'B', u0: 1.75, title: 'входная дверь в витраже', count: 1, swingSide: -1, swingFrom: 'u0' },
   { id: 'ДВ-2', kind: 'door', w: 0.7, h: 2.0, sill: 0, wall: 'P1', u0: 3.4, title: 'дверь КО → мойка', count: 1, swingSide: 1, swingFrom: 'u1' },
   { id: 'ДВ-3', kind: 'door', w: 0.6, h: 1.9, sill: 0, wall: 'P2', u0: 1.3, title: 'дверь мойка → парная (стекло)', count: 1, swingSide: 1, swingFrom: 'u0' },
 ]
@@ -119,14 +122,15 @@ export const walls = [
   },
   {
     id: 'B',
-    name: 'Фасад главный, к террасе (ось Б)',
+    name: 'Фронтон остеклённый, к террасе (ось В)',
     kind: 'ext',
+    glass: true,
     a: { x: 0, z: 4.5 },
     b: { x: 6, z: 4.5 },
     thick: project.dims.wallT,
     height: project.dims.wallH,
     outSign: 1,
-    openings: [opening(0.45, 'ОК-2'), opening(1.75, 'ДВ-1'), opening(4.45, 'ОК-3')],
+    openings: [opening(1.75, 'ДВ-1')],
   },
   {
     id: 'C',
@@ -314,15 +318,28 @@ export const gable = {
 }
 
 export const roofArea = {
-  main: 2 * project.roof.slopeLen * (project.dims.L + 2 * project.roof.gableOverhang),
-  terrace:
-    ((project.terraceRoof.z1 - project.terraceRoof.z0) /
-      Math.cos(project.terraceRoof.pitch * D2R)) *
-    (project.dims.L + 2 * project.terraceRoof.overhangX),
+  // единая двускатная кровля над домом и террасой: 2 ската × длина 7,7 м
+  main: 2 * project.roof.slopeLen * project.roof.slopeWidth,
   get total() {
-    return this.main + this.terrace
+    return this.main
   },
 }
+
+/** остеклённый фронтон: площадь стекла и длина профиля */
+export const glazing = (() => {
+  const L = project.dims.L
+  const H = project.dims.wallH
+  const door = openings.find((o) => o.id === 'ДВ-1')
+  const lower = L * H - door.w * door.h
+  const upper = (L * gable.height) / 2
+  const frame =
+    (project.glassWall.mullions.length * H + 2 * L + 3 * project.glassWall.transom) * project.glassWall.frame
+  return {
+    area: +(lower + upper).toFixed(2),
+    net: +(lower + upper - frame).toFixed(2),
+    gableArea: +upper.toFixed(2),
+  }
+})()
 
 export const axisLabels = {
   x: [

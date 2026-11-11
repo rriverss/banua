@@ -170,16 +170,16 @@
 <text x="860" y="437" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9.2" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">к каждому оголовку, стыки — вразбежку на 1,5 м.</text>
 <text x="860" y="452" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9.2" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">Терраса — по сваям 6,85 м, стойки 100×100 на оголовках.</text>
 <text x="860" y="467" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9.2" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">Уклон участка под баней — отвод воды от пятна застройки.</text>
-<text x="36" y="839" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9" font-weight="400" fill="#7a766d" text-anchor="start" opacity="1" letter-spacing="0">Перед завинчиванием выполнить пробное погружение и уточнить глубину плотных грунтов. Схема не заменяет геологию участка.</text>
+<text x="36" y="839" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9" font-weight="400" fill="#7a766d" text-anchor="start" opacity="1" letter-spacing="0">Перед завинчиванием выполнить пробное погружение и уточнить глубину плотных грунтов. Схема не</text><text x="36" y="852" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9" font-weight="400" fill="#7a766d" text-anchor="start" opacity="1" letter-spacing="0">заменяет геологию участка.</text>
 <rect x="792" y="777" width="430" height="82" fill="#fff" stroke="#191714" stroke-width="1.2"/>
 <line x1="792" y1="801" x2="1222" y2="801" stroke="#191714" stroke-width="1" stroke-linecap="butt" opacity="1"/>
 <line x1="1024" y1="801" x2="1024" y2="859" stroke="#191714" stroke-width="1" stroke-linecap="butt" opacity="1"/>
 <line x1="792" y1="829" x2="1222" y2="829" stroke="#191714" stroke-width="1" stroke-linecap="butt" opacity="1"/>
-<text x="804" y="794" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">БАНЯ «КЕДР» 6,0 × 4,5 + терраса</text>
+<text x="804" y="794" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">БАНЯ «МАРГО» 6,0 × 4,5 + терраса</text>
 <text x="804" y="819" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">План фундамента</text>
 <text x="804" y="843" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Винтовые сваи ⌀108×2500, ростверк 150×150</text>
 <text x="804" y="854" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0"></text>
 <text x="1038" y="819" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">1:50</text>
-<text x="1038" y="843" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Лист 1 из 1</text>
+<text x="1038" y="843" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Лист 2 из 7</text>
 <text x="1038" y="854" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Версия 1.0 · 11.2026</text>
 </svg>

@@ -47,11 +47,14 @@ const floorArea = totalArea
 const joineryCount = openings.filter((o) => o.kind === 'window').length
 
 // стропила
-const rafterCountMain = Math.round(P.dims.L / P.frames.spacing) + 1
+// одна кровля над домом и террасой: пары стропил с шагом 600 по Z
+const rafterPairs = (() => {
+  let n = 0
+  for (let z = 0.25; z < P.roof.zFront - 0.2; z += P.frames.spacing) n++
+  return n
+})()
+const rafterCountMain = rafterPairs * 2
 const rafterLenMain = P.roof.slopeLen + 0.3
-const terRafterCount = Math.round(P.dims.L / P.frames.spacing) + 1
-const terSlopeLen = (P.terraceRoof.z1 - P.terraceRoof.z0) / Math.cos((P.terraceRoof.pitch * Math.PI) / 180)
-const rafterLenTer = terSlopeLen + 0.3
 
 // лаги
 const joistCount = Math.round((P.dims.L - 0.3) / P.frames.spacing) + 1
@@ -63,7 +66,7 @@ const girderLen = girders.reduce((s, g) => s + Math.hypot(g.x1 - g.x0, g.z1 - g.
 
 // обрешётка
 const battenLen = roofArea.total / 0.35
-const counterBattenLen = rafterCountMain * 2 * rafterLenMain + terRafterCount * rafterLenTer
+const counterBattenLen = rafterCountMain * rafterLenMain
 
 // площади отделки
 const koWalls = (2.85 + 4.3) * 2 * P.dims.ceiling - 1.4 - 1.08 - 1.44
@@ -89,12 +92,13 @@ const price = {
   vapor: 2700, // рулон 70 м²
   foil: 7500, // рулон 50 м²
   wind: 4200, // рулон 70 м²
-  metalTile: 690, // ₽/м²
-  ridge: 1400, // конёк 3 м
-  eaveStrip: 750, // планка 2 м
+  falz: 1250, // ₽/м², фальц 0,5 мм с картинами
+  ridge: 1900, // конёк фальцевый 2 м
+  eaveStrip: 900, // планка 2 м
   roofScrews: 1200, // 250 шт
   insulationRoof: 95, // ₽/м²
-  siding: 850, // имитация бруса, м²
+  siding: 1500, // рейка фасадная RAL 7021, м²
+  larch: 2900, // планкен лиственница натур, м²
   liningPine: 620,
   liningLinden: 1350,
   terraceBoard: 2100,
@@ -206,12 +210,13 @@ const groups = [
     name: '4. Кровля',
     icon: '⌂',
     items: [
-      item('Металлочерепица Монтеррей', '0,45 мм, RAL 3005, м²', 'м²', Math.ceil(roofArea.total * 1.12), price.metalTile),
-      item('Конёк', '3 м, полукруглый', 'шт', Math.ceil((P.dims.L + 0.6) / 3), price.ridge),
+      item('Фальц-кровля RAL 7021', '0,5 мм, полиэстер, с картинами', 'м²', Math.ceil(roofArea.total * 1.12), price.falz),
+      item('Конёк фальцевый', '2 м, RAL 7021', 'шт', Math.ceil((P.roof.zFront - P.roof.zBack) / 2), price.ridge),
       item('Планка торцевая', '2 м', 'шт', 8, price.eaveStrip),
       item('Планка карнизная', '2 м', 'шт', 7, price.eaveStrip),
       item('Саморез кровельный', '4,8×35, 250 шт', 'уп', Math.ceil(roofArea.total / 6), price.roofScrews),
       item('Уплотнитель коньковый', '30×10, 6 м', 'уп', 2, 1200),
+      item('Кляммеры и крепёж фальца', '100 шт', 'уп', 6, 1450),
       item('Подшив свесов', 'софиты/вагонка, м²', 'м²', 9.8, 780),
     ],
   },
@@ -220,7 +225,8 @@ const groups = [
     name: '5. Фасад и внутренняя отделка',
     icon: '▦',
     items: [
-      item('Имитация бруса 20×140', 'фасад, сосна сорт АВ', 'м²', Math.ceil((extNet + gable.area) * 1.1), price.siding),
+      item('Рейка фасадная 20×140', 'RAL 7021, графит, с покраской', 'м²', Math.ceil(extNet * 1.1), price.siding),
+      item('Планкен лиственница', 'фронтон, натур, 20×140', 'м²', Math.ceil((gable.area / 2) * 1.12), price.larch),
       item('Вагонка сосна 14×96', 'КО, мойка, потолки', 'м²', Math.ceil((koWalls + moyWalls + koArea + moyArea) * 1.1), price.liningPine),
       item('Вагонка липа 14×96', 'парная (без смолы, мягкая)', 'м²', Math.ceil((parWalls + parArea) * 1.1), price.liningLinden),
       item('Террасная доска лиственница', '28×140, 4 м', 'м²', Math.ceil(P.dims.L * P.dims.terrace * 1.1), price.terraceBoard),
@@ -307,9 +313,9 @@ const works = [
   { name: 'Ростверк / обвязка, антисептирование', unit: 'м', qty: round(girderLen, 1), price: 950 },
   { name: 'Каркас стен, перегородки, обшивка ОСП', unit: 'м²', qty: round(extNet + intNet, 0), price: 2400 },
   { name: 'Пол и потолок (лаги, настил, балки)', unit: 'м²', qty: round(totalArea * 2, 0), price: 1900 },
-  { name: 'Кровля: стропила, пирог, металлочерепица', unit: 'м²', qty: round(roofArea.total, 0), price: 1700 },
+  { name: 'Кровля: стропила, пирог, фальц RAL 7021', unit: 'м²', qty: round(roofArea.total, 0), price: 1700 },
   { name: 'Утепление, пароизоляция, проклейка', unit: 'м²', qty: round(insulWalls + floorArea * 2 + roofArea.main, 0), price: 450 },
-  { name: 'Фасад: вентзазор, имитация бруса', unit: 'м²', qty: round(extNet + gable.area, 0), price: 1200 },
+  { name: 'Фасад: вентзазор, рейка RAL 7021, лиственница', unit: 'м²', qty: round(extNet + gable.area, 0), price: 1200 },
   { name: 'Внутренняя отделка: вагонка, полки парной', unit: 'м²', qty: round(koWalls + moyWalls + parWalls + koArea + moyArea + parArea, 0), price: 1300 },
   { name: 'Полы: плитка, доска, плинтус', unit: 'м²', qty: round(totalArea, 0), price: 1900 },
   { name: 'Терраса: настил, ограждение, ступени', unit: 'м²', qty: P.dims.L * P.dims.terrace, price: 2600 },
@@ -356,7 +362,7 @@ export const stats = {
   floor: round(totalArea, 1),
   piles: pilePositions.length,
   girder: round(girderLen, 1),
-  rafterMain: rafterCountMain * 2,
+  rafterMain: rafterCountMain,
   joists: joistCount,
   extWoodLen: round(extWoodLen, 1),
   intWoodLen: round(intWoodLen, 1),

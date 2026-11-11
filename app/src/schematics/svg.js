@@ -138,7 +138,7 @@ function wrapText(text, maxChars) {
   return lines
 }
 
-export function sheet({ w = 1240, h = 877, title, subtitle, scale, body, note }) {
+export function sheet({ w = 1240, h = 877, title, subtitle, scale, body, note, num, of }) {
   const m = 18
   const tbW = 430
   const tbH = 82
@@ -151,17 +151,17 @@ ${defs()}
 <rect width="${w}" height="${h}" fill="#fdfcf9"/>
 <rect x="${m}" y="${m}" width="${w - 2 * m}" height="${h - 2 * m}" fill="none" stroke="${INK}" stroke-width="1.6"/>
 ${body}
-${note ? wrapText(note, 150).slice(0, 2).map((l, i) => txt(m + 18, h - m - 20 + i * 13, l, { size: 9, fill: '#7a766d' })).join('') : ''}
+${note ? wrapText(note, 100).slice(0, 2).map((l, i) => txt(m + 18, h - m - 20 + i * 13, l, { size: 9, fill: '#7a766d' })).join('') : ''}
 <rect x="${tbX}" y="${tbY}" width="${tbW}" height="${tbH}" fill="#fff" stroke="${INK}" stroke-width="1.2"/>
 ${line(tbX, tbY + 24, tbX + tbW, tbY + 24, { stroke: INK, w: 1 })}
 ${line(col2, tbY + 24, col2, tbY + tbH, { stroke: INK, w: 1 })}
 ${line(tbX, tbY + 52, tbX + tbW, tbY + 52, { stroke: INK, w: 1 })}
-${txt(tbX + 12, tbY + 17, 'БАНЯ «КЕДР» 6,0 × 4,5 + терраса', { size: 11.5, weight: 700 })}
+${txt(tbX + 12, tbY + 17, 'БАНЯ «МАРГО» 6,0 × 4,5 + терраса', { size: 11.5, weight: 700 })}
 ${txt(tbX + 12, tbY + 42, title, { size: 11, weight: 600 })}
 ${txt(tbX + 12, tbY + 66, subLines[0] || '', { size: 8.5, fill: DIM })}
 ${txt(tbX + 12, tbY + 77, subLines[1] || '', { size: 8.5, fill: DIM })}
 ${txt(col2 + 14, tbY + 42, scale || '1:50', { size: 12, weight: 600 })}
-${txt(col2 + 14, tbY + 66, 'Лист 1 из 1', { size: 8.5, fill: DIM })}
+${txt(col2 + 14, tbY + 66, num ? `Лист ${num} из ${of || 7}` : 'Лист 1 из 1', { size: 8.5, fill: DIM })}
 ${txt(col2 + 14, tbY + 77, 'Версия 1.0 · 11.2026', { size: 8.5, fill: DIM })}
 </svg>`
 }

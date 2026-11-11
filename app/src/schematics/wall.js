@@ -8,12 +8,12 @@ const BASE = 530 // экранная координата y=0
 const X = (u) => OX + u * S
 const Y = (y) => BASE - y * S
 
-const wall = walls.find((w) => w.id === 'B')
+const wall = walls.find((w) => w.id === 'A')
 
 export function wallSheet() {
   const b = []
-  b.push(txt(OX, 58, 'СТЕНА ПО ОСИ Б. СХЕМА КАРКАСА', { size: 19, weight: 700, letter: 1.2 }))
-  b.push(txt(OX, 82, 'Развёртка 6 000 × 2 700, стойки 45×195 с шагом 600, проёмы по ведомости', { size: 11, fill: DIM }))
+  b.push(txt(OX, 58, 'СТЕНА ПО ОСИ А. СХЕМА КАРКАСА', { size: 19, weight: 700, letter: 1.2 }))
+  b.push(txt(OX, 82, 'Задняя стена 6 000 × 2 700, стойки 45×195 с шагом 600, проёмы по ведомости', { size: 11, fill: DIM }))
 
   // фон стены
   b.push(rect(X(0), Y(2.7), wall.length * S, 2.7 * S, { fill: '#fbf7ef', stroke: INK, sw: 1.2 }))
@@ -86,7 +86,7 @@ export function wallSheet() {
   const py = 648
   b.push(txt(OX, py - 26, 'СЛОИ НАРУЖНОЙ СТЕНЫ (снаружи → внутрь), 1:10', { size: 11, weight: 700 }))
   const layers = [
-    ['Имитация бруса 20', 20, '#b07c4a'],
+    ['Рейка графит 20', 20, '#34393d'],
     ['Вентзазор 30', 30, '#ecebe6'],
     ['ОСП-3 9', 9, '#e3cb9f'],
     ['Каркас 195 + вата', 195, '#f0c14b'],
@@ -163,7 +163,8 @@ export function wallSheet() {
   }
 
   return sheet({
-    title: 'Стена Б. Схема каркаса и слои',
+    num: 4,
+    title: 'Стена А. Схема каркаса и слои',
     subtitle: 'Стойки 45×195, шаг 600, обшивка ОСП-3 9 мм',
     scale: '1:50',
     body: b.join('\n'),

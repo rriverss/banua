@@ -7,12 +7,14 @@ import { sectionSheet } from '../schematics/section.js'
 import { wallSheet } from '../schematics/wall.js'
 import { roofSheet } from '../schematics/roof.js'
 import { nodesSheet } from '../schematics/nodes.js'
+import { facadeSheet } from '../schematics/facade.js'
 
 const SHEETS = [
   { id: 'plan', title: 'План 1-го этажа', note: 'Планировка, оси, проёмы, оборудование, экспликация', fn: planSheet },
   { id: 'foundation', title: 'План фундамента', note: '20 винтовых свай, ростверк, примечания по монтажу', fn: foundationSheet },
   { id: 'section', title: 'Разрез 1–1', note: 'Отметки, слои стены/пола/кровли, свесы', fn: sectionSheet },
-  { id: 'wall', title: 'Стена Б: каркас', note: 'Развёртка 6×2,7, шаг 600, пирог стены', fn: wallSheet },
+  { id: 'wall', title: 'Стена А: каркас', note: 'Развёртка 6×2,7, шаг 600, пирог стены', fn: wallSheet },
+  { id: 'facade', title: 'Главный фасад', note: 'Витраж, раскладка фронтона, узлы остекления', fn: facadeSheet },
   { id: 'roof', title: 'Стропильная система', note: 'План стропил, деталь, спецификация кровли', fn: roofSheet },
   { id: 'nodes', title: 'Узлы 1–6', note: 'Свая, стена на перекрытии, карниз, конёк, проём, дымоход', fn: nodesSheet },
 ]
@@ -115,7 +117,7 @@ export function renderMaterials(host) {
       <div class="statgrid">
         <div class="stat"><span>Пиломатериал</span><b>${stats.extWoodLen + stats.intWoodLen > 0 ? Math.round((stats.extWoodLen + stats.intWoodLen) * 0.045 * 0.195) : 0} м³</b><em>каркас, лаги, стропила</em></div>
         <div class="stat"><span>Утепление стен</span><b>${stats.insulWalls} м²</b><em>195 мм, 2 слоя</em></div>
-        <div class="stat"><span>Кровля</span><b>${stats.roof} м²</b><em>металлочерепица</em></div>
+        <div class="stat"><span>Кровля</span><b>${stats.roof} м²</b><em>фальц RAL 7021</em></div>
         <div class="stat accent"><span>Материалы</span><b>${money(materialsTotal)}</b><em>${fmt(Math.round(materialsTotal / totalArea))} ₽/м²</em></div>
       </div>
 
@@ -337,11 +339,11 @@ export function renderAlbum(host) {
         <section class="album-page album-cover">
           <div class="stamp">ПРОЕКТ<br/>2026</div>
           <div class="eyebrow" style="color:#a98247">Индивидуальный проект</div>
-          <h1>Баня «Кедр»</h1>
-          <h2>6,0 × 4,5 м + терраса 2,5 м · каркасная технология · винтовые сваи</h2>
+          <h1>Баня «Марго»</h1>
+          <h2>6,0 × 4,5 м + терраса 2,5 м · барнхаус · панорамный фронтон · винтовые сваи</h2>
           <p style="max-width:640px;color:#4a453c">
             Тёплый контур ${totalArea.toFixed(1).replace('.', ',')} м²: комната отдыха, парная, мойка.
-            Терраса ${terraceArea.toFixed(0)} м². Кровля ${roofArea.total.toFixed(0)} м², уклон 30°.
+            Терраса ${terraceArea.toFixed(0)} м². Кровля ${roofArea.total.toFixed(0)} м², уклон ${project.roof.pitch}°.
             Расчётный регион — Московская область.
           </p>
           <div class="meta">
@@ -351,7 +353,7 @@ export function renderAlbum(host) {
             <div><span>Смета</span><b>${(bom.total / 1e6).toFixed(2).replace('.', ',')} млн ₽</b></div>
           </div>
           <div class="meta" style="margin-top:18px">
-            <div><span>Состав альбома</span><b>6 листов</b></div>
+            <div><span>Состав альбома</span><b>7 листов</b></div>
             <div><span>Каркас</span><b>45×195, шаг 600</b></div>
             <div><span>Утепление</span><b>195 мм</b></div>
             <div><span>Версия</span><b>1.0 · 11.2026</b></div>

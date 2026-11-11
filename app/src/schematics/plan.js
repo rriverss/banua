@@ -119,13 +119,13 @@ function furniture() {
   }
   rail(0, 4.55, 0, 6.95)
   rail(6, 4.55, 6, 6.95)
-  rail(0, 6.95, 2.2, 6.95)
-  rail(3.5, 6.95, 6, 6.95)
+  rail(0, 6.95, 1.4, 6.95)
+  rail(4.6, 6.95, 6, 6.95)
   // ступени
   for (let i = 0; i < 3; i++) {
-    s += rect(X(2.25), Y(6.95 + i * 0.17), 1.2 * S, 0.17 * S, { fill: i % 2 ? '#f1e2ca' : '#e9d7bb', stroke: '#a98f62', sw: 0.7 })
+    s += rect(X(1.4), Y(7.02 + i * 0.34), 3.2 * S, 0.34 * S, { fill: i % 2 ? '#f1e2ca' : '#e9d7bb', stroke: '#a98f62', sw: 0.7 })
   }
-  s += txt(X(3.55), Y(7.35), 'вход', { size: 8.5, fill: ACCENT, weight: 600 })
+  s += txt(X(5.0), Y(7.55), 'вход', { size: 8.5, fill: ACCENT, weight: 600 })
   return s
 }
 
@@ -168,7 +168,7 @@ export function planSheet() {
   }
 
   // размерные цепочки
-  body.push(dimH(X(0), X(6), Y(7) + 46, mm(6)))
+  body.push(dimH(X(0), X(6), Y(7) + 112, mm(6)))
   body.push(dimV(Y(0), Y(2.2), X(0) - 40, mm(2.2)))
   body.push(dimV(Y(2.2), Y(4.5), X(0) - 40, mm(2.3)))
   body.push(dimV(Y(4.5), Y(7), X(0) - 40, mm(2.5)))
@@ -181,9 +181,8 @@ export function planSheet() {
     body.push(txt(X(x) + dx, Y(z) + dz, id, { size: 9, fill: ACCENT, weight: 600 }))
   }
   mark('ОК-1', 4.8, 0.15)
-  mark('ОК-2', 0.9, 4.62, 0, 14)
-  mark('ДВ-1', 2.2, 4.2, 0, -26)
-  mark('ОК-3', 4.8, 4.35)
+  mark('ДВ-1', 2.6, 4.2, 0, -26)
+  mark('ВИТРАЖ 6,0 м', 4.7, 4.72, 0, 16)
   mark('ОК-4', 0.6, 3.35, 14)
   mark('ДВ-2', 3.15, 3.75, 14)
   mark('ДВ-3', 4.6, 2.1, 16, -6)
@@ -236,6 +235,7 @@ export function planSheet() {
   body.push(txt(tx, ty + 12, 'Отметка 0,000 = чистый пол 1-го этажа.', { size: 8.5, fill: DIM }))
 
   return sheet({
+    num: 1,
     title: 'План 1-го этажа',
     subtitle: 'Планировка, оси, проёмы, оборудование',
     scale: '1:50',
