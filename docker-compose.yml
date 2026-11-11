@@ -1,0 +1,15 @@
+services:
+  banua:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    image: banua-kedr:1.0
+    container_name: banua-kedr
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3

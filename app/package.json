@@ -1,0 +1,21 @@
+{
+  "name": "banua-kedr",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Баня «Кедр» 6,0×4,5 с террасой — интерактивный проект: 3D-модель, схемы, ведомость материалов",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5173",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "schemes": "node tools/export-schemes.mjs"
+  },
+  "dependencies": {
+    "marked": "^15.0.7",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "vite": "^6.1.0"
+  }
+}

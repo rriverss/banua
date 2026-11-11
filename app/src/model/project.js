@@ -1,0 +1,353 @@
+/**
+ * Параметрическая модель бани «Кедр» 6,0 × 4,5 м с террасой 2,5 м.
+ * Единственный источник геометрии: 3D-сцена, схемы и ведомость материалов
+ * считаются из этих данных, поэтому цифры всегда сходятся между собой.
+ *
+ * Система координат: X — вдоль главного фасада (0…6), Z — в глубину (0…7),
+ * Y — вверх, 0.000 = уровень чистого пола.
+ */
+
+const D2R = Math.PI / 180
+
+export const project = {
+  title: 'Баня «Кедр»',
+  subtitle: '6,0 × 4,5 м + терраса 2,5 м',
+  version: '1.0',
+  region: 'Московская область',
+  climate: {
+    snow: 'III район, расчётная снеговая нагрузка 180 кг/м² (СП 20.13330)',
+    wind: 'I район, 23 кг/м²',
+    temp: 'расчётная зимняя температура −25 °C',
+    soil: 'суглинок/песок, глубина промерзания 1,4 м (уточнить геологией)',
+  },
+  dims: {
+    L: 6.0, // длина по X
+    D: 4.5, // глубина основного блока по Z
+    terrace: 2.5, // вынос террасы
+    wallT: 0.2, // наружная стена по осям
+    partT: 0.1, // перегородка
+    wallH: 2.7, // верхняя обвязка стен
+    partH: 2.5, // перегородки / потолок
+    ceiling: 2.5,
+    pileTop: -0.345, // верх сваи = низ обвязки
+    girder: 0.15,
+    joist: 0.195,
+    floorDeck: 0.018,
+    groundY: -0.55,
+  },
+  roof: {
+    pitch: 30,
+    ridgeZ: 2.25,
+    overhang: 0.5,
+    gableOverhang: 0.3,
+    surfaceAtWall: 2.96, // верх кровли над стеной Z=0
+    // ridgeY считается ниже
+  },
+  terraceRoof: {
+    pitch: 15,
+    z0: 4.5,
+    z1: 7.35,
+    y0: 2.42,
+    overhangX: 0.3,
+  },
+  piles: {
+    dia: 0.108,
+    length: 2.5,
+    xs: [0.15, 1.55, 2.95, 4.35, 5.85],
+    zs: [0.15, 2.25, 4.45, 6.85],
+  },
+  frames: {
+    spacing: 0.6,
+    board: 0.045,
+    extDepth: 0.195,
+    intDepth: 0.095,
+    plate: 0.045,
+  },
+}
+
+// ----- производные величины кровли -----
+const tanMain = Math.tan(project.roof.pitch * D2R)
+project.roof.ridgeY = project.roof.surfaceAtWall + project.roof.ridgeZ * tanMain
+project.roof.eaveZ = project.roof.ridgeZ - (project.roof.ridgeZ + project.roof.overhang)
+project.roof.eaveBackZ = project.roof.ridgeZ + (project.roof.ridgeZ + project.roof.overhang)
+project.roof.slopeRun = project.roof.ridgeZ + project.roof.overhang
+project.roof.slopeLen = project.roof.slopeRun / Math.cos(project.roof.pitch * D2R)
+
+/** высота верха кровли для координаты z (основная двускатка) */
+export function roofY(z) {
+  const { ridgeY, ridgeZ, pitch } = project.roof
+  return ridgeY - Math.abs(z - ridgeZ) * Math.tan(pitch * D2R)
+}
+
+/** высота верха односкатной кровли террасы */
+export function terraceRoofY(z) {
+  const t = project.terraceRoof
+  return t.y0 - Math.max(0, z - t.z0) * Math.tan(t.pitch * D2R)
+}
+
+// ----- окна и двери -----
+export const openings = [
+  // окна
+  { id: 'ОК-1', kind: 'window', w: 0.5, h: 0.5, sill: 1.35, wall: 'A', u0: 4.55, title: 'окно парной', count: 1 },
+  { id: 'ОК-2', kind: 'window', w: 0.9, h: 1.2, sill: 0.85, wall: 'B', u0: 0.45, title: 'окно комнаты отдыха', count: 1 },
+  { id: 'ОК-3', kind: 'window', w: 0.7, h: 0.7, sill: 1.4, wall: 'B', u0: 4.45, title: 'окно мойки', count: 1 },
+  { id: 'ОК-4', kind: 'window', w: 1.2, h: 1.2, sill: 0.9, wall: 'C', u0: 2.85, title: 'окно комнаты отдыха', count: 1 },
+  { id: 'ОК-5', kind: 'window', w: 0.7, h: 0.7, sill: 1.4, wall: 'D', u0: 3.3, title: 'окно мойки', count: 1 },
+  // двери
+  { id: 'ДВ-1', kind: 'door', w: 0.9, h: 2.0, sill: 0, wall: 'B', u0: 1.75, title: 'входная дверь', count: 1, swingSide: -1, swingFrom: 'u0' },
+  { id: 'ДВ-2', kind: 'door', w: 0.7, h: 2.0, sill: 0, wall: 'P1', u0: 3.4, title: 'дверь КО → мойка', count: 1, swingSide: 1, swingFrom: 'u1' },
+  { id: 'ДВ-3', kind: 'door', w: 0.6, h: 1.9, sill: 0, wall: 'P2', u0: 1.3, title: 'дверь мойка → парная (стекло)', count: 1, swingSide: 1, swingFrom: 'u0' },
+]
+
+function opening(u0, id) {
+  const o = openings.find((x) => x.id === id)
+  return { ...o, u0, u1: u0 + o.w, y0: o.sill, y1: o.sill + o.h }
+}
+
+// ----- стены -----
+export const walls = [
+  {
+    id: 'A',
+    name: 'Фасад задний (ось А)',
+    kind: 'ext',
+    a: { x: 0, z: 0 },
+    b: { x: 6, z: 0 },
+    thick: project.dims.wallT,
+    height: project.dims.wallH,
+    outSign: -1,
+    openings: [opening(4.55, 'ОК-1')],
+  },
+  {
+    id: 'B',
+    name: 'Фасад главный, к террасе (ось Б)',
+    kind: 'ext',
+    a: { x: 0, z: 4.5 },
+    b: { x: 6, z: 4.5 },
+    thick: project.dims.wallT,
+    height: project.dims.wallH,
+    outSign: 1,
+    openings: [opening(0.45, 'ОК-2'), opening(1.75, 'ДВ-1'), opening(4.45, 'ОК-3')],
+  },
+  {
+    id: 'C',
+    name: 'Фасад левый (ось 1)',
+    kind: 'ext',
+    a: { x: 0, z: 0 },
+    b: { x: 0, z: 4.5 },
+    thick: project.dims.wallT,
+    height: project.dims.wallH,
+    outSign: 1,
+    openings: [opening(2.85, 'ОК-4')],
+  },
+  {
+    id: 'D',
+    name: 'Фасад правый (ось 3)',
+    kind: 'ext',
+    a: { x: 6, z: 0 },
+    b: { x: 6, z: 4.5 },
+    thick: project.dims.wallT,
+    height: project.dims.wallH,
+    outSign: -1,
+    openings: [opening(3.3, 'ОК-5')],
+  },
+  {
+    id: 'P1',
+    name: 'Перегородка КО / мойка',
+    kind: 'int',
+    a: { x: 3, z: 0 },
+    b: { x: 3, z: 4.45 },
+    thick: project.dims.partT,
+    height: project.dims.partH,
+    openings: [opening(3.4, 'ДВ-2')],
+  },
+  {
+    id: 'P2',
+    name: 'Перегородка парная / мойка',
+    kind: 'int',
+    a: { x: 3, z: 2.2 },
+    b: { x: 6, z: 2.2 },
+    thick: project.dims.partT,
+    height: project.dims.partH,
+    openings: [opening(1.3, 'ДВ-3')],
+  },
+]
+
+for (const w of walls) {
+  const dx = w.b.x - w.a.x
+  const dz = w.b.z - w.a.z
+  w.length = Math.hypot(dx, dz)
+  w.angle = Math.atan2(dz, dx)
+  w.dir = { x: dx / w.length, z: dz / w.length }
+  w.normal = { x: -w.dir.z, z: w.dir.x }
+}
+
+// ----- помещения -----
+const t = project.dims.wallT
+const pt = project.dims.partT
+
+export const rooms = [
+  {
+    id: 'ko',
+    name: 'Комната отдыха',
+    short: 'КО',
+    area: (3 - t / 2 - t / 2) * (4.5 - t / 2 - t / 2 - 0.0),
+    poly: [
+      [t / 2, t / 2],
+      [3 - pt / 2, t / 2],
+      [3 - pt / 2, 4.5 - t / 2],
+      [t / 2, 4.5 - t / 2],
+    ],
+    center: [1.5, 2.3],
+    floor: 'Шпунтованная доска 35 мм (лиственница)',
+    ceiling: 'Вагонка сосна 14×96, потолок 2,5 м',
+  },
+  {
+    id: 'par',
+    name: 'Парная',
+    short: 'Парная',
+    area: (6 - t / 2 - (3 + pt / 2)) * (2.2 - pt / 2 - t / 2),
+    poly: [
+      [3 + pt / 2, t / 2],
+      [6 - t / 2, t / 2],
+      [6 - t / 2, 2.2 - pt / 2],
+      [3 + pt / 2, 2.2 - pt / 2],
+    ],
+    center: [4.5, 1.15],
+    floor: 'Керамогранит 300×300, трап в мойку',
+    ceiling: 'Вагонка липа, потолок 2,5 м',
+  },
+  {
+    id: 'moy',
+    name: 'Мойка',
+    short: 'Мойка',
+    area: (6 - t / 2 - (3 + pt / 2)) * (4.5 - t / 2 - (2.2 + pt / 2)),
+    poly: [
+      [3 + pt / 2, 2.2 + pt / 2],
+      [6 - t / 2, 2.2 + pt / 2],
+      [6 - t / 2, 4.5 - t / 2],
+      [3 + pt / 2, 4.5 - t / 2],
+    ],
+    center: [4.5, 3.35],
+    floor: 'Керамогранит 300×300 по гидроизоляции, трап',
+    ceiling: 'Вагонка липа, потолок 2,5 м',
+  },
+  {
+    id: 'ter',
+    name: 'Терраса',
+    short: 'Терраса',
+    area: 6 * 2.5,
+    poly: [
+      [0, 4.5],
+      [6, 4.5],
+      [6, 7],
+      [0, 7],
+    ],
+    center: [3, 5.75],
+    floor: 'Террасная доска лиственница 28×140',
+    ceiling: 'Открытые стропила, подшив вагонкой',
+  },
+]
+
+/** площадь полигона (shoelace) — используем вместо ручных формул */
+function polyArea(poly) {
+  let s = 0
+  for (let i = 0; i < poly.length; i++) {
+    const [x1, z1] = poly[i]
+    const [x2, z2] = poly[(i + 1) % poly.length]
+    s += x1 * z2 - x2 * z1
+  }
+  return Math.abs(s) / 2
+}
+for (const r of rooms) r.area = polyArea(r.poly)
+
+export const totalArea = rooms
+  .filter((r) => r.id !== 'ter')
+  .reduce((s, r) => s + r.area, 0)
+export const terraceArea = rooms.find((r) => r.id === 'ter').area
+
+// ----- фундамент -----
+export const pilePositions = project.piles.zs.flatMap((z) =>
+  project.piles.xs.map((x) => ({ x, z }))
+)
+
+/** линии обвязки (ростверка) */
+export const girders = [
+  ...project.piles.zs.map((z) => ({ x0: -0.075, z0: z, x1: 6.075, z1: z })),
+  ...[project.piles.xs[0], 2.95, project.piles.xs[4]].map((x) => ({
+    x0: x,
+    z0: -0.075,
+    x1: x,
+    z1: 6.925,
+  })),
+]
+
+// ----- геометрические помощники (общие для 3D и сметы) -----
+export function wallStudPositions(wall, spacing = project.frames.spacing) {
+  const positions = new Set([0, wall.length])
+  for (let u = spacing; u < wall.length - 0.05; u += spacing) positions.add(round3(u))
+  for (const o of wall.openings) {
+    positions.add(round3(Math.max(0.05, o.u0 - 0.045)))
+    positions.add(round3(o.u0))
+    positions.add(round3(Math.min(wall.length - 0.05, o.u1)))
+  }
+  // стойки, попавшие внутрь проёма, не нужны
+  return [...positions]
+    .filter(
+      (u) =>
+        !wall.openings.some((o) => u > o.u0 + 0.01 && u < o.u1 - 0.01)
+    )
+    .sort((a, b) => a - b)
+}
+
+export function wallAreas(wall) {
+  const gross = wall.length * wall.height
+  const holes = wall.openings.reduce((s, o) => s + (o.u1 - o.u0) * (o.y1 - o.y0), 0)
+  return { gross, holes, net: gross - holes }
+}
+
+export const gable = {
+  height: project.roof.ridgeY - project.dims.wallH,
+  count: 2,
+  get area() {
+    return ((project.dims.L * this.height) / 2) * this.count
+  },
+}
+
+export const roofArea = {
+  main: 2 * project.roof.slopeLen * (project.dims.L + 2 * project.roof.gableOverhang),
+  terrace:
+    ((project.terraceRoof.z1 - project.terraceRoof.z0) /
+      Math.cos(project.terraceRoof.pitch * D2R)) *
+    (project.dims.L + 2 * project.terraceRoof.overhangX),
+  get total() {
+    return this.main + this.terrace
+  },
+}
+
+export const axisLabels = {
+  x: [
+    { at: 0, label: '1' },
+    { at: 3, label: '2' },
+    { at: 6, label: '3' },
+  ],
+  z: [
+    { at: 0, label: 'А' },
+    { at: 2.2, label: 'Б' },
+    { at: 4.5, label: 'В' },
+  ],
+}
+
+export function round3(v) {
+  return Math.round(v * 1000) / 1000
+}
+
+export function fmt(n, digits = 0) {
+  return n.toLocaleString('ru-RU', {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  })
+}
+
+export function money(n) {
+  return fmt(Math.round(n)) + ' ₽'
+}

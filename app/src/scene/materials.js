@@ -1,0 +1,156 @@
+import * as THREE from 'three'
+
+const std = (color, opts = {}) =>
+  new THREE.MeshStandardMaterial({ color, roughness: 0.85, metalness: 0.02, ...opts })
+
+/** процедурная текстура 1×1 м: паттерн задаётся в world-масштабе */
+function canvasTex(draw, size = 256) {
+  const c = document.createElement('canvas')
+  c.width = size
+  c.height = size
+  const ctx = c.getContext('2d')
+  draw(ctx, size)
+  const t = new THREE.CanvasTexture(c)
+  t.wrapS = t.wrapT = THREE.RepeatWrapping
+  t.colorSpace = THREE.SRGBColorSpace
+  t.anisotropy = 8
+  return t
+}
+
+const tex = {
+  siding: canvasTex((ctx, s) => {
+    const boards = 7
+    const w = s / boards
+    ctx.fillStyle = '#a5703f'
+    ctx.fillRect(0, 0, s, s)
+    for (let i = 0; i < boards; i++) {
+      const shade = 0.86 + ((i * 37) % 17) / 100
+      ctx.fillStyle = `rgba(${Math.round(150 * shade)}, ${Math.round(100 * shade)}, ${Math.round(58 * shade)}, 1)`
+      ctx.fillRect(i * w + 1, 0, w - 2, s)
+      ctx.fillStyle = 'rgba(70, 42, 22, .55)'
+      ctx.fillRect(i * w, 0, 2, s)
+      ctx.fillStyle = 'rgba(255, 232, 200, .10)'
+      ctx.fillRect(i * w + 2, 0, 2, s)
+    }
+  }),
+  lining: canvasTex((ctx, s) => {
+    const boards = 10
+    const h = s / boards
+    ctx.fillStyle = '#ecd3a9'
+    ctx.fillRect(0, 0, s, s)
+    for (let i = 0; i < boards; i++) {
+      const shade = 0.93 + ((i * 53) % 9) / 100
+      ctx.fillStyle = `rgba(${Math.round(232 * shade)}, ${Math.round(206 * shade)}, ${Math.round(164 * shade)}, 1)`
+      ctx.fillRect(0, i * h + 1, s, h - 2)
+      ctx.fillStyle = 'rgba(140, 108, 70, .45)'
+      ctx.fillRect(0, i * h, s, 1.5)
+      ctx.fillStyle = 'rgba(255, 246, 226, .35)'
+      ctx.fillRect(0, i * h + 2, s, 1)
+    }
+  }),
+  floor: canvasTex((ctx, s) => {
+    const planks = 3
+    const h = s / planks
+    ctx.fillStyle = '#a2683c'
+    ctx.fillRect(0, 0, s, s)
+    for (let i = 0; i < planks; i++) {
+      const shade = 0.88 + ((i * 41) % 13) / 100
+      ctx.fillStyle = `rgba(${Math.round(164 * shade)}, ${Math.round(106 * shade)}, ${Math.round(62 * shade)}, 1)`
+      ctx.fillRect(0, i * h + 2, s, h - 3)
+      ctx.fillStyle = 'rgba(58, 34, 18, .5)'
+      ctx.fillRect(0, i * h, s, 2)
+      for (let g = 0; g < 6; g++) {
+        ctx.strokeStyle = `rgba(90, 52, 26, ${0.06 + (g % 3) * 0.03})`
+        ctx.beginPath()
+        const y = i * h + 8 + ((g * 13) % (h - 12))
+        ctx.moveTo(0, y)
+        ctx.bezierCurveTo(s * 0.3, y + 4, s * 0.6, y - 5, s, y + 2)
+        ctx.stroke()
+      }
+    }
+  }),
+  terrace: canvasTex((ctx, s) => {
+    const boards = 6
+    const w = s / boards
+    ctx.fillStyle = '#8f6244'
+    ctx.fillRect(0, 0, s, s)
+    for (let i = 0; i < boards; i++) {
+      const shade = 0.9 + ((i * 29) % 15) / 100
+      ctx.fillStyle = `rgba(${Math.round(146 * shade)}, ${Math.round(100 * shade)}, ${Math.round(70 * shade)}, 1)`
+      ctx.fillRect(i * w + 2, 0, w - 4, s)
+      ctx.fillStyle = 'rgba(40, 24, 14, .75)'
+      ctx.fillRect(i * w, 0, 2, s)
+    }
+  }),
+  roof: canvasTex((ctx, s) => {
+    const ribs = 3
+    const w = s / ribs
+    ctx.fillStyle = '#7d3a32'
+    ctx.fillRect(0, 0, s, s)
+    for (let i = 0; i < ribs; i++) {
+      const g = ctx.createLinearGradient(i * w, 0, (i + 1) * w, 0)
+      g.addColorStop(0, '#6a2f28')
+      g.addColorStop(0.35, '#93463c')
+      g.addColorStop(0.75, '#8a4037')
+      g.addColorStop(1, '#652b25')
+      ctx.fillStyle = g
+      ctx.fillRect(i * w, 0, w, s)
+    }
+    for (let y = 0; y < s; y += s / 4) {
+      ctx.fillStyle = 'rgba(0,0,0,.16)'
+      ctx.fillRect(0, y, s, 2)
+      ctx.fillStyle = 'rgba(255,220,200,.08)'
+      ctx.fillRect(0, y + 2, s, 1)
+    }
+  }),
+}
+
+export const M = {
+  frame: std('#d9a568', { roughness: 0.8 }),
+  frameDark: std('#b8823f', { roughness: 0.85 }),
+  osb: std('#e3cb9f', { roughness: 0.95 }),
+  insulation: std('#f0c14b', { roughness: 1 }),
+  siding: std('#ffffff', { roughness: 0.8, map: tex.siding }),
+  lining: std('#ffffff', { roughness: 0.82, map: tex.lining }),
+  liningLinden: std('#fff0d2', { roughness: 0.82, map: tex.lining }),
+  floor: std('#ffffff', { roughness: 0.72, map: tex.floor }),
+  terrace: std('#ffffff', { roughness: 0.82, map: tex.terrace }),
+  tile: std('#98a0a5', { roughness: 0.32 }),
+  roof: std('#ffffff', { roughness: 0.42, metalness: 0.35, map: tex.roof, side: THREE.DoubleSide }),
+  roofEdge: std('#5c2a25', { roughness: 0.5, metalness: 0.3 }),
+  metal: std('#3a3f43', { roughness: 0.45, metalness: 0.6 }),
+  metalLight: std('#9aa3a8', { roughness: 0.35, metalness: 0.7 }),
+  pile: std('#8b8880', { roughness: 0.6, metalness: 0.4 }),
+  concrete: std('#b9b6ae', { roughness: 0.95 }),
+  stove: std('#2c2c2f', { roughness: 0.5, metalness: 0.5 }),
+  stone: std('#5b5f63', { roughness: 1 }),
+  glass: new THREE.MeshPhysicalMaterial({
+    color: '#bcd8e2',
+    roughness: 0.05,
+    metalness: 0,
+    transmission: 0.85,
+    transparent: true,
+    opacity: 0.45,
+    thickness: 0.02,
+    side: THREE.DoubleSide,
+  }),
+  windowFrame: std('#6c4a2d', { roughness: 0.7 }),
+  door: std('#7a4b28', { roughness: 0.65 }),
+  water: std('#7fb7c9', { roughness: 0.2, transparent: true, opacity: 0.85 }),
+  ground: std('#6f8757', { roughness: 1 }),
+  gravel: std('#9c968a', { roughness: 1 }),
+  fabric: std('#b4523f', { roughness: 0.9 }),
+}
+
+export const LAYERS = [
+  { id: 'foundation', name: 'Фундамент', hint: '20 винтовых свай ⌀108, ростверк 150×150' },
+  { id: 'frame', name: 'Каркас', hint: 'доска 45×195, шаг 600' },
+  { id: 'sheathing', name: 'Обшивка ОСП', hint: 'ОСП-3 9 мм стены / 18 мм пол' },
+  { id: 'insulation', name: 'Утеплитель', hint: 'каменная вата 195 мм' },
+  { id: 'facade', name: 'Фасад', hint: 'имитация бруса по вентзазору 30 мм' },
+  { id: 'interior', name: 'Отделка', hint: 'вагонка сосна / липа' },
+  { id: 'roof', name: 'Кровля', hint: 'металлочерепица, 30°' },
+  { id: 'terrace', name: 'Терраса', hint: 'лиственница, ограждение' },
+  { id: 'fixtures', name: 'Печь и мебель', hint: 'печь 12 кВт, полки, сантехника' },
+  { id: 'labels', name: 'Подписи', hint: 'названия и площади помещений' },
+]

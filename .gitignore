@@ -1,0 +1,9 @@
+# зависимости и сборка
+node_modules/
+dist/
+.vite/
+
+# артефакты экспорта
+app/public/schemes/*.png
+*.log
+.DS_Store
