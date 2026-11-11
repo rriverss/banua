@@ -18,9 +18,9 @@ const { M } = await import('./src/scene/materials.js')
 
 const palette = {
   frame: '#d9a568', frameDark: '#c08a48', osb: '#e3cb9f', insulation: '#f0c14b',
-  siding: '#a5703f', sidingDark: '#34393d', gableWood: '#b07a45', lining: '#ecd3a9',
+  siding: '#a5703f', sidingDark: '#34393d', gableWood: '#d9b183', lining: '#ecd3a9',
   liningLinden: '#f3dcb2', floor: '#c2996b', terrace: '#b98a58', tile: '#9aa2a7',
-  roof: '#2e3338', roofEdge: '#23272b', metal: '#3a3f43', metalLight: '#9aa3a8',
+  roof: '#2e3338', roofEdge: '#23272b', plinth: '#8d8a83', metal: '#3a3f43', metalLight: '#9aa3a8',
   pile: '#8b8880', concrete: '#b9b6ae', stove: '#2c2c2f', stone: '#5b5f63',
   glass: '#a9cede', windowFrame: '#26292c', door: '#2f3438', water: '#7fb7c9',
   ground: '#6f8757', gravel: '#9c968a', fabric: '#b4523f',
@@ -71,11 +71,13 @@ root.traverse((o) => { if (o.isMesh && o.visible) push(o) })
 console.log('triangles', tris.length)
 
 const views = {
-  front: { pos: [3, 3.1, 18], target: [3, 1.9, 3.4], fov: 26 },
-  corner: { pos: [12.5, 7.4, 14], target: [3, 1.7, 3.6], fov: 30 },
-  cornerBack: { pos: [-9, 6.2, -8], target: [3, 2.0, 3.2], fov: 30 },
-  inside: { pos: [1.5, 1.65, 3.6], target: [2.4, 2.6, 1.0], fov: 60 },
-  side: { pos: [16, 3.2, 3.6], target: [3, 2.0, 3.6], fov: 26 },
+  front: { pos: [6, 3.4, 24], target: [6, 2.6, 8], fov: 26 },
+  corner: { pos: [19, 9.5, 21], target: [5.5, 2.4, 4.8], fov: 28 },
+  cornerBack: { pos: [16, 9.0, -12], target: [5.5, 2.6, 4.0], fov: 28 },
+  inside: { pos: [4.0, 1.75, 4.3], target: [7.6, 2.1, 10], fov: 62 },
+  side: { pos: [22, 4.6, 4.5], target: [5.0, 2.4, 4.5], fov: 26 },
+  terrace: { pos: [2.5, 1.9, 13.5], target: [6.0, 1.8, 8.0], fov: 40 },
+  top: { pos: [5, 26, 5], target: [5, 0, 4.7], fov: 26 },
 }
 const only = process.argv[4]
 const cam = new THREE.PerspectiveCamera(30, W / H, 0.1, 200)

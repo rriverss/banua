@@ -340,16 +340,16 @@ export function renderAlbum(host) {
           <div class="stamp">ПРОЕКТ<br/>2026</div>
           <div class="eyebrow" style="color:#a98247">Индивидуальный проект</div>
           <h1>Баня «Марго»</h1>
-          <h2>6,0 × 4,5 м + терраса 2,5 м · барнхаус · панорамный фронтон · винтовые сваи</h2>
+          <h2>10,0 × 9,5 м · барнхаус · витраж во фронтоне · Г-образная терраса · винтовые сваи</h2>
           <p style="max-width:640px;color:#4a453c">
-            Тёплый контур ${totalArea.toFixed(1).replace('.', ',')} м²: комната отдыха, парная, мойка.
+            Тёплый контур ${totalArea.toFixed(1).replace('.', ',')} м²: кухня-гостиная, спальня, сауна, душевая, санузел, гардероб.
             Терраса ${terraceArea.toFixed(0)} м². Кровля ${roofArea.total.toFixed(0)} м², уклон ${project.roof.pitch}°.
             Расчётный регион — Московская область.
           </p>
           <div class="meta">
             <div><span>Площадь тёплого контура</span><b>${totalArea.toFixed(1).replace('.', ',')} м²</b></div>
-            <div><span>Площадь застройки</span><b>42,0 м²</b></div>
-            <div><span>Фундамент</span><b>20 свай</b></div>
+            <div><span>Площадь застройки</span><b>95,0 м²</b></div>
+            <div><span>Фундамент</span><b>31 свая</b></div>
             <div><span>Смета</span><b>${(bom.total / 1e6).toFixed(2).replace('.', ',')} млн ₽</b></div>
           </div>
           <div class="meta" style="margin-top:18px">

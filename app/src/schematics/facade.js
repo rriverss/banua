@@ -1,175 +1,228 @@
-import { sheet, txt, line, rect, poly, circle, dimH, dimV, callout, INK, DIM, ACCENT } from './svg.js'
-import { project as P, roofY, roofUnderY, glazing, gable, openings } from '../model/project.js'
-import { mm } from './plan.js'
+import { sheet, txt, line, rect, poly, path, circle, dimH, dimV, INK } from './svg.js'
+import { project as P, openings, gable, glazing } from '../model/project.js'
 
-const S = 84
-const OX = 150
-const BASE = 648
+const DIM = '#6d6a63'
+const ACCENT = '#a9693a'
+
+const S = 74
+const OX = 118
+const Y0 = 690 // уровень чистого пола / настила
+
 const X = (x) => OX + x * S
-const Y = (y) => BASE - y * S
+const Y = (y) => Y0 - y * S
 
+const W = P.dims.W
+const x0 = P.dims.x0
+const x1 = x0 + P.dims.L
 const R = P.roof
-const L = P.dims.L
-const H = P.dims.wallH
-const eaveY = roofY(R.eaveX)
-const under = (x) => roofUnderY(x)
 const GW = P.glassWall
+const eaveY = R.eaveY
+const ridgeY = R.ridgeY
+const ridgeX = R.ridgeX
+const wallH = P.dims.wallH
+const topGlaze = GW.top
+const beamTop = wallH - 0.12
+
 const door = openings.find((o) => o.id === 'ДВ-1')
-const CX = 720
+const doorX0 = x0 + door.u0
+const doorX1 = doorX0 + door.w
+
+function callout(n, tx, ty, px, py, lx, ly) {
+  return (
+    circle(px, py, 9, { fill: '#fff', stroke: ACCENT, sw: 1.3 }) +
+    txt(px, py + 3.4, String(n), { size: 9, anchor: 'middle', fill: ACCENT, weight: 700 }) +
+    line(px, py, lx, ly, { stroke: ACCENT, w: 0.8 }) +
+    line(lx, ly, tx, ty, { stroke: ACCENT, w: 0.8 }) +
+    txt(tx - 4, ty + 3, '', { size: 8 })
+  )
+}
 
 export function facadeSheet() {
   const b = []
-  b.push(txt(60, 58, 'ГЛАВНЫЙ ФАСАД. ОСЬ В', { size: 19, weight: 700, letter: 1.2 }))
-  b.push(txt(60, 82, 'Фронтон-витраж 6,0 м, терраса под кровлей. Барнхаус: графит + лиственница', { size: 11, fill: DIM }))
 
-  // ---- терраса и ступени
-  b.push(rect(X(0), Y(0), L * S, 0.12 * S, { fill: '#b98a58', stroke: '#8a6a44', sw: 1 }))
-  for (let i = 0; i < 3; i++) {
-    b.push(rect(X(1.4), Y(-0.16 - i * 0.17), 3.2 * S, 0.17 * S, { fill: i % 2 ? '#c79a67' : '#b98a58', stroke: '#8a6a44', sw: 0.9 }))
-  }
-  // стойки террасы
-  for (const x of [0.1, L - 0.1]) {
-    b.push(rect(X(x) - 4, Y(2.62), 8, 2.62 * S, { fill: '#3a3f43', stroke: '#20242a', sw: 0.9 }))
+  // ---------- земля и цоколь
+  b.push(line(X(-0.6), Y(-0.48), X(W + 0.8), Y(-0.48), { stroke: INK, w: 1.4 }))
+  b.push(rect(X(x0), Y(0), (x1 - x0) * S, 0.48 * S, { fill: '#d9d4ca', stroke: '#a39c8f', sw: 0.8 }))
+  for (let x = x0 + 0.1; x < x1; x += 0.32) {
+    b.push(line(X(x), Y(-0.45), X(x), Y(0), { stroke: '#bcb5a8', w: 0.5 }))
   }
 
-  // ---- витраж: стекло
-  b.push(rect(X(0.05), Y(H), (L - 0.1) * S, H * S, { fill: '#d3e6ec', stroke: 'none', sw: 0 }))
-  b.push(
-    poly(
-      [
-        [X(0.05), Y(under(0.05))],
-        [X(3), Y(under(3))],
-        [X(3), Y(H)],
-        [X(0.05), Y(H)],
-      ],
-      { fill: '#cfdfe6', stroke: 'none', sw: 0 }
-    )
-  )
-  // ---- деревянная часть фронтона (справа от оси 2)
-  b.push(
-    poly(
-      [
-        [X(3), Y(under(3))],
-        [X(L - 0.05), Y(under(L - 0.05))],
-        [X(L - 0.05), Y(H)],
-        [X(3), Y(H)],
-      ],
-      { fill: '#b07a45', stroke: '#7d5227', sw: 1 }
-    )
-  )
-  for (let x = 3.1; x < L - 0.06; x += 0.15) {
-    const yTop = Math.min(under(x), under(3))
-    if (Y(yTop) >= Y(H) - 1) continue
-    b.push(line(X(x), Y(yTop), X(x), Y(H), { stroke: '#8d5c2c', w: 0.5, opacity: 0.55 }))
+  // ---------- стена (тёмная рейка) под витражом и по краям
+  b.push(rect(X(x0), Y(0.05), (x1 - x0) * S, 0.06 * S, { fill: '#2c3033' }))
+
+  // ---------- витраж
+  const gx0 = X(x0)
+  const gx1 = X(x1)
+  b.push(rect(gx0, Y(topGlaze), (x1 - x0) * S, (topGlaze - 0.05) * S, { fill: '#dce8ec', stroke: INK, sw: 1.2 }))
+  // стеклопакеты: вертикальные стойки
+  for (const m of GW.mullions) {
+    b.push(rect(X(m) - 5, Y(topGlaze), 10, (topGlaze - 0.05) * S, { fill: '#23282b' }))
   }
-  // ---- каркас витража
-  b.push(line(X(0.05), Y(0), X(L - 0.05), Y(0), { stroke: '#20242a', w: 6 }))
-  b.push(line(X(0.05), Y(H), X(L - 0.05), Y(H), { stroke: '#20242a', w: 5 }))
-  b.push(line(X(0.05), Y(GW.transom), X(L - 0.05), Y(GW.transom), { stroke: '#20242a', w: 4 }))
-  for (const x of GW.mullions) {
-    const top = x <= 3.01 ? under(x) : H
-    b.push(line(X(x), Y(0), X(x), Y(top), { stroke: '#20242a', w: 4.5 }))
-  }
-  b.push(line(X(0.05), Y(under(0.05)), X(3), Y(under(3)), { stroke: '#20242a', w: 4.5 }))
+  // трансома
+  b.push(rect(gx0, Y(GW.transom) - 4, (x1 - x0) * S, 8, { fill: '#23282b' }))
   // дверь
-  b.push(rect(X(door.u0), Y(door.h), door.w * S, door.h * S, { fill: 'none', stroke: '#20242a', sw: 3.5 }))
-  b.push(line(X(door.u0 + 0.08), Y(1.0), X(door.u0 + 0.08), Y(1.14), { stroke: '#9aa3a8', w: 5 }))
+  b.push(rect(X(doorX0), Y(door.h), door.w * S, door.h * S, { fill: '#cfdde2', stroke: '#23282b', sw: 1.6 }))
+  b.push(rect(X(doorX0 + door.w / 2) - 3, Y(1.15), 6, 1.0 * S, { fill: '#8c9aa0' }))
+  b.push(circle(X(doorX0 + door.w - 0.12), Y(1.05), 3.6, { fill: '#4d5357' }))
+  // нижняя обвязка
+  b.push(rect(gx0, Y(0.05), (x1 - x0) * S, 4, { fill: '#23282b' }))
 
-  // ---- кровля и свесы
-  const roofBand = [
-    [X(R.eaveX), Y(eaveY)],
-    [X(R.ridgeX), Y(R.ridgeY)],
-    [X(R.eaveRightX), Y(eaveY)],
-    [X(R.eaveRightX), Y(eaveY - 0.17)],
-    [X(R.ridgeX), Y(R.ridgeY - 0.17)],
-    [X(R.eaveX), Y(eaveY - 0.17)],
+  // ---------- верхняя балка и стеновая обвязка
+  b.push(rect(X(x0), Y(beamTop), (x1 - x0) * S, 0.2 * S, { fill: '#c08a55', stroke: '#7d5533', sw: 0.9 }))
+  b.push(rect(X(x0), Y(wallH), (x1 - x0) * S, 0.12 * S, { fill: '#8a5a30' }))
+
+  // ---------- фронтон (лиственница)
+  b.push(
+    poly(
+      [
+        [X(x0), Y(wallH)],
+        [X(x1), Y(wallH)],
+        [X(ridgeX), Y(ridgeY - 0.05)],
+      ],
+      { fill: '#d9b183', stroke: '#a67c4a', sw: 1.1 }
+    )
+  )
+  for (let i = 1; i < 26; i++) {
+    const yy = wallH + (i * (ridgeY - wallH)) / 26
+    const half = ((ridgeX - R.eaveX) * (ridgeY - yy)) / (ridgeY - eaveY)
+    b.push(
+      line(X(ridgeX - half), Y(yy), X(ridgeX + half), Y(yy), { stroke: '#c39a6b', w: 0.45 })
+    )
+  }
+
+  // ---------- кровля: два ската, торцевые планки
+  const t = 0.24
+  const covL = [
+    [R.eaveX, eaveY],
+    [ridgeX, ridgeY],
+    [ridgeX, ridgeY + 0.02],
+    [R.eaveX, eaveY - t],
   ]
-  b.push(poly(roofBand, { fill: '#2b2f33', stroke: '#181b1e', sw: 1.2 }))
-  b.push(line(X(R.eaveX), Y(eaveY - 0.17), X(R.ridgeX), Y(R.ridgeY - 0.17), { stroke: '#454c52', w: 1 }))
+  const covR = [
+    [ridgeX, ridgeY],
+    [R.eaveRightX, eaveY],
+    [R.eaveRightX, eaveY - t],
+    [ridgeX, ridgeY + 0.02],
+  ]
+  b.push(poly(covL.map(([x, y]) => [X(x), Y(y)]), { fill: '#2b3034', stroke: '#1d2124', sw: 1 }))
+  b.push(poly(covR.map(([x, y]) => [X(x), Y(y)]), { fill: '#2b3034', stroke: '#1d2124', sw: 1 }))
+  // перфорированная лента под свесом
+  for (const sx of [R.eaveX, R.eaveRightX]) {
+    b.push(rect(X(sx) - 3, Y(eaveY - t), 6, 0.1 * S, { fill: '#4b5155' }))
+  }
+  // конёк
+  b.push(rect(X(ridgeX) - 6, Y(ridgeY + 0.06), 12, 0.12 * S, { fill: '#1d2124' }))
 
-  // ---- размеры
-  b.push(dimH(X(0), X(3), 730, mm(3)))
-  b.push(dimH(X(3), X(L), 730, mm(3)))
-  b.push(dimH(X(0), X(L), 762, mm(L)))
-  b.push(dimV(Y(0), Y(H), 96, mm(H)))
-  b.push(dimV(Y(0), Y(R.ridgeY), 62, mm(R.ridgeY)))
+  // ---------- стойки и настил террасы
+  const zf = P.dims.depth
+  b.push(rect(X(0), Y(0.02), W * S, 0.06 * S, { fill: '#b98452', stroke: '#7d5533', sw: 0.8 }))
+  for (const px of [x0 + 0.25, x1 - 0.25]) {
+    b.push(rect(X(px) - 6, Y(2.55), 12, 2.55 * S, { fill: '#6f4a28', stroke: '#4a3018', sw: 0.8 }))
+  }
+  // ступени во всю ширину
+  for (let i = 0; i < 3; i++) {
+    const h = 0.18 * (i + 1)
+    b.push(rect(X(0), Y(-h + 0.18) + 0.05 * S * 0, W * S, 0.18 * S, { fill: i % 2 ? '#c79a68' : '#bd8e5b', stroke: '#8a6035', sw: 0.8 }))
+    b.push(line(X(0), Y(-h), X(W), Y(-h), { stroke: '#8a6035', w: 0.8 }))
+  }
 
-  // ---- выноски
-  b.push(callout(X(4.4), Y(H + 0.4), 1, X(5.5), Y(3.42)))
-  b.push(callout(X(1.0), Y(1.5), 2, X(0.45), Y(0.95)))
-  b.push(callout(X(2.2), Y(R.ridgeY - 0.1), 3, X(1.05), Y(R.ridgeY + 0.34)))
-  b.push(callout(X(5.2), Y(0.2), 4, X(5.55), Y(-0.66)))
+  // ---------- размеры
+  b.push(dimH(X(0), X(x0), Y(-0.84), '2 000'))
+  b.push(dimH(X(x0), X(x1), Y(-0.84), '8 000'))
+  b.push(dimH(X(0), X(x1), Y(-1.14), '10 000'))
+  b.push(dimV(Y(0), Y(topGlaze), X(0) - 30, '2 550'))
+  b.push(dimV(Y(topGlaze), Y(ridgeY), X(0) - 30, '2 780'))
+  b.push(dimV(Y(0), Y(ridgeY), X(0) - 62, '5 333'))
+  b.push(
+    txt(X(ridgeX) + 8, Y((eaveY + ridgeY) / 2), `уклон ${R.pitch}°`, {
+      size: 9,
+      fill: ACCENT,
+      weight: 600,
+      rotate: -31,
+    })
+  )
 
-  // ---- легенда
-  b.push(txt(CX, 110, 'ОТДЕЛКА ФАСАДА', { size: 11, weight: 700, letter: 0.6 }))
+  // ---------- выноски
+  b.push(callout(1, X(4.2), Y(3.55), X(4.0), Y(3.6), X(4.6), Y(3.75)))
+  b.push(callout(2, X(3.0), Y(1.35), X(2.55), Y(1.3), X(2.1), Y(1.9)))
+  b.push(callout(3, X(9.4), Y(3.85), X(8.6), Y(4.1), X(8.2), Y(4.35)))
+  b.push(callout(4, X(7.2), Y(-0.35), X(7.6), Y(-0.05), X(7.9), Y(-0.4)))
+
+  // ---------- подписи
+  b.push(txt(OX - 20, 46, 'ГЛАВНЫЙ ФАСАД. ОСЬ 6 (ВИТРАЖ)', { size: 19, weight: 700, letter: 1.2 }))
+  b.push(
+    txt(OX - 20, 68, 'Фронтон-витраж 8,0 м, терраса 2,5 м под кровлей: графит + лиственница', {
+      size: 10.5,
+      fill: DIM,
+    })
+  )
+
+  // ---------- легенда справа
+  const lx = 918
+  let ly = 118
+  b.push(txt(lx, ly, 'ОТДЕЛКА ФАСАДА', { size: 10.5, weight: 700, letter: 0.4 }))
+  ly += 20
   const legend = [
-    ['1', 'Фронтон — лиственница, натур', '#b07a45'],
-    ['2', 'Витраж — стеклопакет 2-кам., рама чёрная', '#cfdfe6'],
-    ['3', 'Кровля — фальц RAL 7021, свес 400', '#2b2f33'],
-    ['4', 'Терраса — доска лиственница 28×140', '#b98a58'],
-    ['5', 'Стены — рейка RAL 7021 (графит)', '#34393d'],
+    ['#d9b183', '1', 'Фронтон — планкен лиственницы, натур'],
+    ['#dce8ec', '2', 'Витраж — стеклопакет 2-кам., рама чёрная'],
+    ['#2b3034', '3', 'Кровля — фальц RAL 7021, свес 700'],
+    ['#bd8e5b', '4', 'Терраса — доска лиственницы 28×140'],
+    ['#2c3033', '5', 'Стены — рейка RAL 7021 (графит)'],
   ]
-  legend.forEach(([n, t, c], i) => {
-    const y = 130 + i * 25
-    b.push(rect(CX, y, 15, 15, { fill: c, stroke: '#b9b2a5', sw: 0.8 }))
-    b.push(txt(CX + 7.5, y + 11, n, { size: 7.5, anchor: 'middle', fill: c === '#2b2f33' || c === '#34393d' ? '#fff' : INK, weight: 700 }))
-    b.push(txt(CX + 24, y + 11.5, t, { size: 8.5, fill: '#3d3a34' }))
-  })
+  for (const [c, n, text] of legend) {
+    b.push(rect(lx, ly - 9, 13, 11, { fill: c, stroke: '#9c968a', sw: 0.7 }))
+    b.push(txt(lx + 20, ly, `${n}. ${text}`, { size: 8.6 }))
+    ly += 17
+  }
 
-  // ---- остекление
-  b.push(txt(CX, 288, 'ОСТЕКЛЕНИЕ', { size: 11, weight: 700, letter: 0.6 }))
-  const gl = [
-    ['Площадь витража', '19,4 м² (чистое 17,3)'],
-    ['Стеклопакет', '2-кам., закалка'],
-    ['Профиль', 'алюминий, чёрный, 60 мм'],
-    ['Трансома', '2 100 мм от пола'],
-    ['Дверь в витраже', '1 900 × 2 000'],
-    ['Фронтон', 'стекло слева, дерево справа'],
-    ['Ориентир цены', '18 000 ₽/м² с монтажом'],
+  ly += 16
+  b.push(txt(lx, ly, 'ВИТРАЖ', { size: 10, weight: 700, letter: 0.4 }))
+  ly += 15
+  const rows = [
+    ['Габарит', `${(x1 - x0).toFixed(1).replace('.', ',')} × ${topGlaze.toFixed(2).replace('.', ',')} м`],
+    ['Площадь', `${glazing.area.toFixed(1).replace('.', ',')} м² (чистое ${glazing.net.toFixed(1).replace('.', ',')})`],
+    ['Заполнение', '2-камерный стеклопакет, закалка'],
+    ['Рамы', 'алюминий, RAL 9005, 60 мм'],
+    ['Стойки', `шаг ~1,3 м, ${GW.mullions.length} шт.`],
+    ['Трансома', `${GW.transom.toFixed(2).replace('.', ',')} м от пола`],
+    ['Дверь', `${Math.round(door.w * 1000)} × ${Math.round(door.h * 1000)} мм`],
+    ['Фронтон', `h ${gable.height.toFixed(2).replace('.', ',')} м, ${(gable.area / 2).toFixed(2).replace('.', ',')} м²`],
   ]
-  gl.forEach(([k, v], i) => {
-    const y = 310 + i * 17
-    b.push(txt(CX, y, k, { size: 8.5, fill: DIM }))
-    b.push(txt(CX + 490, y, v, { size: 8.5, weight: 600, anchor: 'end' }))
-    const x0 = CX + k.length * 4.6 + 8
-    const x1 = CX + 490 - v.length * 4.9 - 8
-    if (x1 > x0 + 6) b.push(line(x0, y - 2.5, x1, y - 2.5, { stroke: '#ddd6c8', w: 0.7, dash: '1.5 3' }))
-  })
+  for (const [k, v] of rows) {
+    b.push(txt(lx, ly, k, { size: 8.2, fill: DIM }))
+    b.push(txt(lx + 92, ly, v, { size: 8.4, weight: 600 }))
+    ly += 14
+  }
 
-  // ---- примечания
-  b.push(txt(CX, 460, 'ПРИМЕЧАНИЯ', { size: 11, weight: 700, letter: 0.6 }))
+  ly += 14
+  b.push(txt(lx, ly, 'ПРИМЕЧАНИЯ', { size: 10, weight: 700, letter: 0.4 }))
+  ly += 14
   const notes = [
-    'Стойка по оси 2 — несущая: держит конёк и стену П1.',
-    'Стекло в парной не ставим; мойку можно матировать.',
-    'Рама утоплена на 60 мм, откосы скрытые.',
-    'Водосток подвесной, стояки у боковых стен.',
-    'Витраж — после кровли и закрытия контура.',
+    '• Витраж — самонесущий, по стойкам 60×120 мм.',
+    '• Верхняя балка 200×200 — разгрузка фронтона.',
+    '• Свес кровли 700 мм закрывает витраж от косого дождя.',
+    '• Фронтон — планкен по контрбруску, вентзазор 30 мм.',
+    '• Цоколь — плитняк, отступ 30 мм от рейки.',
+    '• Все узлы — см. лист 7.',
   ]
-  notes.forEach((t, i) => {
-    b.push(circle(CX + 3, 478 + i * 20, 1.5, { fill: ACCENT, stroke: ACCENT }))
-    b.push(txt(CX + 12, 481 + i * 20, t, { size: 8.5, fill: '#3d3a34' }))
-  })
+  for (const n of notes) {
+    b.push(txt(lx, ly, n, { size: 8.2, fill: DIM }))
+    ly += 13
+  }
 
-  // ---- узел примыкания витража к кровле
-  const dx = CX
-  const dy = 596
-  b.push(txt(dx, dy, 'УЗЕЛ · ВИТРАЖ + КРОВЛЯ (1:25)', { size: 10, weight: 700 }))
-  b.push(rect(dx, dy + 10, 490, 140, { fill: '#fbf9f4', stroke: '#cfc7b8', sw: 0.9 }))
-  b.push(poly([[dx + 30, dy + 128], [dx + 30, dy + 60], [dx + 62, dy + 60], [dx + 62, dy + 128]], { fill: '#d3e6ec', stroke: '#20242a', sw: 1.2 }))
-  b.push(line(dx + 62, dy + 64, dx + 300, dy + 26, { stroke: '#2b2f33', w: 10 }))
-  b.push(line(dx + 62, dy + 74, dx + 300, dy + 36, { stroke: '#8a6a44', w: 4 }))
-  b.push(rect(dx + 58, dy + 48, 12, 40, { fill: '#20242a', stroke: '#20242a' }))
-  b.push(txt(dx + 90, dy + 40, 'фальц + обрешётка', { size: 7.5, fill: DIM }))
-  b.push(txt(dx + 90, dy + 92, 'стойка витража 60×120', { size: 7.5, fill: DIM }))
-  b.push(txt(dx + 90, dy + 108, 'герметик + ПСУЛ + пена', { size: 7.5, fill: DIM }))
-  b.push(txt(dx + 30, dy + 142, 'Верхняя обвязка витража — по стойке оси 2, свес кровли 350.', { size: 7.5, fill: '#5d584e' }))
+  ly += 14
+  b.push(rect(lx, ly - 10, 282, 62, { fill: '#f7f2e7', stroke: '#d8d0c0', sw: 0.8 }))
+  b.push(txt(lx + 10, ly + 6, 'ПАРАМЕТРЫ', { size: 8.6, weight: 700 }))
+  b.push(txt(lx + 10, ly + 22, `Кровля: ${(R.zFront - R.zBack).toFixed(1).replace('.', ',')} × ${(R.eaveRightX - R.eaveX).toFixed(1).replace('.', ',')} м, ${R.pitch}°`, { size: 8, fill: DIM }))
+  b.push(txt(lx + 10, ly + 35, `Конёк: x = ${ridgeX.toFixed(2).replace('.', ',')} м, отм. +${ridgeY.toFixed(2).replace('.', ',')}`, { size: 8, fill: DIM }))
+  b.push(txt(lx + 10, ly + 48, `Карниз: +${eaveY.toFixed(2).replace('.', ',')} м, вынос 700 мм`, { size: 8, fill: DIM }))
 
   return sheet({
-    num: 5,
+    num: 6,
     title: 'Главный фасад',
-    subtitle: `Витраж ${glazing.area.toFixed(1).replace('.', ',')} м², фронтон ${gable.height.toFixed(2).replace('.', ',')} м, уклон ${R.pitch}°`,
+    subtitle: 'Витраж, фронтон, терраса',
     scale: '1:50',
-    body: b.join(''),
+    body: b.join('\n'),
     note: 'RAL 7021 — стены и кровля, лиственница натур — фронтон и терраса. Стеклопакет 2-кам. с закалкой, рама чёрная.',
   })
 }

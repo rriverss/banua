@@ -38,7 +38,7 @@ export function createViewer(container) {
   sun.shadow.mapSize.set(2048, 2048)
   sun.shadow.camera.left = -14
   sun.shadow.camera.right = 14
-  sun.shadow.camera.top = 14
+  sun.shadow.camera.top = 22
   sun.shadow.camera.bottom = -14
   sun.shadow.camera.near = 1
   sun.shadow.camera.far = 60
@@ -72,14 +72,14 @@ export function createViewer(container) {
 
   // ---- камеры
   const presets = {
-    general: { pos: [11.8, 6.2, 13.4], target: [3, 1.9, 3.2] },
-    front: { pos: [3, 3.0, 16.8], target: [3, 2.2, 4.0] },
-    back: { pos: [3, 3.4, -10.2], target: [3, 1.8, 1.5] },
-    side: { pos: [16.8, 3.4, 3.2], target: [3, 1.8, 3.0] },
-    top: { pos: [3.2, 18.5, 3.6], target: [3, 0, 3.6] },
-    inside: { pos: [1.45, 1.62, 1.05], target: [2.6, 1.5, 6.0] },
-    steam: { pos: [3.35, 1.6, 1.95], target: [5.1, 1.0, 0.7] },
-    terrace: { pos: [8.6, 2.1, 9.2], target: [2.8, 1.3, 5.2] },
+    general: { pos: [21.5, 11.5, 22.0], target: [5.0, 2.4, 4.6] },
+    front: { pos: [6.0, 4.4, 26.0], target: [6.0, 2.7, 8.0] },
+    back: { pos: [6.0, 5.2, -14.0], target: [6.0, 2.6, 3.0] },
+    side: { pos: [25.0, 5.4, 4.5], target: [5.0, 2.4, 4.5] },
+    top: { pos: [5.5, 27.0, 5.2], target: [5.0, 0, 4.8] },
+    inside: { pos: [4.2, 1.7, 4.4], target: [8.0, 2.0, 10.5] },
+    steam: { pos: [3.9, 1.65, 2.2], target: [2.4, 1.0, 0.6] },
+    terrace: { pos: [1.6, 2.0, 13.0], target: [6.0, 1.8, 7.6] },
   }
   let anim = null
   function flyTo(key) {
