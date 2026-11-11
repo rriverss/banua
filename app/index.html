@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Баня «Кедр» — интерактивный проект 6,0 × 4,5 с террасой</title>
+    <meta
+      name="description"
+      content="Проект каркасной бани 6×4,5 с террасой: 3D-модель, чертежи, ведомость материалов и смета, технология монтажа."
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b1917'/%3E%3Cpath d='M6 18 16 8l10 10' fill='none' stroke='%23d6a86a' stroke-width='2.4'/%3E%3Cpath d='M9 18v8h14v-8' fill='none' stroke='%23d6a86a' stroke-width='2.4'/%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#/3d">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="30" height="30">
+            <path d="M5 18 16 7l11 11" fill="none" stroke="#d6a86a" stroke-width="2.2" />
+            <path d="M9 18v9h14v-9" fill="none" stroke="#d6a86a" stroke-width="2.2" />
+            <path d="M14 27v-6h4v6" fill="none" stroke="#d6a86a" stroke-width="2.2" />
+          </svg>
+        </span>
+        <span class="brand-text">
+          <b>БАНЯ «КЕДР»</b>
+          <small>6,0 × 4,5 м + терраса 2,5 м · каркас · винтовые сваи</small>
+        </span>
+      </a>
+
+      <nav class="tabs" id="tabs">
+        <a href="#/3d" data-route="3d">3D-модель</a>
+        <a href="#/schemes" data-route="schemes">Схемы</a>
+        <a href="#/materials" data-route="materials">Материалы</a>
+        <a href="#/budget" data-route="budget">Смета</a>
+        <a href="#/guide" data-route="guide">Технология</a>
+        <a href="#/album" data-route="album">Альбом</a>
+      </nav>
+
+      <div class="topmeta">
+        <span class="dot"></span> Московская область · 2026 · v1.0
+      </div>
+    </header>
+
+    <main id="app"></main>
+
+    <footer class="footer">
+      <div>
+        <b>Баня «Кедр»</b> — учебно-рабочий проект. Данные модели, ведомости и чертежи
+        сгенерированы из одного параметрического описания, поэтому сходятся между собой.
+      </div>
+      <div>
+        Перед строительством: геология участка, привязка к местным нормам, расчёт конструкций
+        инженером. Цены — ориентировочные, МО, ноябрь 2026.
+      </div>
+    </footer>
+
+    <div id="modal" class="modal" hidden>
+      <div class="modal-inner">
+        <button class="modal-close" id="modal-close" aria-label="Закрыть">×</button>
+        <div class="modal-body" id="modal-body"></div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
