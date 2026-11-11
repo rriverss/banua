@@ -9,7 +9,7 @@ import {
   wallStudPositions,
   gable,
   roofY,
-  terraceRoofY,
+  roofUnderY,
   roofArea,
 } from '../model/project.js'
 import { M, LAYERS } from './materials.js'
@@ -149,12 +149,6 @@ function buildFloors(layers) {
   const deck = panel(P.dims.L, 0.028, P.dims.terrace - 0.05, M.terrace, [P.dims.L, P.dims.terrace])
   deck.position.set(P.dims.L / 2, 0.005, P.dims.D + P.dims.terrace / 2)
   layers.terrace.add(deck)
-  // ступени
-  for (let i = 0; i < 3; i++) {
-    const y = -0.02 - i * 0.16
-    const step = box(1.3, 0.05, 0.32, M.terrace, 2.85, y, P.dims.D + P.dims.terrace + 0.12 + i * 0.3)
-    layers.terrace.add(step)
-  }
 }
 
 // ------------------------------------------------------------------ стены
@@ -170,6 +164,7 @@ function wallGroups(wall) {
 }
 
 function buildWall(wall, layers) {
+  if (wall.glass) return
   const L = wall.length
   const H = wall.height
   const T = wall.thick
@@ -245,7 +240,7 @@ function buildWall(wall, layers) {
       const osb = panel(w, h, 0.009, M.osb, [w / 1.25, h / 2.5])
       osb.position.set(cx, cy, out * (T / 2 + 0.005))
       G.sheathing.add(osb)
-      const fac = panel(w, h, 0.02, M.siding, uvWall)
+      const fac = panel(w, h, 0.02, M.sidingDark, uvWall)
       fac.position.set(cx, cy, out * (T / 2 + 0.03 + 0.011))
       G.facade.add(fac)
       const lin = panel(w, h, 0.016, M.lining, uvInt)
@@ -265,6 +260,7 @@ function buildWall(wall, layers) {
 
 /** утеплитель в полости стены */
 function buildWallInsulation(wall, layers) {
+  if (wall.glass) return
   const rects = subtractRects(wall.length, wall.height, wall.openings)
   const G = wallGroups(wall).insulation
   for (const r of rects) {
@@ -280,213 +276,316 @@ function buildWallInsulation(wall, layers) {
 // ---------------------------------------------------------------- потолок
 function buildCeiling(layers) {
   const y = P.dims.ceiling
-  // балки
-  for (let i = 0; i < 11; i++) {
-    const x = 0.15 + (i * (P.dims.L - 0.3)) / 10
-    layers.frame.add(box(B, 0.195, P.dims.D - 0.2, M.frame, x, y + 0.1, P.dims.D / 2))
+  const x0 = 3.0
+  const w = P.dims.L - x0
+  // балки перекрытия над мойкой и парной (опирание: перегородка P1 — стена D)
+  for (let i = 0; i <= 7; i++) {
+    const z = 0.15 + (i * (P.dims.D - 0.3)) / 7
+    layers.frame.add(box(w - 0.1, 0.195, B, M.frame, x0 + w / 2, y + 0.1, z))
   }
   // подшив потолка
   for (const r of rooms) {
-    if (r.id === 'ter') continue
+    if (r.id === 'ter' || r.id === 'ko') continue
     const shape = new THREE.Shape(r.poly.map(([x, z]) => new THREE.Vector2(x, -z)))
     const geo = new THREE.ShapeGeometry(shape)
     geo.rotateX(-Math.PI / 2)
-    const base = r.id === 'par' || r.id === 'moy' ? M.liningLinden : M.lining
-    const mat = base.clone()
+    const mat = M.liningLinden.clone()
     mat.side = THREE.DoubleSide
     const m = mesh(geo, mat)
     m.position.y = y
     layers.interior.add(m)
   }
-  // утеплитель потолка
-  const ins = panel(P.dims.L - 0.2, 0.2, P.dims.D - 0.2, M.insulation, null)
-  ins.position.set(P.dims.L / 2, y + 0.3, P.dims.D / 2)
+  // утеплитель чердака
+  const ins = panel(w - 0.2, 0.2, P.dims.D - 0.2, M.insulation, null)
+  ins.position.set(x0 + w / 2, y + 0.3, P.dims.D / 2)
   layers.insulation.add(ins)
+
+  // свод КО: подшив по стропилам от x=0 до x=3
+  const pts = []
+  const n = 10
+  for (let i = 0; i <= n; i++) {
+    const x = (P.dims.L / 2) * (i / n)
+    pts.push([x, roofUnderY(x) - 0.02])
+  }
+  const poly = [...pts]
+  for (let i = n; i >= 0; i--) poly.push([pts[i][0], pts[i][1] - 0.02])
+  const ceilingSlope = (() => {
+    const shape = new THREE.Shape([
+      new THREE.Vector2(0, roofUnderY(0) - 0.02),
+      new THREE.Vector2(3, roofUnderY(3) - 0.02),
+      new THREE.Vector2(3, roofUnderY(3) - 0.16),
+      new THREE.Vector2(0, roofUnderY(0) - 0.16),
+    ])
+    const geo = new THREE.ExtrudeGeometry(shape, { depth: P.dims.D - 0.05, bevelEnabled: false })
+    const mat = M.liningLinden.clone()
+    mat.side = THREE.DoubleSide
+    const m = mesh(geo, mat)
+    m.position.set(0, 0, 0.025)
+    return m
+  })()
+  layers.interior.add(ceilingSlope)
+
+  // стенка над перегородкой x=3 до кровли (разделяет свод КО и чердак мойки)
+  const ridgeWallH = roofUnderY(3) - P.dims.partH
+  layers.interior.add(box(0.1, ridgeWallH, P.dims.D - 0.05, M.lining, 3, P.dims.partH + ridgeWallH / 2, P.dims.D / 2))
+  layers.frame.add(box(0.12, ridgeWallH, P.dims.D - 0.05, M.frame, 3, P.dims.partH + ridgeWallH / 2, P.dims.D / 2))
+  layers.insulation.add(box(0.14, ridgeWallH - 0.04, P.dims.D - 0.1, M.insulation, 3, P.dims.partH + ridgeWallH / 2, P.dims.D / 2))
+
+  // утеплитель по скату над КО
+  const insShape = new THREE.Shape([
+    new THREE.Vector2(0, roofUnderY(0) - 0.18),
+    new THREE.Vector2(3, roofUnderY(3) - 0.18),
+    new THREE.Vector2(3, roofUnderY(3) - 0.38),
+    new THREE.Vector2(0, roofUnderY(0) - 0.38),
+  ])
+  const insGeo = new THREE.ExtrudeGeometry(insShape, { depth: P.dims.D - 0.1, bevelEnabled: false })
+  const insKO = mesh(insGeo, M.insulation)
+  insKO.position.z = 0.05
+  layers.insulation.add(insKO)
 }
 
 // ---------------------------------------------------------------- фронтоны
-function buildGables(layers) {
-  const h = gable.height
-  const W = P.dims.D
-  const apex = P.roof.ridgeZ
-  const shape = new THREE.Shape()
-  shape.moveTo(0, 0)
-  shape.lineTo(W, 0)
-  shape.lineTo(apex, h)
-  shape.closePath()
-  const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.02, bevelEnabled: false })
-  const osbGeo = new THREE.ExtrudeGeometry(shape, { depth: 0.009, bevelEnabled: false })
+/** плоская пластина из полигона в координатах XY, выдавленная по Z */
+function shapePlate(points, depth, mat, z, holes = null) {
+  const shape = new THREE.Shape(points.map(([x, y]) => new THREE.Vector2(x, y)))
+  if (holes) for (const h of holes) shape.holes.push(new THREE.Path(h.map(([x, y]) => new THREE.Vector2(x, y))))
+  const geo = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: false })
+  const m = mesh(geo, mat)
+  m.position.z = z
+  return m
+}
 
-  for (const [x, rot, off] of [
-    [0, -Math.PI / 2, -0.01],
-    [P.dims.L, -Math.PI / 2, 0.03],
-  ]) {
-    const fac = mesh(geo.clone(), M.siding)
-    fac.rotation.y = rot
-    fac.position.set(x + off, P.dims.wallH, 0)
-    layers.facade.add(fac)
-
-    const osb = mesh(osbGeo.clone(), M.osb)
-    osb.rotation.y = rot
-    osb.position.set(x + off + (x === 0 ? 0.021 : -0.0), P.dims.wallH, 0)
-    layers.sheathing.add(osb)
-
-    // стойки фронтона
-    const g = new THREE.Group()
-    g.position.set(x, P.dims.wallH, 0)
-    for (let z = 0.3; z < W - 0.2; z += 0.6) {
-      const top = h - (Math.abs(z - apex) / apex) * h
-      if (top < 0.15) continue
-      const st = box(B, top, 0.095, M.frame, 0, top / 2, z)
-      g.add(st)
-    }
-    layers.frame.add(g)
-
-    // утеплитель фронтона
-    const insShape = new THREE.Shape()
-    insShape.moveTo(0.1, 0.05)
-    insShape.lineTo(W - 0.1, 0.05)
-    insShape.lineTo(apex, h - 0.12)
-    insShape.closePath()
-    const insGeo = new THREE.ExtrudeGeometry(insShape, { depth: 0.18, bevelEnabled: false })
-    const ins = mesh(insGeo, M.insulation)
-    ins.rotation.y = rot
-    ins.position.set(x + (x === 0 ? 0.03 : -0.21), P.dims.wallH, 0)
-    layers.insulation.add(ins)
+function gableTopProfile() {
+  const pts = []
+  const n = 12
+  for (let i = 0; i <= n; i++) {
+    const x = (P.dims.L * i) / n
+    pts.push([x, Math.max(P.dims.wallH + 0.02, roofUnderY(x) - 0.02)])
   }
+  return pts
+}
+
+function buildGables(layers) {
+  const h = P.dims.wallH
+  const top = gableTopProfile()
+  // задний фронтон: дерево снаружи, каркас, утепление
+  layers.facade.add(shapePlate([[0, h], ...top, [P.dims.L, h]], 0.02, M.gableWood, -0.13))
+  layers.sheathing.add(shapePlate([[0, h], ...top, [P.dims.L, h]], 0.009, M.osb, -0.1))
+  layers.insulation.add(shapePlate([[0.05, h + 0.02], ...top.map(([x, y]) => [x, y - 0.05]), [P.dims.L - 0.05, h + 0.02]], 0.16, M.insulation, -0.09))
+
+  // стойки фронтона (z=0)
+  for (let x = 0.15; x < P.dims.L - 0.02; x += 0.6) {
+    const hgt = roofUnderY(x) - h - 0.08
+    if (hgt < 0.12) continue
+    layers.frame.add(box(0.045, hgt, 0.18, M.frame, x, h + hgt / 2, 0))
+  }
+  // обвязка по скату
+  layers.frame.add(beam(V(0, roofUnderY(0) - 0.1, 0), V(3, roofUnderY(3) - 0.1, 0), 0.045, 0.18, M.frame))
+  layers.frame.add(beam(V(6, roofUnderY(6) - 0.1, 0), V(3, roofUnderY(3) - 0.1, 0), 0.045, 0.18, M.frame))
+}
+
+// ------------------------------------------------------- фронтон-витраж (z=4.5)
+function buildGlassWall(layers) {
+  const z = P.dims.D
+  const H = P.dims.wallH
+  const GW = P.glassWall
+  const fr = layers.facade
+  const under = (x) => roofUnderY(x) - 0.02
+  const doorRaw = openings.find((o) => o.id === 'ДВ-1')
+  const door = { ...doorRaw, u1: doorRaw.u0 + doorRaw.w }
+
+  // коробка витража
+  fr.add(box(P.dims.L, 0.06, 0.14, M.windowFrame, P.dims.L / 2, 0.03, z))
+  fr.add(box(P.dims.L, 0.06, 0.14, M.windowFrame, P.dims.L / 2, H - 0.03, z))
+  fr.add(box(P.dims.L, 0.05, 0.1, M.windowFrame, P.dims.L / 2, GW.transom, z))
+
+  // стойки
+  for (const x of GW.mullions) {
+    const top = x <= 3.001 ? under(x) : H
+    fr.add(box(0.06, top - 0.02, 0.12, M.windowFrame, x, top / 2, z))
+  }
+  // наклонная обвязка по скату (левая половина)
+  fr.add(beam(V(0, under(0), z), V(3, under(3), z), 0.06, 0.12, M.windowFrame))
+
+  // стекло: нижняя лента (три полотна вокруг двери)
+  const addGlass = (x0, x1, y0, y1) => {
+    const w = x1 - x0
+    const hh = y1 - y0
+    if (w <= 0.03 || hh <= 0.03) return
+    const m = panel(w, hh, 0.012, M.glass, null)
+    m.position.set((x0 + x1) / 2, (y0 + y1) / 2, z - 0.006)
+    fr.add(m)
+  }
+  addGlass(0.06, door.u0 + 0.02, 0.02, H - 0.02)
+  addGlass(door.u1 - 0.02, P.dims.L - 0.06, 0.02, H - 0.02)
+  addGlass(door.u0 + 0.02, door.u1 - 0.02, door.h + 0.03, H - 0.02)
+
+  // стекло: фронтон (левая половина до конька)
+  fr.add(shapePlate([[0.06, H - 0.02], [3, H - 0.02], [3, under(3)], [0.06, under(0.06)]], 0.012, M.glass, z - 0.006))
+
+  // деревянная часть фронтона (над мойкой и парной) — снаружи
+  fr.add(shapePlate([[3, H - 0.02], [P.dims.L - 0.06, H - 0.02], [P.dims.L - 0.06, under(P.dims.L - 0.06)], [3, under(3)]], 0.02, M.gableWood, z + 0.02))
+  // каркас деревянной части
+  for (let x = 3.3; x < P.dims.L - 0.1; x += 0.6) {
+    const hgt = under(x) - H - 0.05
+    if (hgt < 0.1) continue
+    layers.frame.add(box(0.045, hgt, 0.16, M.frame, x, H + hgt / 2, z - 0.09))
+  }
+
+  // дверь
+  fr.add(box(door.w, 0.06, 0.14, M.windowFrame, (door.u0 + door.u1) / 2, door.h, z))
+  fr.add(box(door.w, 0.06, 0.14, M.windowFrame, (door.u0 + door.u1) / 2, 0.03, z))
+  fr.add(box(0.05, door.h, 0.14, M.windowFrame, door.u0 + 0.02, door.h / 2, z))
+  fr.add(box(0.05, door.h, 0.14, M.windowFrame, door.u1 - 0.02, door.h / 2, z))
+  const leaf = panel(door.w - 0.08, door.h - 0.06, 0.03, M.glass, null)
+  leaf.position.set((door.u0 + door.u1) / 2, door.h / 2, z)
+  fr.add(leaf)
+  fr.add(box(0.035, 0.5, 0.035, M.metalLight, door.u1 - 0.1, 1.05, z + 0.06))
 }
 
 // ----------------------------------------------------------------- кровля
-function roofQuad(z0, y0, z1, y1, x0, x1, mat, uvScale = 0.35) {
+/** скат: полоса между (xA,yA) и (xB,yB), протянутая по Z */
+function slopeQuad(xA, yA, xB, yB, z0, z1, mat, uv = 0.6, flip = false) {
   const g = new THREE.BufferGeometry()
-  const verts = new Float32Array([
-    x0, y0, z0,
-    x1, y0, z0,
-    x1, y1, z1,
-    x0, y0, z0,
-    x1, y1, z1,
-    x0, y1, z1,
-  ])
-  const slope = Math.hypot(z1 - z0, y1 - y0)
-  const len = x1 - x0
-  const uv = new Float32Array([
-    0, 0, len / uvScale, 0, len / uvScale, slope / uvScale,
-    0, 0, len / uvScale, slope / uvScale, 0, slope / uvScale,
-  ])
+  const v = flip
+    ? [xA, yA, z0, xB, yB, z1, xB, yB, z0, xA, yA, z0, xA, yA, z1, xB, yB, z1]
+    : [xA, yA, z0, xB, yB, z0, xB, yB, z1, xA, yA, z0, xB, yB, z1, xA, yA, z1]
+  const verts = new Float32Array(v)
+  const len = Math.hypot(xB - xA, yB - yA)
+  const w = z1 - z0
+  const U = len / uv
+  const Vv = w / uv
+  const uvArr = new Float32Array([0, 0, U, 0, U, Vv, 0, 0, U, Vv, 0, Vv])
   g.setAttribute('position', new THREE.BufferAttribute(verts, 3))
-  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2))
+  g.setAttribute('uv', new THREE.BufferAttribute(uvArr, 2))
   g.computeVertexNormals()
-  const m = mesh(g, mat)
-  return m
+  return mesh(g, mat)
 }
 
 function buildRoof(layers) {
   const g = layers.roof
   const R = P.roof
-  const x0 = -R.gableOverhang
-  const x1 = P.dims.L + R.gableOverhang
-  const ridgeY = R.ridgeY
+  const z0 = R.zBack
+  const z1 = R.zFront
   const step = P.frames.spacing
+  const eaveY = roofY(R.eaveX)
+  const ridgeY = R.ridgeY
 
-  // стропила двух скатов
-  for (let i = 0; i * step <= P.dims.L + 0.001; i++) {
-    const x = Math.min(i * step, P.dims.L)
-    for (const s of [-1, 1]) {
-      const zEave = R.ridgeZ + s * (R.ridgeZ + R.overhang)
-      const a = V(x, ridgeY - 0.12, R.ridgeZ)
-      const b = V(x, roofY(zEave) - 0.12, zEave)
-      g.add(beam(a, b, 0.045, 0.195, M.frame))
-    }
+  // стропильные пары каждые 600 по Z (до лобовой доски не доходят на 30 мм)
+  const xEnd = (xEave) => xEave + (xEave < R.ridgeX ? 0.03 : -0.03)
+  for (let z = 0.25; z < z1 - 0.2; z += step) {
+    g.add(beam(V(R.ridgeX, roofY(R.ridgeX) - 0.24, z), V(xEnd(R.eaveX), roofY(R.eaveX) - 0.24, z), 0.045, 0.195, M.frame))
+    g.add(beam(V(R.ridgeX, roofY(R.ridgeX) - 0.24, z), V(xEnd(R.eaveRightX), roofY(R.eaveRightX) - 0.24, z), 0.045, 0.195, M.frame))
   }
   // коньковый прогон
-  g.add(beam(V(x0, ridgeY - 0.22, R.ridgeZ), V(x1, ridgeY - 0.22, R.ridgeZ), 0.05, 0.195, M.frameDark))
+  g.add(beam(V(R.ridgeX, ridgeY - 0.3, z0), V(R.ridgeX, ridgeY - 0.3, z1), 0.045, 0.245, M.frameDark))
 
-  // контробрешётка и обрешётка
+  // подстропильные балки над террасой + стойки
+  for (const x of [0.08, P.dims.L - 0.08]) {
+    const yb = roofY(x) - 0.31
+    g.add(beam(V(x, yb, P.dims.D - 0.05), V(x, yb, z1 - 0.2), 0.045, 0.195, M.frameDark))
+    const px = x < 1 ? 0.15 : P.dims.L - 0.15
+    const top = yb - 0.1
+    layers.terrace.add(box(0.1, top, 0.1, M.frameDark, px, top / 2, 6.85))
+  }
+
+  // контробрешётка по стропилам, обрешётка по скату
+  const slopeLen = R.slopeLen
+  const nb = Math.floor(slopeLen / 0.35)
   for (const s of [-1, 1]) {
-    const zEave = R.ridgeZ + s * (R.ridgeZ + R.overhang)
-    for (let i = 0; i * step <= P.dims.L + 0.001; i++) {
-      const x = Math.min(i * step, P.dims.L)
-      const a = V(x, ridgeY - 0.03, R.ridgeZ)
-      const b = V(x, roofY(zEave) - 0.03, zEave)
+    const xEave = s < 0 ? R.eaveX : R.eaveRightX
+    for (let z = 0.25; z < z1 - 0.2; z += step) {
+      const a = V(R.ridgeX, roofY(R.ridgeX) - 0.115, z)
+      const b = V(xEave + (xEave < R.ridgeX ? 0.03 : -0.03), roofY(xEave) - 0.115, z)
       g.add(beam(a, b, 0.05, 0.05, M.frameDark))
     }
-    const slopeLen = Math.hypot(R.ridgeZ - zEave, ridgeY - roofY(zEave))
-    const n = Math.floor(slopeLen / 0.35)
-    for (let k = 1; k <= n; k++) {
-      const t = (k * 0.35) / slopeLen
-      const z = R.ridgeZ + (zEave - R.ridgeZ) * t
-      const y = ridgeY - 0.075 - (ridgeY - roofY(zEave)) * t
-      g.add(box(x1 - x0, 0.025, 0.1, M.frame, (x0 + x1) / 2, y, z))
+    for (let k = 1; k <= nb; k++) {
+      const t = Math.min(0.965, (k * 0.35) / slopeLen)
+      const x = R.ridgeX + (xEave - R.ridgeX) * t
+      for (let zz = z0 + 0.1; zz < z1 - 0.11; zz += 1.1) {
+        const zzb = Math.min(z1 - 0.1, zz + 1.1)
+        g.add(box(0.1, 0.025, zzb - zz, M.frame, x, roofY(x) - 0.065, (zz + zzb) / 2))
+      }
     }
   }
 
-  // покрытие
-  g.add(roofQuad(-R.overhang - 0.0, roofY(-R.overhang), R.ridgeZ, ridgeY, x0, x1, M.roof, 0.35))
-  g.add(
-    roofQuad(R.ridgeZ, ridgeY, R.ridgeZ + R.ridgeZ + R.overhang, roofY(R.ridgeZ + R.ridgeZ + R.overhang), x0, x1, M.roof, 0.35)
-  )
+  // покрытие (нарезано по Z — ровнее тени и меньше «длинных» треугольников)
+  const seg = 0.7
+  for (let z = z0; z < z1 - 0.001; z += seg) {
+    const zb = Math.min(z1, z + seg)
+    g.add(slopeQuad(R.ridgeX, ridgeY, R.eaveX, eaveY, z, zb, M.roof, 0.55))
+    g.add(slopeQuad(R.ridgeX, ridgeY, R.eaveRightX, eaveY, z, zb, M.roof, 0.55))
+  }
+
+  // подшив потолка террасы: по скату, ниже стропил — закрывает обрешётку снизу
+  const tz0 = P.dims.D + 0.03
+  const tz1 = z1 - 0.02
+  for (let z = tz0; z < tz1 - 0.001; z += 0.7) {
+    const zb = Math.min(tz1, z + 0.7)
+    for (const [xa, xb] of [[R.eaveX + 0.02, R.ridgeX], [R.ridgeX, R.eaveRightX - 0.02]]) {
+      g.add(slopeQuad(xa, roofY(xa) - 0.355, xb, roofY(xb) - 0.355, z, zb, M.lining, 0.55, true))
+    }
+  }
 
   // конёк
-  const ridge = mesh(new THREE.CylinderGeometry(0.09, 0.09, x1 - x0, 14, 1, false, 0, Math.PI), M.roofEdge)
-  ridge.rotation.z = Math.PI / 2
-  ridge.position.set((x0 + x1) / 2, ridgeY + 0.02, R.ridgeZ)
+  const ridge = mesh(new THREE.CylinderGeometry(0.1, 0.1, z1 - z0, 14, 1, false, 0, Math.PI), M.roofEdge)
+  ridge.rotation.x = Math.PI / 2
+  ridge.position.set(R.ridgeX, ridgeY + 0.01, (z0 + z1) / 2)
   g.add(ridge)
 
-  // торцевые планки
-  for (const x of [x0, x1]) {
-    for (const s of [-1, 1]) {
-      const zEave = R.ridgeZ + s * (R.ridgeZ + R.overhang)
-      g.add(beam(V(x, ridgeY, R.ridgeZ), V(x, roofY(zEave), zEave), 0.02, 0.14, M.roofEdge))
+  // торцевые планки по фронтонам
+  for (const z of [z0, z1]) {
+    g.add(beam(V(R.eaveX, eaveY + 0.02, z), V(R.ridgeX, ridgeY + 0.02, z), 0.02, 0.16, M.roofEdge))
+    g.add(beam(V(R.ridgeX, ridgeY + 0.02, z), V(R.eaveRightX, eaveY + 0.02, z), 0.02, 0.16, M.roofEdge))
+  }
+  // капельник / лобовая по карнизам (глубокая — закрывает торцы стропил)
+  for (const x of [R.eaveX, R.eaveRightX]) {
+    g.add(box(0.035, 0.4, z1 - z0, M.roofEdge, x, eaveY - 0.19, (z0 + z1) / 2))
+    g.add(box(0.06, 0.03, z1 - z0, M.roofEdge, x, eaveY - 0.385, (z0 + z1) / 2))
+  }
+}
+
+// ------------------------------------------------------------ терраса
+function buildTerrace(layers) {
+  const t = layers.terrace
+  const D = P.dims.D
+  const L = P.dims.L
+  const zf = D + P.dims.terrace
+  const RH = 1.02
+
+  // лобовая доска настила по периметру
+  t.add(box(L + 0.02, 0.2, 0.04, M.frameDark, L / 2, -0.1, zf - 0.02))
+  for (const x of [0.01, L - 0.01]) t.add(box(0.04, 0.2, P.dims.terrace, M.frameDark, x, -0.1, (D + zf) / 2))
+
+  // ограждение: стойки шаг ~0.9 + 4 горизонтальные ламели
+  const rail = (x0, z0, x1, z1) => {
+    const len = Math.hypot(x1 - x0, z1 - z0)
+    const n = Math.max(2, Math.round(len / 0.9))
+    for (let i = 0; i <= n; i++) {
+      const k = i / n
+      t.add(box(0.08, RH, 0.08, M.frameDark, x0 + (x1 - x0) * k, RH / 2, z0 + (z1 - z0) * k))
+    }
+    for (const y of [0.34, 0.58, 0.82, 1.0]) {
+      if (Math.abs(x1 - x0) > 0.01) t.add(box(len, 0.07, 0.06, M.frameDark, (x0 + x1) / 2, y, z0))
+      else t.add(box(0.06, 0.07, len, M.frameDark, x0, y, (z0 + z1) / 2))
     }
   }
+  rail(0.14, D + 0.2, 0.14, zf - 0.14)
+  rail(L - 0.14, D + 0.2, L - 0.14, zf - 0.14)
+  rail(0.14, zf - 0.14, 1.4, zf - 0.14)          // фронт слева от входа
+  rail(4.6, zf - 0.14, L - 0.14, zf - 0.14)       // фронт справа от входа
 
-  // ---- односкатная кровля террасы
-  const T = P.terraceRoof
-  const ty0 = T.y0
-  const ty1 = terraceRoofY(T.z1)
-  g.add(roofQuad(T.z0, ty0, T.z1, ty1, -T.overhangX, P.dims.L + T.overhangX, M.roof, 0.35))
-  for (let i = 0; i * step <= P.dims.L + 0.001; i++) {
-    const x = Math.min(i * step, P.dims.L)
-    g.add(beam(V(x, ty0 - 0.1, T.z0), V(x, ty1 - 0.1, T.z1), 0.045, 0.145, M.frame))
+  // ступени: 3 проступи + подступенки + тетивы
+  const sw = 3.2
+  const sx = L / 2
+  for (let i = 0; i < 3; i++) {
+    const top = -0.17 * (i + 1)
+    const zc = zf + 0.19 + i * 0.34
+    t.add(box(sw, 0.05, 0.36, M.terrace, sx, top - 0.025, zc))
+    t.add(box(sw, 0.17, 0.02, M.frameDark, sx, top + 0.085, zc - 0.18))
   }
-  for (let i = 0; i * step <= P.dims.L + 0.001; i++) {
-    const x = Math.min(i * step, P.dims.L)
-    g.add(beam(V(x, ty0 - 0.02, T.z0), V(x, ty1 - 0.02, T.z1), 0.05, 0.05, M.frameDark))
-  }
-  const slopeLen = Math.hypot(T.z1 - T.z0, ty0 - ty1)
-  for (let k = 1; k * 0.35 < slopeLen; k++) {
-    const t = (k * 0.35) / slopeLen
-    const z = T.z0 + (T.z1 - T.z0) * t
-    const y = ty0 - (ty0 - ty1) * t - 0.06
-    g.add(box(P.dims.L + 2 * T.overhangX, 0.025, 0.1, M.frame, P.dims.L / 2, y, z))
-  }
-
-  // стойки террасы
-  for (const x of [0.15, 2.95, 5.85]) {
-    const top = terraceRoofY(6.85) - 0.12
-    layers.terrace.add(box(0.1, top, 0.1, M.frameDark, x, top / 2, 6.85))
-  }
-  // ограждение террасы
-  const railTop = 1.02
-  const railSegs = [
-    { a: [0.15, 0.15], b: [0.15, 6.85] },
-    { a: [5.85, 6.85], b: [5.85, 0.15] },
-    { a: [0.15, 6.85], b: [2.2, 6.85] },
-    { a: [3.5, 6.85], b: [5.85, 6.85] },
-  ]
-  for (const s of railSegs) {
-    const a = V(s.a[0], railTop, s.a[1])
-    const b = V(s.b[0], railTop, s.b[1])
-    layers.terrace.add(beam(a, b, 0.07, 0.09, M.frameDark))
-    layers.terrace.add(beam(V(a.x, 0.14, a.z), V(b.x, 0.14, b.z), 0.05, 0.06, M.frameDark))
-    const len = Math.hypot(b.x - a.x, b.z - a.z)
-    const n = Math.max(2, Math.round(len / 0.14))
-    for (let i = 1; i < n; i++) {
-      const t = i / n
-      const x = a.x + (b.x - a.x) * t
-      const z = a.z + (b.z - a.z) * t
-      layers.terrace.add(box(0.035, 0.82, 0.035, M.frame, x, 0.57, z))
-    }
+  for (const x of [sx - sw / 2 + 0.03, sx + sw / 2 - 0.03]) {
+    t.add(box(0.05, 0.34, 1.06, M.frameDark, x, -0.34, zf + 0.52))
   }
 }
 
@@ -614,7 +713,9 @@ export function buildBanya() {
   for (const w of walls) buildWallInsulation(w, layers)
   buildCeiling(layers)
   buildGables(layers)
+  buildGlassWall(layers)
   buildRoof(layers)
+  buildTerrace(layers)
   buildFixtures(layers)
   buildLabels(layers)
 

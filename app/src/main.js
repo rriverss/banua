@@ -33,7 +33,7 @@ function render() {
   document.querySelectorAll('#tabs a').forEach((a) => {
     a.classList.toggle('active', a.dataset.route === route)
   })
-  document.title = `${ROUTES[route].title} · Баня «Кедр» — проект 6×4,5`
+  document.title = `${ROUTES[route].title} · Баня «Марго» — проект 6×4,5`
   const result = ROUTES[route].render(app)
   if (typeof result === 'function') dispose = result
   window.scrollTo({ top: 0 })

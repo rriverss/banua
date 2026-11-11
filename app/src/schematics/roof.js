@@ -1,148 +1,166 @@
 import { sheet, txt, line, rect, poly, circle, dimH, dimV, axisMark, callout, INK, DIM, ACCENT } from './svg.js'
-import { project as P, roofArea } from '../model/project.js'
+import { project as P, roofArea, gable } from '../model/project.js'
 import { mm } from './plan.js'
 
-const S = 64
+const S = 62
 const OX = 250
-const OY = 205
+const OY = 175
 const X = (x) => OX + x * S
 const Y = (z) => OY + z * S
 
 const R = P.roof
-const TR = P.terraceRoof
+const L = P.dims.L
+const D = P.dims.D
+const TER = P.dims.terrace
+const zF = R.zFront
+const zB = R.zBack
+
+/** стропило в плане: от конька до карниза */
+function rafter(z) {
+  return line(X(R.ridgeX), Y(z), X(R.eaveX), Y(z), { stroke: '#a9764a', w: 2 }) +
+    line(X(R.ridgeX), Y(z), X(R.eaveRightX), Y(z), { stroke: '#a9764a', w: 2 })
+}
 
 export function roofSheet() {
   const b = []
   b.push(txt(OX, 58, 'СТРОПИЛЬНАЯ СИСТЕМА. ПЛАН', { size: 19, weight: 700, letter: 1.2 }))
-  b.push(txt(OX, 82, 'Двускатная кровля 30° над блоком и односкатная 15° над террасой', { size: 10.5, fill: DIM }))
+  b.push(txt(OX, 82, `Двускатная кровля ${R.pitch}°, конёк вдоль дома, терраса под той же крышей`, { size: 11, fill: DIM }))
 
-  // контуры
-  b.push(
-    rect(X(-R.gableOverhang), Y(-R.overhang), (6 + 2 * R.gableOverhang) * S, (4.5 + 2 * R.overhang) * S, {
-      fill: '#f7f1e6',
-      stroke: INK,
-      sw: 1.1,
-    })
-  )
-  b.push(
-    rect(X(-TR.overhangX), Y(TR.z0), (6 + 2 * TR.overhangX) * S, (TR.z1 - TR.z0) * S, {
-      fill: '#f3ede2',
-      stroke: INK,
-      sw: 1,
-      dash: '6 3',
-    })
-  )
+  // ---- контур кровли
+  b.push(rect(X(R.eaveX), Y(zB), (L + 2 * R.overhang) * S, (zF - zB) * S, { fill: '#f4efe4', stroke: INK, sw: 1.6 }))
 
-  // стропила
-  for (let x = 0; x <= 6.001; x += 0.6) {
-    for (const s of [-1, 1]) {
-      const zEave = R.ridgeZ + s * (R.ridgeZ + R.overhang)
-      b.push(line(X(x), Y(R.ridgeZ), X(x), Y(zEave), { stroke: '#a9764a', w: 2.2 }))
-    }
-    b.push(line(X(x), Y(TR.z0), X(x), Y(TR.z1), { stroke: '#a9764a', w: 1.6 }))
+  // ---- контур дома и террасы (пунктир — под кровлей)
+  b.push(rect(X(0), Y(0), L * S, D * S, { fill: 'none', stroke: '#8d887e', sw: 1.2, dash: '8 5' }))
+  b.push(line(X(0), Y(D), X(L), Y(D), { stroke: '#8d887e', w: 1.2, dash: '8 5' }))
+  b.push(rect(X(0), Y(D), L * S, TER * S, { fill: '#f7eddd', stroke: 'none', sw: 0 }))
+  for (let x = 0.2; x < L - 0.1; x += 0.145) {
+    b.push(line(X(x), Y(D), X(x), Y(D + TER), { stroke: '#e0cbac', w: 0.5 }))
   }
 
-  // конёк и карнизы
-  b.push(line(X(-R.gableOverhang), Y(R.ridgeZ), X(6 + R.gableOverhang), Y(R.ridgeZ), { stroke: '#7d3a32', w: 4.5 }))
-  b.push(txt(X(1.35), Y(R.ridgeZ) - 9, 'КОНЁК 6 600', { size: 8.5, anchor: 'middle', fill: '#7d3a32', weight: 600, letter: 1 }))
-  b.push(line(X(-R.gableOverhang), Y(-R.overhang), X(6 + R.gableOverhang), Y(-R.overhang), { stroke: '#5d2b26', w: 1.8 }))
-  b.push(line(X(-R.gableOverhang), Y(5.0), X(6 + R.gableOverhang), Y(5.0), { stroke: '#5d2b26', w: 1.8 }))
-  b.push(line(X(-TR.overhangX), Y(TR.z1), X(6 + TR.overhangX), Y(TR.z1), { stroke: '#5d2b26', w: 1.8 }))
+  b.push(line(X(0), Y(D), X(L), Y(D), { stroke: '#20242a', w: 1.6 }))
+  b.push(txt(X(0.25), Y(D) - 6, 'витраж 6,0 м', { size: 7.5, fill: '#20242a' }))
 
-  // оси
-  for (const a of [0, 3, 6]) {
-    b.push(line(X(a), Y(-0.5), X(a), Y(7.45), { stroke: '#cfc8bb', w: 0.6, dash: '9 4' }))
-    b.push(axisMark(X(a), Y(-0.95), String(a === 0 ? 1 : a === 3 ? 2 : 3)))
+  // ---- ограждение террасы
+  b.push(line(X(0.14), Y(D + 0.2), X(0.14), Y(zF - 0.14), { stroke: '#8a6a44', w: 2 }))
+  b.push(line(X(L - 0.14), Y(D + 0.2), X(L - 0.14), Y(zF - 0.14), { stroke: '#8a6a44', w: 2 }))
+  b.push(line(X(0.14), Y(zF - 0.14), X(1.4), Y(zF - 0.14), { stroke: '#8a6a44', w: 2 }))
+  b.push(line(X(4.6), Y(zF - 0.14), X(L - 0.14), Y(zF - 0.14), { stroke: '#8a6a44', w: 2 }))
+
+  // ---- стропила
+  for (let z = 0.25; z < zF - 0.2; z += P.frames.spacing) b.push(rafter(z))
+
+  // ---- конёк
+  b.push(line(X(R.ridgeX), Y(zB), X(R.ridgeX), Y(zF), { stroke: '#2f3438', w: 4.5 }))
+  b.push(txt(X(R.ridgeX) + 6, Y(zB + 1.2), 'КОНЁК · прогон 45×245', { size: 8, fill: '#2f3438', weight: 600, rotate: 90, }))
+
+  // ---- подстропильные балки и стойки над террасой
+  for (const x of [0.08, L - 0.08]) {
+    b.push(line(X(x), Y(D), X(x), Y(zF - 0.2), { stroke: '#8a6a44', w: 2.4 }))
+    b.push(rect(X(x) - 4, Y(6.85) - 4, 8, 8, { fill: '#d9a568', stroke: '#8a6a44', sw: 0.8 }))
   }
-  b.push(axisMark(X(-1.5), Y(0), 'А'))
-  b.push(axisMark(X(-1.5), Y(2.25), 'Б'))
-  b.push(axisMark(X(-1.5), Y(4.5), 'В'))
 
-  // размеры
-  for (let x = 0; x < 6; x += 0.6) {
-    b.push(dimH(X(x), X(x + 0.6), Y(7.35) + 28, '600', { size: 7 }))
+  // ---- торцевые свесы и капельник
+  for (const z of [zB, zF]) {
+    b.push(line(X(R.eaveX), Y(z), X(R.eaveRightX), Y(z), { stroke: '#2f3438', w: 2.4 }))
   }
-  b.push(dimH(X(-R.gableOverhang), X(6 + R.gableOverhang), Y(7.35) + 56, '6 600'))
-  b.push(dimV(Y(4.5), Y(TR.z1), X(-0.65) - 26, '2 850'))
-  b.push(txt(X(1.0), Y(1.45), 'полската 2 750 · уклон 30°', { size: 8, fill: ACCENT }))
-  b.push(txt(X(1.0), Y(6.55), 'полската 2 850 · уклон 15°', { size: 8, fill: ACCENT }))
 
-  b.push(txt(X(3), Y(1.1), 'ОСНОВНОЙ СКАТ · 30°', { size: 10, anchor: 'middle', fill: DIM, letter: 1.5 }))
-  b.push(txt(X(3), Y(6.15), 'ТЕРРАСА · 15°', { size: 9, anchor: 'middle', fill: DIM, letter: 1.2 }))
-  b.push(txt(X(6.55), Y(-R.overhang) + 4, 'свес 500', { size: 8, fill: ACCENT }))
-  b.push(txt(X(6.55), Y(5.0) + 4, 'свес 500', { size: 8, fill: ACCENT }))
-  b.push(txt(X(6.55), Y(TR.z1) + 4, 'свес 350', { size: 8, fill: ACCENT }))
+  // ---- ступени и вход
+  for (let i = 0; i < 3; i++) {
+    b.push(rect(X(L / 2 - 1.6), Y(D + TER + 0.1 + i * 0.34), 3.2 * S, 0.34 * S, { fill: i % 2 ? '#f1e2ca' : '#e9d7bb', stroke: '#a98f62', sw: 0.7 }))
+  }
 
-  b.push(callout(X(4.55), Y(2.25), 4, X(5.45), Y(1.35)))
-  b.push(callout(X(6.3), Y(4.8), 3, X(6.95), Y(5.3)))
+  // ---- дымоход
+  b.push(circle(X(5.35), Y(0.5), 7, { fill: '#3a3f43', stroke: '#20242a' }))
+  b.push(txt(X(5.35) - 12, Y(0.5) + 12, '⌀115', { size: 7.5, fill: DIM, anchor: 'end' }))
 
-  // таблица
-  const tx = 720
-  let ty = 118
-  b.push(txt(tx, ty, 'СПЕЦИФИКАЦИЯ КРОВЛИ', { size: 10.5, weight: 700 }))
-  ty += 10
-  const rows = [
-    ['Стропило 45×195, L=3 175', '22 шт'],
-    ['Стропило террасы 45×145, L=2 950', '11 шт'],
-    ['Коньковый прогон 45×195', '6,6 м'],
-    ['Контробрешётка 50×50', '≈ 90 м'],
-    ['Обрешётка 25×100, шаг 350', '≈ 190 м'],
+  // ---- оси
+  for (const x of [0, 3, 6]) {
+    b.push(line(X(x), Y(zB) - 26, X(x), Y(zF) + 26, { stroke: '#b9b2a5', w: 0.8, dash: '14 4 3 4' }))
+    b.push(axisMark(X(x), Y(zB) - 48, String(x === 0 ? 1 : x === 3 ? 2 : 3)))
+  }
+  for (const [z, l] of [[0, 'А'], [4.5, 'В'], [7, 'Г']]) {
+    b.push(line(X(R.eaveX) - 26, Y(z), X(R.eaveRightX) + 26, Y(z), { stroke: '#b9b2a5', w: 0.8, dash: '14 4 3 4' }))
+    b.push(axisMark(X(R.eaveX) - 48, Y(z), l))
+  }
+
+  // ---- размеры
+  b.push(dimH(X(R.eaveX), X(R.eaveRightX), Y(zF) + 52, mm(L + 2 * R.overhang)))
+  b.push(dimH(X(0), X(L), Y(zF) + 86, mm(L)))
+  b.push(dimV(Y(zB), Y(zF), X(R.eaveX) - 86, mm(zF - zB)))
+  b.push(dimV(Y(0), Y(D), X(R.eaveRightX) + 42, mm(D)))
+  b.push(dimV(Y(D), Y(D + TER), X(R.eaveRightX) + 42, mm(TER)))
+
+  // стропила: 12 пар через 600 по Z
+  b.push(txt(X(0.3), Y(D + 0.42), '12 пар стропил через 600 по Z', { size: 8, fill: DIM }))
+
+  // ---- выноски
+  b.push(callout(X(R.ridgeX + 0.4), Y(2.6), 4, X(R.ridgeX + 1.5), Y(1.5)))
+  b.push(callout(X(L - 0.2), Y(6.55), 3, X(L - 0.05), Y(7.72)))
+
+  // ---- спецификация
+  const tx = 800
+  b.push(txt(tx, 110, 'СПЕЦИФИКАЦИЯ КРОВЛИ', { size: 11, weight: 700, letter: 0.6 }))
+  b.push(rect(tx, 122, 400, 22, { fill: '#f3ede1', stroke: '#cfc7b8', sw: 0.9 }))
+  b.push(txt(tx + 8, 137, 'Наименование', { size: 8.5, weight: 700 }))
+  b.push(txt(tx + 392, 137, 'Кол-во', { size: 8.5, weight: 700, anchor: 'end' }))
+  const spec = [
+    ['Стропило 45×195, L=3 750', '24 шт'],
+    ['Коньковый прогон 45×245', '7,7 м'],
+    ['Подстропильная балка 45×195', '2 × 2,9 м'],
+    ['Стойка террасы 100×100', '2 шт'],
+    ['Контробрешётка 50×50', '≈ 54 м'],
+    ['Обрешётка 25×100, шаг 350', '≈ 168 м'],
     ['Гидроизоляция', '62 м²'],
-    ['Металлочерепица 0,45', '67 м²'],
-    ['Конёк + торцевые планки', '6,6 + 12,8 м'],
-    ['Саморезы кровельные', '≈ 400 шт'],
+    ['Кровля фальц RAL 7021', `${Math.round(roofArea.total)} м²`],
+    ['Саморезы / кляммеры', '≈ 520 шт'],
   ]
-  b.push(rect(tx, ty, 420, 23, { fill: '#f1ece2', stroke: INK, sw: 1 }))
-  b.push(txt(tx + 8, ty + 15.5, 'Наименование', { size: 8.5, weight: 700 }))
-  b.push(txt(tx + 412, ty + 15.5, 'Кол-во', { size: 8.5, weight: 700, anchor: 'end' }))
-  ty += 23
-  for (const [n, q] of rows) {
-    b.push(rect(tx, ty, 420, 23, { fill: '#fff', stroke: '#cec7ba', sw: 0.8 }))
-    b.push(txt(tx + 8, ty + 15.5, n, { size: 8.5 }))
-    b.push(txt(tx + 412, ty + 15.5, q, { size: 8.5, anchor: 'end', weight: 600 }))
-    ty += 23
-  }
-  ty += 18
-  b.push(txt(tx, ty, `Площадь кровли: ${roofArea.total.toFixed(1).replace('.', ',')} м²`, { size: 9.5, weight: 700, fill: ACCENT }))
-  ty += 15
-  for (const n of [
-    'Снеговая нагрузка 180 кг/м² (III район).',
-    'Шаг стропил 600 — под металлочерепицу.',
-    'Свес 500 защищает фасад и террасу.',
-    'Вентзазор 50 мм, выход на коньке.',
-  ]) {
-    b.push(txt(tx, ty, n, { size: 8.2, fill: '#3d3a34' }))
-    ty += 12
-  }
+  spec.forEach(([n, q], i) => {
+    const y = 144 + i * 21
+    b.push(rect(tx, y, 400, 21, { fill: i % 2 ? '#fbf9f4' : '#fff', stroke: '#e2dbcd', sw: 0.6 }))
+    b.push(txt(tx + 8, y + 14, n, { size: 8.5 }))
+    b.push(txt(tx + 392, y + 14, q, { size: 8.5, weight: 600, anchor: 'end' }))
+  })
 
-  // деталь стропила
-  const dx = 760
-  const dy = 720
-  b.push(txt(tx, 540, 'ДЕТАЛЬ СТРОПИЛА', { size: 10.5, weight: 700 }))
-  const baseY = dy
-  const apexY = dy - 160
+  b.push(txt(tx, 366, 'ПОКАЗАТЕЛИ', { size: 10, weight: 700, letter: 0.6 }))
+  const rows = [
+    ['Площадь кровли', `${roofArea.total.toFixed(1).replace('.', ',')} м²`],
+    ['Уклон', `${R.pitch}°`],
+    ['Высота конька', `+${R.ridgeY.toFixed(3).replace('.', ',')}`],
+    ['Высота фронтона', `${gable.height.toFixed(2).replace('.', ',')} м`],
+    ['Свес карниза / фронтона', '400 / 350 мм'],
+  ]
+  rows.forEach(([k, v], i) => {
+    b.push(txt(tx, 388 + i * 17, k, { size: 8.5, fill: DIM }))
+    b.push(txt(tx + 400, 388 + i * 17, v, { size: 8.5, weight: 600, anchor: 'end' }))
+  })
+
+  // ---- деталь стропила
+  const dx = 800
+  const dyTop = 520
+  const kat = 140
+  b.push(txt(dx, dyTop - 12, 'ДЕТАЛЬ СТРОПИЛА', { size: 11, weight: 700 }))
   b.push(
     poly(
       [
-        [dx, baseY],
-        [dx + 278, baseY],
-        [dx + 278, apexY],
+        [dx, dyTop + kat],
+        [dx + kat, dyTop + kat],
+        [dx + kat, dyTop],
       ],
-      { fill: 'none', stroke: '#a9764a', sw: 2 }
+      { fill: '#f6efe2', stroke: '#8a6a44', sw: 1.2 }
     )
   )
-  b.push(txt(dx + 60, baseY - 6, '30°', { size: 10, weight: 700, fill: ACCENT }))
-  b.push(txt(dx + 150, baseY + 16, 'полската 2 750', { size: 8, fill: DIM }))
-  b.push(txt(dx + 288, baseY - 74, 'h = 1 299', { size: 8, fill: DIM }))
-  b.push(txt(dx + 150, apexY + 20, 'L = 3 175', { size: 8.5, fill: ACCENT, weight: 600 }))
-  b.push(txt(dx + 8, baseY + 30, 'стропило 45×195, шаг 600', { size: 8, fill: DIM }))
-  b.push(txt(dx + 8, baseY + 42, 'свес 500, лобовая доска 25×150', { size: 8, fill: DIM }))
+  b.push(txt(dx + kat / 2, dyTop + kat + 16, '3 400', { size: 8, anchor: 'middle', fill: DIM }))
+  b.push(txt(dx + kat + 8, dyTop + kat / 2, '1 586', { size: 8, fill: DIM }))
+  b.push(txt(dx + 26, dyTop + kat - 16, `${R.pitch}°`, { size: 9, fill: ACCENT, weight: 600 }))
+  b.push(txt(dx, dyTop + kat + 34, 'стропило 45×195, контробрешётка 50, обрешётка 25×100', { size: 7.5, fill: DIM }))
+  b.push(txt(dx, dyTop + kat + 46, 'свес 400, лобовая доска 25×150, капельник', { size: 7.5, fill: DIM }))
 
   return sheet({
+    num: 6,
     title: 'Стропильная система',
-    subtitle: 'Уклон 30° / 15°, стропила 45×195, шаг 600',
+    subtitle: `Уклон ${R.pitch}°, стропила 45×195 через 600, конёк вдоль дома`,
     scale: '1:50',
-    body: b.join('\n'),
-    note: 'Схема под металлочерепицу. При замене на мягкую черепицу — сплошной настил ОСП-3 9 мм и подкладочный ковёр.',
+    body: b.join(''),
+    note: 'Стропильные пары опираются на коньковый прогон и подстропильные балки; над террасой балки стоят на стойках 100×100. Перед монтажом уточните снеговой район.',
   })
 }

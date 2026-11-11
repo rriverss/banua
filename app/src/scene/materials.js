@@ -33,6 +33,22 @@ const tex = {
       ctx.fillRect(i * w + 2, 0, 2, s)
     }
   }),
+  sidingDark: canvasTex((ctx, s) => {
+    const boards = 9
+    const w = s / boards
+    ctx.fillStyle = '#2f3437'
+    ctx.fillRect(0, 0, s, s)
+    for (let i = 0; i < boards; i++) {
+      const shade = 0.88 + ((i * 53) % 19) / 90
+      const v = Math.round(46 * shade)
+      ctx.fillStyle = `rgb(${v}, ${v + 3}, ${v + 5})`
+      ctx.fillRect(i * w + 1, 0, w - 2, s)
+      ctx.fillStyle = 'rgba(0,0,0,.55)'
+      ctx.fillRect(i * w, 0, 2, s)
+      ctx.fillStyle = 'rgba(255,255,255,.05)'
+      ctx.fillRect(i * w + 2, 0, 1.5, s)
+    }
+  }),
   lining: canvasTex((ctx, s) => {
     const boards = 10
     const h = s / boards
@@ -83,24 +99,23 @@ const tex = {
     }
   }),
   roof: canvasTex((ctx, s) => {
-    const ribs = 3
+    const ribs = 4
     const w = s / ribs
-    ctx.fillStyle = '#7d3a32'
+    ctx.fillStyle = '#2b2f33'
     ctx.fillRect(0, 0, s, s)
     for (let i = 0; i < ribs; i++) {
       const g = ctx.createLinearGradient(i * w, 0, (i + 1) * w, 0)
-      g.addColorStop(0, '#6a2f28')
-      g.addColorStop(0.35, '#93463c')
-      g.addColorStop(0.75, '#8a4037')
-      g.addColorStop(1, '#652b25')
+      g.addColorStop(0, '#22262a')
+      g.addColorStop(0.42, '#3b4146')
+      g.addColorStop(0.62, '#343a3f')
+      g.addColorStop(1, '#212529')
       ctx.fillStyle = g
       ctx.fillRect(i * w, 0, w, s)
-    }
-    for (let y = 0; y < s; y += s / 4) {
-      ctx.fillStyle = 'rgba(0,0,0,.16)'
-      ctx.fillRect(0, y, s, 2)
-      ctx.fillStyle = 'rgba(255,220,200,.08)'
-      ctx.fillRect(0, y + 2, s, 1)
+      // фальцевый шов
+      ctx.fillStyle = 'rgba(12,14,16,.85)'
+      ctx.fillRect(i * w, 0, 2.5, s)
+      ctx.fillStyle = 'rgba(220,235,245,.10)'
+      ctx.fillRect(i * w + 2.5, 0, 1.5, s)
     }
   }),
 }
@@ -116,8 +131,10 @@ export const M = {
   floor: std('#ffffff', { roughness: 0.72, map: tex.floor }),
   terrace: std('#ffffff', { roughness: 0.82, map: tex.terrace }),
   tile: std('#98a0a5', { roughness: 0.32 }),
-  roof: std('#ffffff', { roughness: 0.42, metalness: 0.35, map: tex.roof, side: THREE.DoubleSide }),
-  roofEdge: std('#5c2a25', { roughness: 0.5, metalness: 0.3 }),
+  roof: std('#ffffff', { roughness: 0.38, metalness: 0.45, map: tex.roof, side: THREE.DoubleSide }),
+  roofEdge: std('#23272b', { roughness: 0.42, metalness: 0.45 }),
+  sidingDark: std('#ffffff', { roughness: 0.75, map: tex.sidingDark }),
+  gableWood: std('#ffffff', { roughness: 0.78, map: tex.siding }),
   metal: std('#3a3f43', { roughness: 0.45, metalness: 0.6 }),
   metalLight: std('#9aa3a8', { roughness: 0.35, metalness: 0.7 }),
   pile: std('#8b8880', { roughness: 0.6, metalness: 0.4 }),
@@ -134,8 +151,8 @@ export const M = {
     thickness: 0.02,
     side: THREE.DoubleSide,
   }),
-  windowFrame: std('#6c4a2d', { roughness: 0.7 }),
-  door: std('#7a4b28', { roughness: 0.65 }),
+  windowFrame: std('#26292c', { roughness: 0.55, metalness: 0.25 }),
+  door: std('#33383c', { roughness: 0.6, metalness: 0.2 }),
   water: std('#7fb7c9', { roughness: 0.2, transparent: true, opacity: 0.85 }),
   ground: std('#6f8757', { roughness: 1 }),
   gravel: std('#9c968a', { roughness: 1 }),
@@ -147,9 +164,9 @@ export const LAYERS = [
   { id: 'frame', name: 'Каркас', hint: 'доска 45×195, шаг 600' },
   { id: 'sheathing', name: 'Обшивка ОСП', hint: 'ОСП-3 9 мм стены / 18 мм пол' },
   { id: 'insulation', name: 'Утеплитель', hint: 'каменная вата 195 мм' },
-  { id: 'facade', name: 'Фасад', hint: 'имитация бруса по вентзазору 30 мм' },
+  { id: 'facade', name: 'Фасад', hint: 'рейка RAL 7021, лиственница на фронтоне' },
   { id: 'interior', name: 'Отделка', hint: 'вагонка сосна / липа' },
-  { id: 'roof', name: 'Кровля', hint: 'металлочерепица, 30°' },
+  { id: 'roof', name: 'Кровля', hint: 'фальц RAL 7021, 25°' },
   { id: 'terrace', name: 'Терраса', hint: 'лиственница, ограждение' },
   { id: 'fixtures', name: 'Печь и мебель', hint: 'печь 12 кВт, полки, сантехника' },
   { id: 'labels', name: 'Подписи', hint: 'названия и площади помещений' },

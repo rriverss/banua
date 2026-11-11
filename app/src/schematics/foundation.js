@@ -105,6 +105,7 @@ export function foundationSheet() {
   }
 
   return sheet({
+    num: 2,
     title: 'План фундамента',
     subtitle: 'Винтовые сваи ⌀108×2500, ростверк 150×150',
     scale: '1:50',

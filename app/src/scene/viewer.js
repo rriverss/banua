@@ -9,7 +9,7 @@ export function createViewer(container) {
   scene.fog = new THREE.Fog('#cfdbe4', 32, 70)
 
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 250)
-  camera.position.set(11.5, 7.5, 12.5)
+  camera.position.set(11.8, 6.2, 13.4)
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' })
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -72,14 +72,14 @@ export function createViewer(container) {
 
   // ---- камеры
   const presets = {
-    general: { pos: [11.5, 7.2, 12.8], target: [3, 1.5, 2.9] },
-    front: { pos: [3, 3.2, 16.5], target: [3, 1.9, 3] },
-    back: { pos: [3, 4.2, -9.5], target: [3, 1.6, 2.2] },
-    side: { pos: [15.5, 4.2, 3.2], target: [3, 1.6, 2.4] },
-    top: { pos: [3.2, 18, 3.4], target: [3, 0, 3.4] },
-    inside: { pos: [2.55, 1.7, 4.05], target: [1.35, 1.15, 1.9] },
+    general: { pos: [11.8, 6.2, 13.4], target: [3, 1.9, 3.2] },
+    front: { pos: [3, 3.0, 16.8], target: [3, 2.2, 4.0] },
+    back: { pos: [3, 3.4, -10.2], target: [3, 1.8, 1.5] },
+    side: { pos: [16.8, 3.4, 3.2], target: [3, 1.8, 3.0] },
+    top: { pos: [3.2, 18.5, 3.6], target: [3, 0, 3.6] },
+    inside: { pos: [1.45, 1.62, 1.05], target: [2.6, 1.5, 6.0] },
     steam: { pos: [3.35, 1.6, 1.95], target: [5.1, 1.0, 0.7] },
-    terrace: { pos: [8.2, 2.2, 8.6], target: [3, 1.2, 5.4] },
+    terrace: { pos: [8.6, 2.1, 9.2], target: [2.8, 1.3, 5.2] },
   }
   let anim = null
   function flyTo(key) {
