@@ -1,205 +1,195 @@
-import { sheet, txt, line, rect, poly, path, circle, dimH, dimV, callout, INK, DIM, ACCENT } from './svg.js'
-import { project as P, roofY, roofUnderY, gable } from '../model/project.js'
-import { mm } from './plan.js'
+import { sheet, txt, line, rect, poly, path, circle, dimH, dimV, INK } from './svg.js'
+import { project as P, rooms, gable, roofArea, pilePositions } from '../model/project.js'
 
-const S = 92
-const OX = 210
-const OY = 715
+const DIM = '#6d6a63'
+const ACCENT = '#a9693a'
+
+const S = 70
+const OX = 92
+const Y0 = 648 // чистый пол 0,000
 const X = (x) => OX + x * S
-const Y = (y) => OY - y * S
+const Y = (y) => Y0 - y * S
 
-const T = P.dims.wallT
-const L = P.dims.L
+const dm = P.dims
+const R = P.roof
+const W = dm.W
+const x0 = dm.x0
+const x1 = x0 + dm.L
 
-/** штриховка утеплителя в прямоугольнике */
-function insul(x, y, w, h) {
-  return rect(x, y, w, h, { fill: 'url(#insul)', stroke: '#c9a35b', sw: 0.7 })
+const eaveY = R.eaveY
+const ridgeY = R.ridgeY
+const ridgeX = R.ridgeX
+const wallH = dm.wallH
+const plinthTop = 0.05
+const plinthBot = -0.45
+
+function hatch(x1_, y1_, x2_, y2_, opts) {
+  return rect(Math.min(x1_, x2_), Math.min(Y(y1_), Y(y2_)), Math.abs(x2_ - x1_), Math.abs(Y(y1_) - Y(y2_)), opts)
 }
 
-/** стена в разрезе: ОСП + каркас с утеплителем + обшивка */
-function wallCut(x, y0, y1, thick, inner = 1) {
-  const s = []
-  const t = thick
-  s.push(rect(x, Y(y1), t * S, (y1 - y0) * S, { fill: 'url(#insul)', stroke: '#8a6a44', sw: 0.9 }))
-  // ОСП снаружи
-  s.push(rect(inner > 0 ? x : x + t * S - 2.4, Y(y1), 2.4, (y1 - y0) * S, { fill: '#d9b981', stroke: 'none', sw: 0 }))
-  // обшивка внутри
-  s.push(rect(inner > 0 ? x + t * S - 2 : x, Y(y1), 2, (y1 - y0) * S, { fill: '#b07c4a', stroke: 'none', sw: 0 }))
-  return s.join('')
+function callout(n, px, py, lx, ly) {
+  return (
+    circle(px, py, 9, { fill: '#fff', stroke: ACCENT, sw: 1.3 }) +
+    txt(px, py + 3.4, String(n), { size: 9, anchor: 'middle', fill: ACCENT, weight: 700 }) +
+    line(px, py, lx, ly, { stroke: ACCENT, w: 0.8 })
+  )
 }
 
 export function sectionSheet() {
   const b = []
-  const ridgeY = P.roof.ridgeY
-  const eaveL = P.roof.eaveX
-  const eaveR = P.roof.eaveRightX
-  const eaveY = roofY(eaveL)
-  const under = (x) => roofUnderY(x)
+  const zCut = 5.4 // сечение по кухне-гостиной
 
-  b.push(txt(OX, 58, 'РАЗРЕЗ 1–1', { size: 19, weight: 700, letter: 1.2 }))
-  b.push(txt(OX, 82, 'Поперёк конька, по мойке и комнате отдыха. Отметки — от уровня чистого пола', { size: 10.5, fill: DIM }))
-
-  // ---- грунт
-  const gy = Y(P.dims.groundY)
-  b.push(rect(40, gy, 940, 877 - 60 - gy, { fill: 'url(#soil)', stroke: 'none', opacity: 0.45 }))
-  b.push(line(40, gy, 980, gy, { stroke: '#6d6a63', w: 1.4 }))
-  b.push(rect(X(0.05), gy + 8, 86, 14, { fill: '#fdfbf6', stroke: 'none', sw: 0, opacity: 0.92 }))
-  b.push(txt(X(0.08), gy + 18, 'грунт −0,550', { size: 8, fill: DIM }))
-
-  // ---- сваи (за плоскостью разреза, пунктир)
-  for (const x of [0.15, 2.95, 5.85]) {
-    b.push(rect(X(x) - 5, Y(P.dims.pileTop), 10, 0.71 * S, { fill: '#e9e6df', stroke: '#7d7a72', sw: 0.9, dash: '5 3' }))
+  // ---------- грунт
+  b.push(line(X(-0.9), Y(dm.groundY), X(W + 0.9), Y(dm.groundY), { stroke: INK, w: 1.3 }))
+  for (let x = -0.8; x < W + 0.9; x += 0.34) {
+    b.push(line(X(x), Y(dm.groundY), X(x + 0.18), Y(dm.groundY - 0.16), { stroke: '#b9b2a5', w: 0.7 }))
   }
 
-  // ---- обвязка и пол
-  b.push(rect(X(-0.075), Y(P.dims.pileTop), 6.15 * S, P.dims.girder * S, { fill: '#d9a568', stroke: '#8a6a44', sw: 0.9 }))
-  b.push(rect(X(0), Y(0), L * S, 0.195 * S, { fill: 'url(#insul)', stroke: '#8a6a44', sw: 0.9 }))
-  b.push(rect(X(0) - 4, Y(0.03), L * S + 8, 0.03 * S, { fill: '#c9a373', stroke: '#8a6a44', sw: 0.8 }))
+  // ---------- сваи, ростверк, цоколь
+  for (const p of pilePositions.filter((q) => q.z > 4 && q.z < 8)) {
+    b.push(rect(X(p.x) - 4, Y(dm.pileTop), 8, (dm.pileTop - dm.groundY + 0.45) * S, { fill: '#9aa3a8', stroke: '#6f7a80', sw: 0.8 }))
+    b.push(line(X(p.x) - 7, Y(dm.groundY - 0.45), X(p.x) + 7, Y(dm.groundY - 0.42), { stroke: '#6f7a80', w: 1 }))
+  }
+  b.push(rect(X(x0) - 6, Y(dm.pileTop), (dm.L + 0.3) * S, 0.15 * S, { fill: '#c7a06d', stroke: '#8a6035', sw: 0.9 }))
+  // каменный цоколь
+  for (const wx of [x0 - 0.06, x1 + 0.06]) {
+    b.push(rect(X(wx) - 4, Y(plinthTop), 8, (plinthTop - plinthBot) * S, { fill: '#cfc9bd', stroke: '#8f887a', sw: 0.8 }))
+  }
 
-  // ---- стены
-  b.push(wallCut(X(0), 0, P.dims.wallH, T, 1))
-  b.push(rect(X(0), Y(P.dims.wallH), T * S, P.dims.wallH * S, { fill: 'none', stroke: INK, sw: 1.1 }))
-  b.push(wallCut(X(L - T), 0, P.dims.wallH, T, -1))
-  b.push(rect(X(L - T), Y(P.dims.wallH), T * S, P.dims.wallH * S, { fill: 'none', stroke: INK, sw: 1.1 }))
+  // ---------- пол и потолок
+  b.push(rect(X(x0), Y(0), dm.L * S, 0.32 * S, { fill: '#e5d3b6', stroke: '#a98f62', sw: 0.9 }))
+  b.push(rect(X(x0), Y(0.02), dm.L * S, 5, { fill: '#c79a68' }))
+  // плоский потолок над северным блоком — не в разрезе; здесь свод
+  b.push(line(X(x0), Y(wallH), X(x1), Y(wallH), { stroke: '#8a6035', w: 1, dash: '6 4' }))
 
-  // ---- перегородка x=3 с надстройкой до кровли
-  const pt = P.dims.partT
-  const ceiling = P.dims.ceiling
-  b.push(rect(X(3 - pt / 2), Y(ceiling), pt * S, ceiling * S, { fill: 'url(#insul)', stroke: '#8a6a44', sw: 0.9 }))
-  b.push(rect(X(3 - pt / 2), Y(under(3)), pt * S, (under(3) - ceiling) * S, { fill: 'url(#insul)', stroke: '#8a6a44', sw: 0.9 }))
-  b.push(txt(X(3.4), Y(1.1), 'П1', { size: 8, fill: DIM }))
+  // ---------- стены
+  for (const wx of [x0 - dm.wallT / 2, x1 + dm.wallT / 2]) {
+    b.push(rect(X(wx) - (dm.wallT / 2) * S, Y(wallH), dm.wallT * S, wallH * S, { fill: '#efe4d3', stroke: INK, sw: 1.2 }))
+    b.push(rect(X(wx) - (dm.wallT / 2) * S, Y(wallH), 3, wallH * S, { fill: '#34393d' }))
+  }
 
-  // ---- потолок мойки
-  b.push(rect(X(3 + pt / 2), Y(ceiling), (L - T - 3 - pt / 2) * S, 0.195 * S, { fill: '#e6bd8c', stroke: '#8a6a44', sw: 0.8 }))
-  b.push(insul(X(3 + pt / 2), Y(ceiling + 0.4), (L - T - 3 - pt / 2) * S, 0.2 * S))
-
-  // ---- свод КО (подшив по стропилам)
+  // ---------- стропила и свод
+  const rafterY = (x) => (x <= ridgeX ? ridgeY - (ridgeX - x) * Math.tan((R.pitch * Math.PI) / 180) : ridgeY - (x - ridgeX) * Math.tan((R.pitch * Math.PI) / 180))
+  const drawPlane = (xa, xb, fill, under) => {
+    const p = []
+    for (let i = 0; i <= 24; i++) {
+      const x = xa + ((xb - xa) * i) / 24
+      p.push([X(x), Y(rafterY(x) - under)])
+    }
+    p.push([X(xb), Y(rafterY(xb) + 0.42)], [X(xa), Y(rafterY(xa) + 0.42)])
+    return poly(p, { fill, stroke: '#8a6a44', sw: 0.9 })
+  }
+  // свод: подшив по стропилам от стен до конька
+  b.push(drawPlane(x0, ridgeX, '#efdcbf', 0.06))
+  b.push(drawPlane(ridgeX, x1, '#efdcbf', 0.06))
+  // утеплитель в скате
+  b.push(drawPlane(x0, ridgeX, '#f2e6cf', 0.3))
+  b.push(drawPlane(ridgeX, x1, '#f2e6cf', 0.3))
+  // карнизы и свесы
+  for (const [ax, bx2] of [[R.eaveX, x0], [x1, R.eaveRightX]]) {
+    const p = []
+    p.push([X(ax), Y(rafterY(ax) + 0.3)], [X(bx2), Y(rafterY(bx2) + 0.3)], [X(bx2), Y(rafterY(bx2) - 0.1)], [X(ax), Y(rafterY(ax) - 0.1)])
+    b.push(poly(p, { fill: '#dfc9a6', stroke: '#8a6a44', sw: 0.9 }))
+  }
+  // кровля
   b.push(
     poly(
       [
-        [X(0.02), Y(under(0.02))],
-        [X(3 - pt / 2), Y(under(3 - pt / 2))],
-        [X(3 - pt / 2), Y(under(3 - pt / 2) - 0.14)],
-        [X(0.02), Y(under(0.02) - 0.14)],
+        [X(R.eaveX), Y(rafterY(R.eaveX) + 0.08)],
+        [X(ridgeX), Y(ridgeY + 0.08)],
+        [X(R.eaveRightX), Y(rafterY(R.eaveRightX) + 0.08)],
+        [X(R.eaveRightX), Y(rafterY(R.eaveRightX) - 0.05)],
+        [X(ridgeX), Y(ridgeY - 0.05)],
+        [X(R.eaveX), Y(rafterY(R.eaveX) - 0.05)],
       ],
-      { fill: '#f3dcb2', stroke: '#b08a52', sw: 0.8 }
+      { fill: '#2b3034', stroke: '#1d2124', sw: 1 }
     )
   )
 
-  b.push(txt(X(4.55), Y(3.3), 'холодный чердак, продух 50 мм', { size: 8, fill: DIM }))
-  b.push(txt(X(1.0), Y(3.55), 'свод КО открыт до конька', { size: 8, fill: DIM }))
+  // ---------- терраса
+  b.push(rect(X(0), Y(0), dm.x0 * S, 0.06 * S, { fill: '#c79a68', stroke: '#8a6035', sw: 0.9 }))
+  b.push(rect(X(0), Y(0.06), dm.x0 * S, 0.24 * S, { fill: '#b98452', stroke: '#8a6035', sw: 0.7 }))
+  b.push(txt(X(1.0), Y(0.62), 'настил лиственница 28', { size: 7.5, anchor: 'middle', fill: DIM }))
+  b.push(rect(X(x0 + 0.25) - 5, Y(2.55), 10, 2.55 * S, { fill: '#6f4a28', stroke: '#4a3018', sw: 0.8 }))
+  b.push(txt(X(x0 + 0.25) + 12, Y(1.4), 'стойка 120×120', { size: 7.5, fill: DIM }))
 
-  // ---- кровля
-  const roofPoly = [
-    [X(eaveL), Y(eaveY)],
-    [X(P.roof.ridgeX), Y(ridgeY)],
-    [X(eaveR), Y(eaveY)],
-    [X(eaveR), Y(eaveY - 0.14)],
-    [X(P.roof.ridgeX), Y(ridgeY - 0.14)],
-    [X(eaveL), Y(eaveY - 0.14)],
+  // ---------- подписи помещений
+  b.push(txt(X(5.4), Y(1.5), 'Кухня-гостиная', { size: 11, weight: 600 }))
+  b.push(txt(X(5.4), Y(1.18), '28,7 м² · свод до конька 5,33', { size: 8.5, fill: DIM }))
+  b.push(txt(X(5.4), Y(0.82), 'Терраса за витражом', { size: 8.5, fill: DIM }))
+
+  // ---------- выноски
+  b.push(callout(1, X(x0 - 0.1), Y(-0.2), X(x0) - 96, Y(-0.6)))
+  b.push(callout(2, X(x0), Y(1.7), X(x0) - 72, Y(2.4)))
+  b.push(callout(3, X(2.4), Y(rafterY(2.4) - 0.2), X(2.0) - 30, Y(rafterY(2.4) + 0.55)))
+  b.push(callout(4, X(5.0), Y(rafterY(5.0) - 0.18), X(5.2), Y(rafterY(5.0) + 0.7)))
+  b.push(callout(5, X(1.0), Y(0.0), X(0.55), Y(-0.55)))
+
+  // ---------- размерные линии
+  b.push(dimH(X(0), X(x0), Y(-0.78), '2 000'))
+  b.push(dimH(X(x0), X(x1), Y(-0.78), '8 000'))
+  b.push(dimH(X(0), X(x1), Y(-1.08), '10 000'))
+  b.push(dimV(Y(0), Y(wallH), X(0) - 26, '2 900'))
+  b.push(dimV(Y(wallH), Y(ridgeY), X(0) - 26, '2 433'))
+  b.push(dimV(Y(0), Y(ridgeY), X(0) - 58, '5 333'))
+  b.push(dimV(Y(plinthBot), Y(0), X(x1) + 24, '450'))
+  b.push(
+    txt(X(ridgeX) + 10, Y(ridgeY + 0.42), `+${ridgeY.toFixed(2).replace('.', ',')}`, { size: 8.5, fill: ACCENT, weight: 600 })
+  )
+  b.push(txt(X(1.94) - 6, Y(0) - 8, '−0,000', { size: 8.5, fill: ACCENT, weight: 600 }))
+  b.push(txt(X(2.0) - 6, Y(dm.groundY) + 12, '−0,550', { size: 8.5, fill: ACCENT, weight: 600 }))
+
+  // ---------- заголовок
+  b.push(txt(OX - 14, 46, 'РАЗРЕЗ 1–1', { size: 19, weight: 700, letter: 1.2 }))
+  b.push(txt(OX - 14, 68, 'Поперёк конька, по кухне-гостиной и террасе. Отметки — от чистого пола', { size: 10.5, fill: DIM }))
+
+  // ---------- слои справа
+  const lx = 880
+  let ly = 112
+  b.push(txt(lx, ly, 'СЛОИ КОНСТРУКЦИЙ', { size: 10.5, weight: 700, letter: 0.4 }))
+  ly += 18
+  const blocks = [
+    ['СТЕНА (снаружи → внутрь)', ['рейка RAL 7021, вентзазор 30', 'ОСП-3 9 мм', 'каркас 195 + вата 195', 'пароизоляция', 'вагонка 16']],
+    ['ПОЛ', ['покрытие 18–35', 'ОСП-3 18', 'лага 195 + вата 195', 'ветрозащита', 'продух 100']],
+    ['КРОВЛЯ (снизу вверх)', ['вагонка 16 по стропилам', 'стропило 195 + вата 195', 'контробрешётка 50', 'обрешётка 25×100, шаг 350', 'фальц RAL 7021']],
+    ['СВОД ГОСТИНОЙ', ['подшив вагонкой по стропилам', 'утепление 195 в скате', 'вентзазор 50 у конька', 'фальц по обрешётке']],
   ]
-  b.push(poly(roofPoly, { fill: '#2f3438', stroke: '#20242a', sw: 1 }))
-  // стропило в разрезе
-  for (const s of [-1, 1]) {
-    const xa = P.roof.ridgeX
-    const xb = s < 0 ? eaveL + 0.1 : eaveR - 0.1
-    b.push(
-      poly(
-        [
-          [X(xa), Y(ridgeY - 0.16)],
-          [X(xb), Y(roofY(xb) - 0.16)],
-          [X(xb), Y(roofY(xb) - 0.355)],
-          [X(xa), Y(ridgeY - 0.355)],
-        ],
-        { fill: '#d9a568', stroke: '#8a6a44', sw: 0.9 }
-      )
-    )
-  }
-  // утеплитель по скату над КО и над мойкой
-  b.push(
-    poly(
-      [
-        [X(0.02), Y(under(0.02) - 0.16)],
-        [X(3 - 0.2), Y(under(3 - 0.2) - 0.16)],
-        [X(3 - 0.2), Y(under(3 - 0.2) - 0.34)],
-        [X(0.02), Y(under(0.02) - 0.34)],
-      ],
-      { fill: 'url(#insul)', stroke: '#c9a35b', sw: 0.6 }
-    )
-  )
-  // конёк
-  b.push(circle(X(P.roof.ridgeX), Y(ridgeY + 0.02), 3, { fill: '#20242a', stroke: '#20242a' }))
-
-  // ---- вертикальные стойки витража за разрезом (пунктир)
-  for (const x of P.glassWall.mullions) {
-    b.push(line(X(x), Y(0), X(x), Y(under(x) - 0.02), { stroke: '#b3ada2', w: 1, dash: '6 5', opacity: 0.8 }))
+  for (const [title, rows] of blocks) {
+    b.push(txt(lx, ly, title, { size: 8.6, weight: 700, fill: ACCENT }))
+    ly += 13
+    for (const r of rows) {
+      b.push(text_(lx, ly, '• ' + r))
+      ly += 12
+    }
+    ly += 6
   }
 
-  // ---- отметки
-  const level = (y, text, x = X(-0.55), color = ACCENT) => {
-    const yy = Y(y)
-    return (
-      poly([[x, yy], [x + 26, yy - 4], [x + 26, yy + 4]], { fill: color, stroke: 'none' }) +
-      line(x + 26, yy, x + 74, yy, { stroke: color, w: 1.2 }) +
-      txt(x - 6, yy + 3.5, text, { size: 9.5, fill: color, weight: 600, anchor: 'end' })
-    )
-  }
-  b.push(level(0, '0,000'))
-  b.push(level(2.5, '2,500'))
-  b.push(level(ridgeY, '4,360'))
-  b.push(level(-0.345, '−0,345'))
-
-  // ---- размеры
-  b.push(dimH(X(0), X(3), Y(ridgeY) - 46, mm(3)))
-  b.push(dimH(X(3), X(L), Y(ridgeY) - 46, mm(3)))
-  b.push(dimH(X(0), X(L), Y(ridgeY) - 82, mm(6)))
-  b.push(dimV(Y(0), Y(2.7), X(L) + 44, mm(2.7)))
-  b.push(dimV(Y(2.7), Y(ridgeY), X(L) + 44, mm(ridgeY - 2.7)))
-  b.push(dimV(Y(0), Y(ridgeY), X(L) + 86, mm(ridgeY)))
-
-  // ---- выноски
-  b.push(callout(X(0.15), Y(-0.28), 1, X(1.05), Y(-0.62)))
-  b.push(callout(X(0.1), Y(1.5), 2, X(-0.75), Y(1.0)))
-  b.push(callout(X(1.4), Y(under(1.4) - 0.2), 3, X(0.35), Y(3.35)))
-  b.push(callout(X(3), Y(ridgeY - 0.16), 4, X(2.05), Y(ridgeY + 0.36)))
-  b.push(callout(X(4.4), Y(ceiling + 0.2), 5, X(4.95), Y(2.02)))
-
-  // ---- правая колонка
-  const cx = 1000
-  b.push(txt(cx, 120, 'СЛОИ КОНСТРУКЦИЙ', { size: 11, weight: 700, letter: 0.6 }))
-  const block = (title, items, y) => {
-    let s = txt(cx, y, title, { size: 9.5, weight: 700, fill: ACCENT })
-    items.forEach((it, i) => {
-      s += circle(cx + 3, y + 15 + i * 15, 1.4, { fill: DIM, stroke: DIM })
-      s += txt(cx + 11, y + 18 + i * 15, it, { size: 8.5, fill: '#3d3a34' })
-    })
-    return s
-  }
-  b.push(block('СТЕНА (снаружи → внутрь)', ['рейка графит RAL 7021', 'вентзазор 30', 'ОСП-3 9', 'каркас 195 + вата', 'пароизоляция', 'вагонка 16'], 148))
-  b.push(block('ПОЛ', ['покрытие 18–35', 'ОСП-3 18', 'лага 195 + вата', 'ветрозащита', 'продув 100'], 290))
-  b.push(block('ПОТОЛОК МОЙКИ / ПАРНОЙ', ['вагонка 16', 'пароизоляция', 'балка 195 + вата', 'вата 100 доп.'], 400))
-  b.push(block('КРОВЛЯ (снизу вверх)', ['стропило 195', 'контробрешётка 50', 'гидроизоляция', 'обрешётка 25×100', 'фальц / металл RAL 7021'], 510))
-
-  b.push(txt(cx, 660, 'ПОКАЗАТЕЛИ', { size: 10, weight: 700, letter: 0.6 }))
-  const rows = [
-    ['Конёк', `+${P.roof.ridgeY.toFixed(3).replace('.', ',')}`],
-    ['Высота стены', '2,700'],
-    ['Свод КО', 'до конька'],
-    ['Потолок мойки', '2,500'],
-    ['Уклон кровли', `${P.roof.pitch}°`],
+  ly += 6
+  b.push(txt(lx, ly, 'ПОКАЗАТЕЛИ', { size: 10, weight: 700, letter: 0.4 }))
+  ly += 15
+  const stats = [
+    ['Конёк', `+${ridgeY.toFixed(2).replace('.', ',')}`],
+    ['Высота стены', `${wallH.toFixed(1).replace('.', ',')}`],
+    ['Карниз', `+${eaveY.toFixed(2).replace('.', ',')}`],
+    ['Уклон кровли', `${R.pitch}°`],
     ['Высота фронтона', `${gable.height.toFixed(2).replace('.', ',')} м`],
+    ['Кровля', `${roofArea.total.toFixed(1).replace('.', ',')} м²`],
+    ['Площадь пола', `${rooms.reduce((s, r) => s + (r.id === 'ter' ? 0 : r.area), 0).toFixed(1).replace('.', ',')} м²`],
   ]
-  rows.forEach(([k, v], i) => {
-    b.push(txt(cx, 680 + i * 15, k, { size: 8.5, fill: DIM }))
-    b.push(txt(cx + 132, 680 + i * 15, v, { size: 8.5, weight: 600 }))
-  })
+  for (const [k, v] of stats) {
+    b.push(txt(lx, ly, k, { size: 8.2, fill: DIM }))
+    b.push(txt(lx + 132, ly, v, { size: 8.4, weight: 600 }))
+    ly += 13
+  }
 
   return sheet({
     num: 3,
     title: 'Разрез 1–1',
-    subtitle: 'Конструкция стены, пола, свода и кровли. Узлы 1–5 — см. лист «Узлы»',
+    subtitle: 'Конструкция стен, пола, свода и кровли',
     scale: '1:50',
-    body: b.join(''),
-    note: 'Свод над комнатой отдыха открыт до конька; над мойкой и парной — плоский потолок 2,5 м с холодным чердаком. Утеплитель кровли — 2×195 мм.',
+    body: b.join('\n'),
+    note: 'Свод над гостиной открыт до конька; над сауной, душевой и спальней — плоский потолок 2,70 м с холодным чердаком. Утеплитель кровли — 2 × 195 мм.',
   })
 }
+
+const text_ = (x, y, t) => txt(x, y, t, { size: 8, fill: DIM })

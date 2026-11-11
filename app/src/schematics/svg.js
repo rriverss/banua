@@ -156,7 +156,7 @@ ${note ? wrapText(note, 100).slice(0, 2).map((l, i) => txt(m + 18, h - m - 20 + 
 ${line(tbX, tbY + 24, tbX + tbW, tbY + 24, { stroke: INK, w: 1 })}
 ${line(col2, tbY + 24, col2, tbY + tbH, { stroke: INK, w: 1 })}
 ${line(tbX, tbY + 52, tbX + tbW, tbY + 52, { stroke: INK, w: 1 })}
-${txt(tbX + 12, tbY + 17, 'БАНЯ «МАРГО» 6,0 × 4,5 + терраса', { size: 11.5, weight: 700 })}
+${txt(tbX + 12, tbY + 17, 'БАРНХАУС «МАРГО» 10,0 × 9,5 + терраса', { size: 11.5, weight: 700 })}
 ${txt(tbX + 12, tbY + 42, title, { size: 11, weight: 600 })}
 ${txt(tbX + 12, tbY + 66, subLines[0] || '', { size: 8.5, fill: DIM })}
 ${txt(tbX + 12, tbY + 77, subLines[1] || '', { size: 8.5, fill: DIM })}

@@ -2,9 +2,9 @@ import { sheet, txt, line, rect, poly, circle, dimH, dimV, axisMark, callout, IN
 import { project as P, walls, wallStudPositions } from '../model/project.js'
 import { mm } from './plan.js'
 
-const S = 104
-const OX = 240
-const BASE = 530 // экранная координата y=0
+const S = 78
+const OX = 120
+const BASE = 470 // экранная координата y=0
 const X = (u) => OX + u * S
 const Y = (y) => BASE - y * S
 
@@ -13,18 +13,18 @@ const wall = walls.find((w) => w.id === 'A')
 export function wallSheet() {
   const b = []
   b.push(txt(OX, 58, 'СТЕНА ПО ОСИ А. СХЕМА КАРКАСА', { size: 19, weight: 700, letter: 1.2 }))
-  b.push(txt(OX, 82, 'Задняя стена 6 000 × 2 700, стойки 45×195 с шагом 600, проёмы по ведомости', { size: 11, fill: DIM }))
+  b.push(txt(OX, 82, `Задняя стена ${mm(wall.length)} × ${mm(wall.height)}, стойки 45×195 с шагом 600, проёмы по ведомости`, { size: 11, fill: DIM }))
 
   // фон стены
-  b.push(rect(X(0), Y(2.7), wall.length * S, 2.7 * S, { fill: '#fbf7ef', stroke: INK, sw: 1.2 }))
+  b.push(rect(X(0), Y(wall.height), wall.length * S, wall.height * S, { fill: '#fbf7ef', stroke: INK, sw: 1.2 }))
 
   // обвязки
   b.push(rect(X(0), Y(0.045), wall.length * S, 0.045 * S, { fill: '#d9a568', stroke: '#8a6a44', sw: 0.8 }))
-  b.push(rect(X(0), Y(2.7), wall.length * S, 0.045 * S, { fill: '#d9a568', stroke: '#8a6a44', sw: 0.8 }))
+  b.push(rect(X(0), Y(wall.height), wall.length * S, 0.045 * S, { fill: '#d9a568', stroke: '#8a6a44', sw: 0.8 }))
 
   // стойки
   for (const u of wallStudPositions(wall)) {
-    b.push(rect(X(u) - 0.0225 * S, Y(2.655), 0.045 * S, 2.61 * S, { fill: '#e6bd8c', stroke: '#8a6a44', sw: 0.7 }))
+    b.push(rect(X(u) - 0.0225 * S, Y(wall.height - 0.045), 0.045 * S, (wall.height - 0.09) * S, { fill: '#e6bd8c', stroke: '#8a6a44', sw: 0.7 }))
   }
 
   // проёмы
@@ -64,18 +64,18 @@ export function wallSheet() {
     if (g > 0.05) b.push(dimH(X(edges[i]), X(edges[i + 1]), ychain, mm(g), { size: 8.5 }))
   }
   b.push(dimH(X(0), X(wall.length), ychain + 34, mm(wall.length), { size: 10 }))
-  b.push(dimV(Y(0), Y(2.7), X(-40), mm(2.7), { size: 10 }))
+  b.push(dimV(Y(0), Y(wall.height), X(-38), mm(wall.height), { size: 10 }))
 
   // высота потолка / уровень
-  b.push(line(X(0), Y(2.5), X(6), Y(2.5), { stroke: ACCENT, w: 0.9, dash: '6 4' }))
-  b.push(txt(X(6) - 4, Y(2.5) - 5, 'потолок 2 500', { size: 8.5, anchor: 'end', fill: ACCENT }))
+  b.push(line(X(0), Y(P.dims.ceiling), X(wall.length), Y(P.dims.ceiling), { stroke: ACCENT, w: 0.9, dash: '6 4' }))
+  b.push(txt(X(0) + 6, Y(P.dims.ceiling) - 5, `потолок ${mm(P.dims.ceiling)}`, { size: 8.5, fill: ACCENT }))
 
   // номера элементов
   const marks = [
-    ['1', X(0.3), Y(0.02) + 12],
-    ['2', X(0.3), Y(2.66) - 6],
+    ['1', X(0.3), Y(0.02) + 14],
+    ['2', X(0.3), Y(wall.height - 0.03) - 8],
     ['3', X(0.9), Y(1.2)],
-    ['4', X(1.5), Y(2.24)],
+    ['4', X(3.6), Y(1.9)],
   ]
   for (const [n, x, y] of marks) {
     b.push(circle(x, y, 9, { fill: '#fff', stroke: ACCENT, sw: 1.2 }))
@@ -83,7 +83,7 @@ export function wallSheet() {
   }
 
   // ---- пирог стены
-  const py = 648
+  const py = 578
   b.push(txt(OX, py - 26, 'СЛОИ НАРУЖНОЙ СТЕНЫ (снаружи → внутрь), 1:10', { size: 11, weight: 700 }))
   const layers = [
     ['Рейка графит 20', 20, '#34393d'],
@@ -95,7 +95,7 @@ export function wallSheet() {
     ['Вагонка 16', 16, '#f3e0bd'],
   ]
   const total = layers.reduce((s, l) => s + l[1], 0)
-  const barW = 560
+  const barW = 520
   let bx = OX + 10
   const scale = barW / (total + 18)
   layers.forEach(([name, t, color], i) => {
@@ -114,27 +114,27 @@ export function wallSheet() {
   b.push(dimH(OX + 10, OX + 10 + barW, py + 114, `итого ${total} мм (с пароизоляцией)`, { size: 9 }))
 
   // легенда
-  const lx = OX + 640
-  let ly = py - 10
+  const lx = OX + 10
+  let ly = py + 140
   layers.forEach(([name], i) => {
     const col = i < 4 ? 0 : 1
     const row = i < 4 ? i : i - 4
-    b.push(txt(lx + col * 210, ly + row * 17, `${i + 1}. ${name}`, { size: 9, fill: '#3d3a34' }))
+    b.push(txt(lx + col * 275, ly + row * 16, `${i + 1}. ${name}`, { size: 8.8, fill: '#3d3a34' }))
   })
 
   // спецификация элементов
-  const tx = 905
-  let ty = 130
+  const tx = 880
+  let ty = 118
   b.push(txt(tx, ty, 'ЭЛЕМЕНТЫ СТЕНЫ', { size: 10.5, weight: 700 }))
   ty += 8
   const rows = [
-    ['1', 'Нижняя обвязка 45×195', '6,2 м'],
-    ['2', 'Верхняя обвязка 45×195', '6,2 м'],
+    ['1', 'Нижняя обвязка 45×195', `${(wall.length + 0.2).toFixed(1).replace('.', ',')} м`],
+    ['2', 'Верхняя обвязка 45×195', `${(wall.length + 0.2).toFixed(1).replace('.', ',')} м`],
     ['3', 'Стойка 45×195', `${wallStudPositions(wall).length} шт`],
-    ['4', 'Перемычка 45×195', '3 шт'],
-    ['5', 'Подоконная стойка', '2 шт'],
-    ['6', 'ОСП-3 9 мм', '16,2 м²'],
-    ['7', 'Вата 195 + плёнки', '14,5 м²'],
+    ['4', 'Перемычка 45×195', `${wall.openings.length} шт`],
+    ['5', 'Подоконная стойка', `${wall.openings.filter((o) => o.kind === 'window').length * 2} шт`],
+    ['6', 'ОСП-3 9 мм', `${(wall.length * wall.height - wall.openings.reduce((a, o) => a + (o.u1 - o.u0) * (o.y1 - o.y0), 0)).toFixed(1).replace('.', ',')} м²`],
+    ['7', 'Вата 195 + плёнки', `${(wall.length * wall.height).toFixed(1).replace('.', ',')} м²`],
   ]
   for (const [n, name, q] of rows) {
     b.push(rect(tx, ty, 300, 24, { fill: '#fff', stroke: '#cec7ba', sw: 0.8 }))
@@ -144,7 +144,7 @@ export function wallSheet() {
     ty += 24
   }
 
-  ty += 18
+  ty += 26
   b.push(txt(tx, ty, 'ПОРЯДОК СБОРКИ', { size: 10.5, weight: 700 }))
   ty += 16
   const steps = [

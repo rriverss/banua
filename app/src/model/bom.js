@@ -42,7 +42,7 @@ const intWoodLen = int.reduce((s, w) => s + wallWood(w), 0)
 
 const extNet = ext.reduce((s, w) => s + wallAreas(w).net, 0)
 const intNet = int.reduce((s, w) => s + wallAreas(w).net, 0)
-const insulWalls = extNet + gable.area + 12 // + перегородки парной
+const insulWalls = extNet + gable.area + 10 // + перегородки мокрого блока
 const floorArea = totalArea
 const joineryCount = openings.filter((o) => o.kind === 'window').length
 
@@ -68,13 +68,39 @@ const girderLen = girders.reduce((s, g) => s + Math.hypot(g.x1 - g.x0, g.z1 - g.
 const battenLen = roofArea.total / 0.35
 const counterBattenLen = rafterCountMain * rafterLenMain
 
-// площади отделки
-const koWalls = (2.85 + 4.3) * 2 * P.dims.ceiling - 1.4 - 1.08 - 1.44
-const parWalls = (2.85 + 2.05) * 2 * P.dims.ceiling - 1.14 - 0.25
-const moyWalls = (2.85 + 2.15) * 2 * P.dims.ceiling - 1.4 - 0.49 * 2
-const parArea = rooms.find((r) => r.id === 'par').area
-const moyArea = rooms.find((r) => r.id === 'moy').area
-const koArea = rooms.find((r) => r.id === 'ko').area
+// площади отделки (по фактическим помещениям модели)
+const roomArea = (id) => rooms.find((r) => r.id === id).area
+const perim = (id) => {
+  const r = rooms.find((q) => q.id === id)
+  let p = 0
+  for (let i = 0; i < r.poly.length; i++) {
+    const a = r.poly[i]
+    const b = r.poly[(i + 1) % r.poly.length]
+    p += Math.hypot(b[0] - a[0], b[1] - a[1])
+  }
+  return p
+}
+const wallSkin = (id, openingsArea = 0) => perim(id) * P.dims.ceiling - openingsArea
+
+const saunaArea = roomArea('sauna')
+const showerArea = roomArea('shower')
+const wcArea = roomArea('wc')
+const wardrobeArea = roomArea('wardrobe')
+const bedArea = roomArea('bed')
+const liveArea = roomArea('living')
+const terraceArea = roomArea('ter')
+
+const saunaWalls = wallSkin('sauna', 0.6)
+const showerWalls = wallSkin('shower', 1.2)
+const wcWalls = wallSkin('wc', 0.6)
+const livingWalls = wallSkin('living', 6.0)
+const bedWalls = wallSkin('bed', 5.0)
+const wardrobeWalls = wallSkin('wardrobe', 0)
+// свод гостиной: две наклонные плоскости вместо плоского потолка
+const vaultArea = (() => {
+  const R = P.roof
+  return ((liveArea) / Math.cos((R.pitch * Math.PI) / 180)) * 1.0
+})()
 
 // ---------- цены (розница МО, 11.2026) ----------
 const price = {
@@ -199,7 +225,7 @@ const groups = [
       item('Каменная вата 100 мм', 'пол, 2 слоя', 'уп', packs(floorArea, 5.76), price.wool100),
       item('Каменная вата 100 мм', 'кровля, 2 слоя', 'уп', packs(roofArea.main, 5.76), price.wool100),
       item('Пароизоляция', 'Изоспан B, 70 м²', 'рулон', Math.ceil(((insulWalls + floorArea) * 1.15) / 70), price.vapor),
-      item('Фольгированная пароизоляция', 'Изоспан FB, парная', 'рулон', Math.ceil((parWalls + parArea) * 1.2 / 50), price.foil),
+      item('Фольгированная пароизоляция', 'Изоспан FB, сауна и душевая', 'рулон', Math.ceil((saunaWalls + saunaArea + showerWalls + showerArea) * 1.2 / 50), price.foil),
       item('Гидро-ветрозащита', 'Изоспан A, 70 м²', 'рулон', Math.ceil(((extNet + roofArea.total) * 1.15) / 70), price.wind),
       item('Лента соединительная', 'двусторонняя, 25 м', 'рулон', 6, 690),
       item('Скотч алюминиевый', 'для фольги, 50 м', 'рулон', 3, 890),
@@ -226,12 +252,12 @@ const groups = [
     icon: '▦',
     items: [
       item('Рейка фасадная 20×140', 'RAL 7021, графит, с покраской', 'м²', Math.ceil(extNet * 1.1), price.siding),
-      item('Планкен лиственница', 'фронтон, натур, 20×140', 'м²', Math.ceil((gable.area / 2) * 1.12), price.larch),
-      item('Вагонка сосна 14×96', 'КО, мойка, потолки', 'м²', Math.ceil((koWalls + moyWalls + koArea + moyArea) * 1.1), price.liningPine),
-      item('Вагонка липа 14×96', 'парная (без смолы, мягкая)', 'м²', Math.ceil((parWalls + parArea) * 1.1), price.liningLinden),
-      item('Террасная доска лиственница', '28×140, 4 м', 'м²', Math.ceil(P.dims.L * P.dims.terrace * 1.1), price.terraceBoard),
-      item('Шпунтованная доска пола', '35×140, лиственница', 'м²', Math.ceil(koArea * 1.08), 1850),
-      item('Керамогранит 300×300', 'парная и мойка, неполированный', 'м²', Math.ceil((parArea + moyArea) * 1.12), 900),
+      item('Планкен лиственница', 'оба фронтона, натур, 20×140', 'м²', Math.ceil(gable.area * 1.12), price.larch),
+      item('Вагонка сосна 14×96', 'гостиная, спальня, потолки', 'м²', Math.ceil((livingWalls + bedWalls + vaultArea + bedArea) * 1.1), price.liningPine),
+      item('Вагонка липа 14×96', 'сауна, душевая, гардероб (без смолы)', 'м²', Math.ceil((saunaWalls + showerWalls + wardrobeWalls + saunaArea + showerArea + wardrobeArea + wcWalls + wcArea) * 1.1), price.liningLinden),
+      item('Террасная доска лиственница', '28×140, 4 м', 'м²', Math.ceil(terraceArea * 1.1), price.terraceBoard),
+      item('Шпунтованная доска пола', '35×140, лиственница', 'м²', Math.ceil((liveArea + bedArea + wardrobeArea) * 1.08), 1850),
+      item('Керамогранит 300×300', 'сауна, душевая, санузел', 'м²', Math.ceil((saunaArea + showerArea + wcArea) * 1.12), 900),
       item('Плинтус, наличник', 'рейка 40×20, 3 м', 'шт', 26, 320),
       item('Масло-воск для бани', '5 л, парная/мойка', 'канистра', 2, price.oil),
       item('Пропитка-антисептик фасад', '10 л', 'канистра', 2, 4200),
@@ -251,10 +277,11 @@ const groups = [
           windowPrice(o)
         )
       ),
-      item('Дверь входная', '900×2000, утеплённая, сосна/дуб', 'шт', 1, price.doorEntry),
-      item('Дверь межкомнатная', '700×2000, влагостойкая', 'шт', 1, price.doorInner),
-      item('Дверь в парную', '600×1900, стекло закалённое 8 мм', 'шт', 1, price.doorGlass),
-      item('Доборы, наличники, петли', 'комплект на 3 двери', 'компл', 1, 9500),
+      item('Дверь входная (витраж)', '1000×2200, алюминий, стеклопакет, в витраже', 'шт', 1, price.doorEntry),
+      item('Дверь терраса → гостиная', '900×2100, алюминий, стеклопакет', 'шт', 2, price.doorGlass),
+      item('Дверь межкомнатная', '800×2000, влагостойкая', 'шт', 3, price.doorInner),
+      item('Дверь в сауну', '700×1900, стекло закалённое 8 мм', 'шт', 1, price.doorGlass),
+      item('Доборы, наличники, петли', 'комплект на 7 дверей', 'компл', 1, 16500),
     ],
   },
   {
@@ -262,8 +289,8 @@ const groups = [
     name: '7. Печь и дымоход',
     icon: '🔥',
     items: [
-      item('Печь дровяная с баком 60 л', 'Термофор «Тунгуска 3» / Harvia, 12 кВт', 'шт', 1, price.stove),
-      item('Дымоход сэндвич ⌀115', '0,8 мм нерж., м', 'м', 4.5, price.chimney),
+      item('Печь дровяная для сауны', 'Harvia / Термофор, 9–12 кВт, с камнями', 'шт', 1, price.stove),
+      item('Дымоход сэндвич ⌀115', '0,8 мм нерж., м', 'м', 5.5, price.chimney),
       item('Проходной узел кровли', 'с зазором 50 мм, нерж.', 'шт', 1, price.chimneyNode),
       item('Искрогаситель + дефлектор', 'нерж.', 'шт', 1, price.spark),
       item('Камни для каменки', 'габбро-диабаз, 20 кг', 'уп', 1, price.stones),
@@ -288,8 +315,8 @@ const groups = [
       item('Водонагреватель 50 л', 'резервный, мойка', 'шт', 1, price.boiler),
       item('Труба PEX 16', 'м', 'м', 30, price.pex),
       item('Фитинги, коллектор', 'PEX 16, тройники, уголки', 'компл', 1, price.fittings),
-      item('Трап с гидрозатвором', 'нерж. 100×100, сухой затвор', 'шт', 2, price.drain),
-      item('Гидроизоляция обмазочная', '25 кг, мойка/парная', 'ведро', 1, price.waterproofing),
+      item('Трап с гидрозатвором', 'нерж. 100×100, сухой затвор', 'шт', 3, price.drain),
+      item('Гидроизоляция обмазочная', '25 кг, душевая/санузел/сауна', 'ведро', 2, price.waterproofing),
       item('Вентиляция', 'канал 100 мм, дефлектор, клапан', 'компл', 1, 7800),
     ],
   },
@@ -300,7 +327,8 @@ const groups = [
     items: [
       item('Доставка и разгрузка', 'пиломатериал, кровля', 'услуга', 1, 28000),
       item('Крепёж, расходники', 'пена, герметик, изоляция', 'компл', 1, 22000),
-      item('Ступени и ограждение террасы', 'брус 100×100, балясина', 'компл', 1, 42000),
+      item('Ступени террасы', '3 подъёма во всю ширину 10 м, лиственница', 'компл', 1, 46000),
+      item('Каменный цоколь', 'плитняк по ЦСП, 0,35 м по периметру', 'м²', 34, 2400),
     ],
   },
 ]
@@ -309,16 +337,16 @@ const materialsTotal = groups.reduce((s, g) => s + g.items.reduce((a, i) => a + 
 
 // ---------- работы ----------
 const works = [
-  { name: 'Разметка, установка свай (20 шт.)', unit: 'шт', qty: pilePositions.length, price: 1900 },
+  { name: `Разметка, установка свай (${pilePositions.length} шт.)`, unit: 'шт', qty: pilePositions.length, price: 1900 },
   { name: 'Ростверк / обвязка, антисептирование', unit: 'м', qty: round(girderLen, 1), price: 950 },
   { name: 'Каркас стен, перегородки, обшивка ОСП', unit: 'м²', qty: round(extNet + intNet, 0), price: 2400 },
   { name: 'Пол и потолок (лаги, настил, балки)', unit: 'м²', qty: round(totalArea * 2, 0), price: 1900 },
   { name: 'Кровля: стропила, пирог, фальц RAL 7021', unit: 'м²', qty: round(roofArea.total, 0), price: 1700 },
   { name: 'Утепление, пароизоляция, проклейка', unit: 'м²', qty: round(insulWalls + floorArea * 2 + roofArea.main, 0), price: 450 },
   { name: 'Фасад: вентзазор, рейка RAL 7021, лиственница', unit: 'м²', qty: round(extNet + gable.area, 0), price: 1200 },
-  { name: 'Внутренняя отделка: вагонка, полки парной', unit: 'м²', qty: round(koWalls + moyWalls + parWalls + koArea + moyArea + parArea, 0), price: 1300 },
+  { name: 'Внутренняя отделка: вагонка, свод, полки сауны', unit: 'м²', qty: round(livingWalls + bedWalls + saunaWalls + showerWalls + vaultArea + saunaArea + bedArea, 0), price: 1300 },
   { name: 'Полы: плитка, доска, плинтус', unit: 'м²', qty: round(totalArea, 0), price: 1900 },
-  { name: 'Терраса: настил, ограждение, ступени', unit: 'м²', qty: P.dims.L * P.dims.terrace, price: 2600 },
+  { name: 'Терраса: настил, ступени во всю ширину, стойки', unit: 'м²', qty: round(terraceArea, 0), price: 2600 },
   { name: 'Монтаж печи, дымохода, разделки', unit: 'компл', qty: 1, price: 48000 },
   { name: 'Электромонтаж', unit: 'компл', qty: 1, price: 42000 },
   { name: 'Сантехника, канализация, вентиляция', unit: 'компл', qty: 1, price: 45000 },

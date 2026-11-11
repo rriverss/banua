@@ -49,6 +49,21 @@ const tex = {
       ctx.fillRect(i * w + 2, 0, 1.5, s)
     }
   }),
+  larch: canvasTex((ctx, s) => {
+    const boards = 8
+    const w = s / boards
+    ctx.fillStyle = '#d9b183'
+    ctx.fillRect(0, 0, s, s)
+    for (let i = 0; i < boards; i++) {
+      const shade = 0.92 + ((i * 41) % 13) / 100
+      ctx.fillStyle = `rgba(${Math.round(222 * shade)}, ${Math.round(182 * shade)}, ${Math.round(137 * shade)}, 1)`
+      ctx.fillRect(i * w + 1, 0, w - 2, s)
+      ctx.fillStyle = 'rgba(150, 112, 70, .35)'
+      ctx.fillRect(i * w, 0, 1.5, s)
+      ctx.fillStyle = 'rgba(255, 245, 225, .22)'
+      ctx.fillRect(i * w + 2, 0, 1.5, s)
+    }
+  }),
   lining: canvasTex((ctx, s) => {
     const boards = 10
     const h = s / boards
@@ -98,6 +113,22 @@ const tex = {
       ctx.fillRect(i * w, 0, 2, s)
     }
   }),
+  plinth: canvasTex((ctx, s) => {
+    ctx.fillStyle = '#8d8a83'
+    ctx.fillRect(0, 0, s, s)
+    const rows = 5
+    const h = s / rows
+    for (let r = 0; r < rows; r++) {
+      let x = r % 2 ? -s / 6 : 0
+      while (x < s) {
+        const w = s / 4 + ((r * 7 + x) % 13)
+        const g = 130 + ((x + r * 31) % 40)
+        ctx.fillStyle = `rgb(${g}, ${g - 4}, ${g - 12})`
+        ctx.fillRect(x + 2, r * h + 2, w - 4, h - 4)
+        x += w
+      }
+    }
+  }),
   roof: canvasTex((ctx, s) => {
     const ribs = 4
     const w = s / ribs
@@ -133,8 +164,9 @@ export const M = {
   tile: std('#98a0a5', { roughness: 0.32 }),
   roof: std('#ffffff', { roughness: 0.38, metalness: 0.45, map: tex.roof, side: THREE.DoubleSide }),
   roofEdge: std('#23272b', { roughness: 0.42, metalness: 0.45 }),
+  plinth: std('#ffffff', { roughness: 0.9, map: tex.plinth }),
   sidingDark: std('#ffffff', { roughness: 0.75, map: tex.sidingDark }),
-  gableWood: std('#ffffff', { roughness: 0.78, map: tex.siding }),
+  gableWood: std('#ffffff', { roughness: 0.78, map: tex.larch }),
   metal: std('#3a3f43', { roughness: 0.45, metalness: 0.6 }),
   metalLight: std('#9aa3a8', { roughness: 0.35, metalness: 0.7 }),
   pile: std('#8b8880', { roughness: 0.6, metalness: 0.4 }),
@@ -160,13 +192,13 @@ export const M = {
 }
 
 export const LAYERS = [
-  { id: 'foundation', name: 'Фундамент', hint: '20 винтовых свай ⌀108, ростверк 150×150' },
+  { id: 'foundation', name: 'Фундамент', hint: '29 винтовых свай ⌀108, ростверк 150×150, каменный цоколь' },
   { id: 'frame', name: 'Каркас', hint: 'доска 45×195, шаг 600' },
   { id: 'sheathing', name: 'Обшивка ОСП', hint: 'ОСП-3 9 мм стены / 18 мм пол' },
   { id: 'insulation', name: 'Утеплитель', hint: 'каменная вата 195 мм' },
-  { id: 'facade', name: 'Фасад', hint: 'рейка RAL 7021, лиственница на фронтоне' },
+  { id: 'facade', name: 'Фасад', hint: 'рейка RAL 7021 по бокам, дерево на фронтонах' },
   { id: 'interior', name: 'Отделка', hint: 'вагонка сосна / липа' },
-  { id: 'roof', name: 'Кровля', hint: 'фальц RAL 7021, 25°' },
+  { id: 'roof', name: 'Кровля', hint: 'фальц RAL 7021, 30°, свес 700' },
   { id: 'terrace', name: 'Терраса', hint: 'лиственница, ограждение' },
   { id: 'fixtures', name: 'Печь и мебель', hint: 'печь 12 кВт, полки, сантехника' },
   { id: 'labels', name: 'Подписи', hint: 'названия и площади помещений' },

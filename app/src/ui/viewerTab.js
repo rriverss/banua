@@ -10,8 +10,8 @@ const CAMERAS = [
   ['side', 'Боковой фасад'],
   ['top', 'Сверху'],
   ['terrace', 'Терраса'],
-  ['inside', 'Внутри: мойка'],
-  ['steam', 'Внутри: парная'],
+  ['inside', 'Гостиная'],
+  ['steam', 'Сауна'],
 ]
 
 export function renderViewer(host) {
