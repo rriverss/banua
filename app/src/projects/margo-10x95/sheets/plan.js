@@ -1,5 +1,5 @@
-import { sheet, txt, line, rect, poly, path, circle, dimH, dimV, axisMark, callout, INK } from './svg.js'
-import { project as P, walls, rooms, totalArea, terraceArea, buildArea, openings, pilePositions } from '../model/project.js'
+import { sheet, txt, line, rect, poly, path, circle, dimH, dimV, axisMark, callout, INK } from '../../../schematics/svg.js'
+import { project as P, walls, rooms, totalArea, terraceArea, buildArea, openings, pilePositions } from '../project.js'
 
 export const mm = (v) =>
   String(Math.round(v * 1000)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')

@@ -1,5 +1,5 @@
-import { sheet, txt, line, rect, poly, path, circle, dimH, dimV, axisMark, callout, INK, DIM, ACCENT } from './svg.js'
-import { project as P, roofArea, gable, pilePositions } from '../model/project.js'
+import { sheet, txt, line, rect, poly, path, circle, dimH, dimV, axisMark, callout, INK, DIM, ACCENT } from '../../../schematics/svg.js'
+import { project as P, roofArea, gable, pilePositions } from '../project.js'
 import { mm } from './plan.js'
 
 const S = 52

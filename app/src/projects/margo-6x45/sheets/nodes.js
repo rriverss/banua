@@ -1,4 +1,4 @@
-import { sheet, txt, line, rect, poly, circle, INK, DIM, ACCENT } from './svg.js'
+import { sheet, txt, line, rect, poly, circle, INK, DIM, ACCENT } from '../../../schematics/svg.js'
 
 const W = 380
 const H = 310
@@ -305,7 +305,7 @@ const node6 = (ox, oy) =>
 export function nodesSheet() {
   const body = []
   body.push(txt(36, 52, 'УЗЛЫ КОНСТРУКЦИЙ', { size: 19, weight: 700, letter: 1.2 }))
-  body.push(txt(36, 76, 'Шесть узлов, которые определяют долговечность дома: фундамент, стена, карниз, конёк, проём, дымоход', { size: 10.5, fill: DIM }))
+  body.push(txt(36, 76, 'Шесть узлов, которые определяют долговечность бани: фундамент, стена, карниз, конёк, проём, дымоход', { size: 10.5, fill: DIM }))
 
   const positions = [
     [36, 94],

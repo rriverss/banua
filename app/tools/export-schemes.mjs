@@ -1,27 +1,25 @@
+// Экспорт SVG-листов всех проектов в public/schemes/<id>/
+// node tools/export-schemes.mjs [id]   (без аргумента — все проекты)
 import { writeFileSync, mkdirSync } from 'node:fs'
-import { planSheet } from '../src/schematics/plan.js'
-import { foundationSheet } from '../src/schematics/foundation.js'
-import { sectionSheet } from '../src/schematics/section.js'
-import { wallSheet } from '../src/schematics/wall.js'
-import { roofSheet } from '../src/schematics/roof.js'
-import { nodesSheet } from '../src/schematics/nodes.js'
-import { facadeSheet } from '../src/schematics/facade.js'
+import { PROJECTS } from '../src/projects/index.js'
 
-const out = new URL('../public/schemes/', import.meta.url)
-mkdirSync(out, { recursive: true })
+const only = process.argv[2]
+const NUM = ['01-plan', '02-foundation', '03-section', '04-wall', '05-roof', '06-facade', '07-nodes']
 
-const sheets = {
-  '01-plan': planSheet,
-  '02-foundation': foundationSheet,
-  '03-section': sectionSheet,
-  '04-wall': wallSheet,
-  '05-roof': roofSheet,
-  '06-facade': facadeSheet,
-  '07-nodes': nodesSheet,
+const list = PROJECTS.filter((p) => !only || p.id === only)
+if (!list.length) {
+  console.error(`Нет проекта «${only}». Есть: ${PROJECTS.map((p) => p.id).join(', ')}`)
+  process.exit(1)
 }
 
-for (const [name, fn] of Object.entries(sheets)) {
-  const svg = fn()
-  writeFileSync(new URL(`${name}.svg`, out), svg, 'utf8')
-  console.log('✓', name, (svg.length / 1024).toFixed(1) + ' КБ')
+for (const P of list) {
+  const out = new URL(`../public/schemes/${P.id}/`, import.meta.url)
+  mkdirSync(out, { recursive: true })
+  console.log(`\n${P.title} — ${P.size}`)
+  P.SHEETS.forEach((sheet, i) => {
+    const svg = sheet.fn()
+    const name = NUM[i] || String(i + 1).padStart(2, '0')
+    writeFileSync(new URL(`${name}.svg`, out), svg, 'utf8')
+    console.log('  ✓', name, (svg.length / 1024).toFixed(1) + ' КБ')
+  })
 }
