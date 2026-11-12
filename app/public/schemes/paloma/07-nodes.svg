@@ -1,0 +1,222 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 877" width="1240" height="877">
+
+<defs>
+  <pattern id="wood" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#c9a074" stroke-width="2"/>
+  </pattern>
+  <pattern id="woodH" width="8" height="8" patternUnits="userSpaceOnUse">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#c9a074" stroke-width="2"/>
+  </pattern>
+  <pattern id="insul" width="10" height="10" patternUnits="userSpaceOnUse">
+    <rect width="10" height="10" fill="#f6e2b3"/>
+    <path d="M0 5 Q 2.5 0 5 5 T 10 5" fill="none" stroke="#d9b264" stroke-width="1"/>
+  </pattern>
+  <pattern id="soil" width="9" height="9" patternUnits="userSpaceOnUse">
+    <line x1="0" y1="9" x2="9" y2="0" stroke="#b6b0a4" stroke-width="1"/>
+  </pattern>
+  <pattern id="concrete" width="7" height="7" patternUnits="userSpaceOnUse">
+    <circle cx="2" cy="2" r="0.7" fill="#b3ada2"/>
+    <circle cx="5.5" cy="5" r="0.6" fill="#b3adb2"/>
+  </pattern>
+  <pattern id="tile" width="12" height="12" patternUnits="userSpaceOnUse">
+    <rect width="12" height="12" fill="#f2f0ec"/>
+    <line x1="0" y1="0" x2="12" y2="0" stroke="#cfcac1" stroke-width="0.8"/>
+    <line x1="0" y1="0" x2="0" y2="12" stroke="#cfcac1" stroke-width="0.8"/>
+  </pattern>
+</defs>
+<rect width="1240" height="877" fill="#fdfcf9"/>
+<rect x="18" y="18" width="1204" height="841" fill="none" stroke="#191714" stroke-width="1.6"/>
+<text x="108" y="46" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="19" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="1.2">УЗЛЫ</text>
+<text x="108" y="66" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Свайное поле, стена на перекрытии, карнизы, окно в пол и проход дымохода</text>
+<rect x="96" y="92" width="336" height="312" fill="#fffdf9" stroke="#d8d1c3" stroke-width="1" rx="0" opacity="1"/>
+<rect x="96" y="92" width="336" height="26" fill="#f1ece2" stroke="#d8d1c3" stroke-width="1" rx="0" opacity="1"/>
+<text x="105" y="109" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">1. Свая — обвязка — пол</text>
+<text x="423" y="109" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#6d6a63" text-anchor="end" opacity="1" letter-spacing="0">1:10</text>
+<rect x="232.875" y="232" width="26.25" height="26.25" fill="#c7a06d" stroke="#8a6a44" stroke-width="1" rx="0" opacity="1"/>
+<rect x="228.5" y="258.25" width="35" height="1.05" fill="#9aa3a8" stroke="#5f6b72" stroke-width="0.8" rx="0" opacity="1"/>
+<rect x="236.55" y="259.3" width="18.9" height="73.5" fill="#9aa3a8" stroke="#5f6b72" stroke-width="0.9" rx="0" opacity="1"/>
+<rect x="241.625" y="197" width="8.75" height="35" fill="#d9a568" stroke="#8a6a44" stroke-width="0.9" rx="0" opacity="1"/>
+<rect x="251.25" y="197" width="59.50000000000001" height="35" fill="url(#insul)" stroke="#b9a98c" stroke-width="0.7" rx="0" opacity="1"/>
+<rect x="251.25" y="197" width="59.50000000000001" height="2.8000000000000003" fill="#e7e1d6" stroke="none" stroke-width="1" rx="0" opacity="1"/>
+<rect x="241.625" y="186.325" width="70" height="6.3" fill="#e5d3b6" stroke="#8a6a44" stroke-width="0.8" rx="0" opacity="1"/>
+<rect x="241.625" y="192.625" width="70" height="4.375" fill="#d8bb90" stroke="#8a6a44" stroke-width="0.8" rx="0" opacity="1"/>
+<circle cx="246" cy="284.5" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="246" y1="284.5" x2="278" y2="292" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="274" y="295" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">свая СВ-1 ⌀108×2500</text>
+<circle cx="228.5" cy="258.25" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="228.5" y1="258.25" x2="200" y2="267.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="204" y="270.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">оголовок 200×200×5</text>
+<circle cx="232.875" cy="242.5" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="232.875" y1="242.5" x2="196.5" y2="225.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="200.5" y="228.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">обвязка 150×150</text>
+<circle cx="241.625" cy="211" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="241.625" y1="211" x2="196.5" y2="204.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="200.5" y="207.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">лага 50×200</text>
+<circle cx="298.5" cy="214.5" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="298.5" y1="214.5" x2="302.5" y2="194" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="298.5" y="197" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">вата 200</text>
+<circle cx="272.25" cy="190.875" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="272.25" y1="190.875" x2="288.5" y2="174.75" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="284.5" y="177.75" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">настил 36+25</text>
+<text x="106" y="392" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.4" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Сетка 2×2 от грызунов по низу утеплителя</text>
+<rect x="452" y="92" width="336" height="312" fill="#fffdf9" stroke="#d8d1c3" stroke-width="1" rx="0" opacity="1"/>
+<rect x="452" y="92" width="336" height="26" fill="#f1ece2" stroke="#d8d1c3" stroke-width="1" rx="0" opacity="1"/>
+<text x="461" y="109" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">2. Стена на перекрытии</text>
+<text x="779" y="109" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#6d6a63" text-anchor="end" opacity="1" letter-spacing="0">1:10</text>
+<rect x="561.5" y="282" width="87.5" height="10.674999999999999" fill="#e2cfae" stroke="#8a6a44" stroke-width="0.9" rx="0" opacity="1"/>
+<rect x="561.5" y="292.675" width="8.75" height="35" fill="#d9a568" stroke="#8a6a44" stroke-width="0.9" rx="0" opacity="1"/>
+<rect x="633.25" y="292.675" width="8.75" height="35" fill="#d9a568" stroke="#8a6a44" stroke-width="0.9" rx="0" opacity="1"/>
+<rect x="580.75" y="275" width="26.25" height="7" fill="#d9a568" stroke="#8a6a44" stroke-width="0.9" rx="0" opacity="1"/>
+<rect x="585.125" y="215.5" width="17.5" height="59.50000000000001" fill="url(#insul)" stroke="#8a6a44" stroke-width="0.9" rx="0" opacity="1"/>
+<rect x="580.75" y="222.5" width="1.575" height="52.5" fill="#d8c8a4" stroke="#a98f62" stroke-width="0.7" rx="0" opacity="1"/>
+<line x1="579.875" y1="219" x2="579.875" y2="278.5" stroke="#7f8a90" stroke-width="1.2" stroke-linecap="butt" stroke-dasharray="3 2" opacity="1"/>
+<rect x="574.1" y="222.5" width="5.25" height="8.75" fill="#c89a63" stroke="#8a6a44" stroke-width="0.6" rx="0" opacity="1"/>
+<rect x="574.1" y="233" width="5.25" height="8.75" fill="#c89a63" stroke="#8a6a44" stroke-width="0.6" rx="0" opacity="1"/>
+<rect x="574.1" y="243.5" width="5.25" height="8.75" fill="#c89a63" stroke="#8a6a44" stroke-width="0.6" rx="0" opacity="1"/>
+<rect x="574.1" y="254" width="5.25" height="8.75" fill="#c89a63" stroke="#8a6a44" stroke-width="0.6" rx="0" opacity="1"/>
+<rect x="574.1" y="264.5" width="5.25" height="8.75" fill="#c89a63" stroke="#8a6a44" stroke-width="0.6" rx="0" opacity="1"/>
+<rect x="602.625" y="219" width="2.8000000000000003" height="56" fill="#f0dcb8" stroke="#a98f62" stroke-width="0.7" rx="0" opacity="1"/>
+<circle cx="598.25" cy="243.5" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="598.25" y1="243.5" x2="611" y2="226.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="607" y="229.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">стойка 40×150 + вата 150</text>
+<circle cx="581.625" cy="255.75" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="581.625" y1="255.75" x2="561" y2="247.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="565" y="250.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">ОСП-3 9 мм</text>
+<circle cx="575.5" cy="273.25" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="575.5" y1="273.25" x2="561" y2="272" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="565" y="275" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">имитация бруса 16</text>
+<circle cx="580.75" cy="278.5" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="580.75" y1="278.5" x2="604" y2="282.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="600" y="285.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">обвязка 40×150</text>
+<circle cx="593" cy="308.25" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="593" y1="308.25" x2="593.5" y2="321" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="589.5" y="324" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">лага 50×200, шаг 600</text>
+<text x="462" y="392" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.4" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Углы — ОСП 9 на укосинах, пароизоляция изнутри</text>
+<rect x="808" y="92" width="336" height="312" fill="#fffdf9" stroke="#d8d1c3" stroke-width="1" rx="0" opacity="1"/>
+<rect x="808" y="92" width="336" height="26" fill="#f1ece2" stroke="#d8d1c3" stroke-width="1" rx="0" opacity="1"/>
+<text x="817" y="109" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">3. Карниз, ось Д</text>
+<text x="1135" y="109" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#6d6a63" text-anchor="end" opacity="1" letter-spacing="0">1:10</text>
+<rect x="904" y="242" width="26.25" height="87.5" fill="url(#insul)" stroke="#191714" stroke-width="1" rx="0" opacity="1"/>
+<rect x="901.9" y="245.5" width="2.1" height="80.5" fill="#c89a63" stroke="#8a6a44" stroke-width="0.7" rx="0" opacity="1"/>
+<polygon points="907.5,207 991.5,191.8625 991.5,226.8625 907.5,242" fill="#f2e2c2" stroke="#8a6a44" stroke-width="1" opacity="1"/>
+<polygon points="907.5,200 991.5,184.8625 991.5,181.3625 907.5,196.5" fill="#d9a568" stroke="#8a6a44" stroke-width="0.8" opacity="1"/>
+<polygon points="907.5,196.5 991.5,181.3625 991.5,178.7375 907.5,193.875" fill="#31363a" stroke="#1d2124" stroke-width="0.8" opacity="1"/>
+<rect x="904" y="193.875" width="4.375" height="49.00000000000001" fill="#b8823f" stroke="#7d5a2c" stroke-width="0.8" rx="0" opacity="1"/>
+<line x1="902.25" y1="193.875" x2="902.25" y2="191.25" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<polygon points="892,186 892,190 916,190 916,186" fill="none" stroke="#9aa3a8" stroke-width="1" opacity="1"/><polygon points="892,186 916,186 916,196 892,196" fill="none" stroke="#9aa3a8" stroke-width="1.4" opacity="1"/>
+<rect x="904" y="200.875" width="42" height="2.8000000000000003" fill="#f0dcb8" stroke="#a98f62" stroke-width="0.7" rx="0" opacity="1"/>
+<line x1="921.5" y1="208.75" x2="935.5" y2="208.75" stroke="#5a8a9a" stroke-width="1.2" stroke-linecap="butt" opacity="1"/>
+<polygon points="935.5,208.75 929.5,207.875 929.5,209.625" fill="#5a8a9a" stroke="none" stroke-width="1" opacity="1"/>
+<line x1="939" y1="208.75" x2="953" y2="208.75" stroke="#5a8a9a" stroke-width="1.2" stroke-linecap="butt" opacity="1"/>
+<polygon points="953,208.75 947,207.875 947,209.625" fill="#5a8a9a" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="942.5" cy="198.25" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="942.5" y1="198.25" x2="953.5" y2="186.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="949.5" y="189.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">кровля + обрешётка</text>
+<circle cx="906.625" cy="215.75" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="906.625" y1="215.75" x2="896.5" y2="197" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="900.5" y="200" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">лобовая 25</text>
+<circle cx="904" cy="186" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="904" y1="186" x2="896.5" y2="179.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="900.5" y="182.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">желоб 125</text>
+<circle cx="925" cy="200.875" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="925" y1="200.875" x2="916.75" y2="249.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="912.75" y="252.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">подшив вагонкой</text>
+<circle cx="914.5" cy="214" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="914.5" y1="214" x2="896.5" y2="228.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="900.5" y="231.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">вентзазор 40</text>
+<text x="818" y="392" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.4" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Свес 600, капельник, вентзазор кровли — 40 мм</text>
+<rect x="96" y="420" width="336" height="312" fill="#fffdf9" stroke="#d8d1c3" stroke-width="1" rx="0" opacity="1"/>
+<rect x="96" y="420" width="336" height="26" fill="#f1ece2" stroke="#d8d1c3" stroke-width="1" rx="0" opacity="1"/>
+<text x="105" y="437" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">4. Высокий борт над террасой</text>
+<text x="423" y="437" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#6d6a63" text-anchor="end" opacity="1" letter-spacing="0">1:10</text>
+<rect x="215.5" y="510.5" width="21" height="157.5" fill="#b8823f" stroke="#7d5a2c" stroke-width="1" rx="0" opacity="1"/>
+<rect x="215.5" y="484.25" width="21" height="26.25" fill="#c7a06d" stroke="#7d5a2c" stroke-width="1" rx="0" opacity="1"/>
+<polygon points="236.5,484.25 299.5,495.149 299.5,530.149 236.5,519.25" fill="#f2e2c2" stroke="#8a6a44" stroke-width="1" opacity="1"/>
+<polygon points="236.5,471.125 299.5,482.024 299.5,486.399 236.5,475.5" fill="#31363a" stroke="#1d2124" stroke-width="0.8" opacity="1"/>
+<rect x="229.5" y="519.25" width="70" height="2.8000000000000003" fill="#f0dcb8" stroke="#a98f62" stroke-width="0.7" rx="0" opacity="1"/>
+<rect x="205" y="668" width="105" height="4.9" fill="#c79a68" stroke="#7d5a2c" stroke-width="0.8" rx="0" opacity="1"/>
+<circle cx="226" cy="580.5" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="226" y1="580.5" x2="254.5" y2="588" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="250.5" y="591" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">стойка 120×120</text>
+<circle cx="226" cy="500" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="226" y1="500" x2="208" y2="493.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="212" y="496.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">балка 100×150</text>
+<circle cx="254" cy="489.5" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="254" y1="489.5" x2="265" y2="514.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="261" y="517.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">стропило 50×200</text>
+<circle cx="285.5" cy="484.25" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="285.5" y1="484.25" x2="286" y2="556.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="282" y="559.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">капельник</text>
+<circle cx="250.5" cy="522.75" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="250.5" y1="522.75" x2="240.5" y2="528.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="236.5" y="531.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">подшив вагонкой</text>
+<circle cx="261" cy="669.75" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="261" y1="669.75" x2="265" y2="682.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="261" y="685.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">террасная доска 28</text>
+<text x="106" y="720" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.4" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Высокий борт — 3,72 м, свес 50 мм по скату</text>
+<rect x="452" y="420" width="336" height="312" fill="#fffdf9" stroke="#d8d1c3" stroke-width="1" rx="0" opacity="1"/>
+<rect x="452" y="420" width="336" height="26" fill="#f1ece2" stroke="#d8d1c3" stroke-width="1" rx="0" opacity="1"/>
+<text x="461" y="437" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">5. Окно ОТ-1 — примыкание</text>
+<text x="779" y="437" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#6d6a63" text-anchor="end" opacity="1" letter-spacing="0">1:10</text>
+<rect x="544.5" y="630" width="105" height="10.674999999999999" fill="#e2cfae" stroke="#8a6a44" stroke-width="0.9" rx="0" opacity="1"/>
+<rect x="569" y="472.5" width="7" height="157.5" fill="url(#insul)" stroke="#8a6a44" stroke-width="0.8" rx="0" opacity="1"/>
+<rect x="595.25" y="472.5" width="7" height="157.5" fill="url(#insul)" stroke="#8a6a44" stroke-width="0.8" rx="0" opacity="1"/>
+<rect x="576" y="469" width="5.25" height="96.25000000000001" fill="#3d4348" stroke="#22262a" stroke-width="0.8" rx="0" opacity="1"/>
+<rect x="590" y="469" width="5.25" height="96.25000000000001" fill="#3d4348" stroke="#22262a" stroke-width="0.8" rx="0" opacity="1"/>
+<rect x="581.25" y="472.5" width="8.75" height="87.5" fill="#dfeaf0" stroke="#5a6b72" stroke-width="0.7" rx="0" opacity="1"/>
+<line x1="585.625" y1="472.5" x2="585.625" y2="560" stroke="#9fb6c0" stroke-width="0.8" stroke-linecap="butt" opacity="1"/>
+<rect x="570.75" y="469" width="31.5" height="2.1" fill="#9aa3a8" stroke="#5f6b72" stroke-width="0.7" rx="0" opacity="1"/>
+<rect x="567.25" y="465.5" width="5.25" height="3.5" fill="#e7e1d6" stroke="#a98f62" stroke-width="0.7" rx="0" opacity="1"/>
+<rect x="563.75" y="469" width="3.5" height="157.5" fill="#c89a63" stroke="#8a6a44" stroke-width="0.7" rx="0" opacity="1"/>
+<circle cx="585.625" cy="507.5" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="585.625" y1="507.5" x2="604.5" y2="504.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="600.5" y="507.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">стеклопакет 2-кам.</text>
+<circle cx="581.25" cy="472.5" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="581.25" y1="472.5" x2="551" y2="452" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="555" y="455" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">рама алюм. 60 мм</text>
+<circle cx="579.5" cy="469.875" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="579.5" y1="469.875" x2="551" y2="487" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="555" y="490" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">отлив с уклоном 5°</text>
+<circle cx="572.5" cy="635.25" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="572.5" y1="635.25" x2="551" y2="651.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="555" y="654.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">пол: доска 36 + 25</text>
+<circle cx="598.75" cy="560" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="598.75" y1="560" x2="604.5" y2="567.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="600.5" y="570.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">усиленная стойка</text>
+<text x="462" y="720" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.4" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Проём 3 100 × 2 260, порог на 0,000, импост через 775 мм</text>
+<rect x="808" y="420" width="336" height="312" fill="#fffdf9" stroke="#d8d1c3" stroke-width="1" rx="0" opacity="1"/>
+<rect x="808" y="420" width="336" height="26" fill="#f1ece2" stroke="#d8d1c3" stroke-width="1" rx="0" opacity="1"/>
+<text x="817" y="437" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">6. Проход дымохода</text>
+<text x="1135" y="437" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#6d6a63" text-anchor="end" opacity="1" letter-spacing="0">1:10</text>
+<polygon points="870.5,522.5 1045.5,537.6375 1045.5,588.3875 870.5,573.25" fill="#f4ece0" stroke="#8a6a44" stroke-width="0.9" opacity="1"/>
+<polygon points="870.5,509.375 1045.5,524.5125 1045.5,537.6375 870.5,522.5" fill="#31363a" stroke="#1d2124" stroke-width="0.8" opacity="1"/>
+<rect x="935.25" y="487.5" width="45.5" height="73.5" fill="#f7f4ee" stroke="#7d848a" stroke-width="1" rx="0" opacity="1"/>
+<rect x="944.875" y="501.5" width="26.25" height="108.5" fill="#cfd6da" stroke="#5f6b72" stroke-width="1" rx="0" opacity="1"/>
+<line x1="944.875" y1="522.5" x2="944.875" y2="501.5" stroke="#5f6b72" stroke-width="0.8" stroke-linecap="butt" opacity="1"/>
+<polygon points="926.5,509.375 944,501.5 972,501.5 989.5,514.8245" fill="none" stroke="#9aa3a8" stroke-width="1.2" opacity="1"/>
+<circle cx="958" cy="491" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="958" y1="491" x2="963" y2="474" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="959" y="477" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">труба-сэндвич ⌀150 / 200</text>
+<circle cx="979" cy="505" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="979" y1="505" x2="993.5" y2="488" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="989.5" y="491" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">короб 260×360</text>
+<circle cx="982.5" cy="531.25" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="982.5" y1="531.25" x2="997" y2="537" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="993" y="540" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">фартук + герметик</text>
+<circle cx="905.5" cy="533" r="1.9" fill="#a9693a" stroke="#191714" stroke-width="1"/>
+<line x1="905.5" y1="533" x2="919" y2="554.5" stroke="#a9693a" stroke-width="0.7" stroke-linecap="butt" opacity="1"/>
+<text x="923" y="557.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.6" font-weight="400" fill="#3d3a34" text-anchor="end" opacity="1" letter-spacing="0">вата 200 с зазором 50</text>
+<text x="818" y="720" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.4" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Расстояние до сгораемых — 50 мм, разделка по КМ</text>
+<text x="36" y="839" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9" font-weight="400" fill="#7a766d" text-anchor="start" opacity="1" letter-spacing="0">Узлы принципиальные: размеры уточняются по месту. Все деревянные элементы — антисептированные,</text><text x="36" y="852" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9" font-weight="400" fill="#7a766d" text-anchor="start" opacity="1" letter-spacing="0">крепёж — оцинкованный.</text>
+<rect x="792" y="777" width="430" height="82" fill="#fff" stroke="#191714" stroke-width="1.2"/>
+<line x1="792" y1="801" x2="1222" y2="801" stroke="#191714" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="1024" y1="801" x2="1024" y2="859" stroke="#191714" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="792" y1="829" x2="1222" y2="829" stroke="#191714" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<text x="804" y="794" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">БАНЯ «ПАЛОМА» 11,0 × 6,5 + терраса</text>
+<text x="804" y="819" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">Узлы</text>
+<text x="804" y="843" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Шесть ключевых узлов каркаса, кровли и</text>
+<text x="804" y="854" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">инженерных проходов</text>
+<text x="1038" y="819" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">1:10</text>
+<text x="1038" y="843" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Лист 7 из 7</text>
+<text x="1038" y="854" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Версия 1.1 · 11.2026</text>
+</svg>

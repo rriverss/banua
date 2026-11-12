@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 877" width="1240" height="877">
+
+<defs>
+  <pattern id="wood" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#c9a074" stroke-width="2"/>
+  </pattern>
+  <pattern id="woodH" width="8" height="8" patternUnits="userSpaceOnUse">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#c9a074" stroke-width="2"/>
+  </pattern>
+  <pattern id="insul" width="10" height="10" patternUnits="userSpaceOnUse">
+    <rect width="10" height="10" fill="#f6e2b3"/>
+    <path d="M0 5 Q 2.5 0 5 5 T 10 5" fill="none" stroke="#d9b264" stroke-width="1"/>
+  </pattern>
+  <pattern id="soil" width="9" height="9" patternUnits="userSpaceOnUse">
+    <line x1="0" y1="9" x2="9" y2="0" stroke="#b6b0a4" stroke-width="1"/>
+  </pattern>
+  <pattern id="concrete" width="7" height="7" patternUnits="userSpaceOnUse">
+    <circle cx="2" cy="2" r="0.7" fill="#b3ada2"/>
+    <circle cx="5.5" cy="5" r="0.6" fill="#b3adb2"/>
+  </pattern>
+  <pattern id="tile" width="12" height="12" patternUnits="userSpaceOnUse">
+    <rect width="12" height="12" fill="#f2f0ec"/>
+    <line x1="0" y1="0" x2="12" y2="0" stroke="#cfcac1" stroke-width="0.8"/>
+    <line x1="0" y1="0" x2="0" y2="12" stroke="#cfcac1" stroke-width="0.8"/>
+  </pattern>
+</defs>
+<rect width="1240" height="877" fill="#fdfcf9"/>
+<rect x="18" y="18" width="1204" height="841" fill="none" stroke="#191714" stroke-width="1.6"/>
+<text x="110" y="46" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="19" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="1.2">ПЛАН КРОВЛИ</text>
+<text x="110" y="66" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Односкатная, уклон 9,8° (1:5,8). Стропила 50×200 шаг 600, обрешётка 25×100 шаг 350</text>
+<rect x="102.80000000000001" y="232.9" width="756.4" height="406.09999999999997" fill="#e8dfdf" stroke="#3a4045" stroke-width="1.4" rx="0" opacity="1"/>
+<line x1="102.80000000000001" y1="267" x2="859.1999999999999" y2="267" stroke="#7d848a" stroke-width="0.5" stroke-linecap="butt" stroke-dasharray="4 4" opacity="1"/>
+<line x1="102.80000000000001" y1="301.1" x2="859.1999999999999" y2="301.1" stroke="#7d848a" stroke-width="0.5" stroke-linecap="butt" stroke-dasharray="4 4" opacity="1"/>
+<line x1="102.80000000000001" y1="335.2" x2="859.1999999999999" y2="335.2" stroke="#7d848a" stroke-width="0.5" stroke-linecap="butt" stroke-dasharray="4 4" opacity="1"/>
+<line x1="102.80000000000001" y1="369.3" x2="859.1999999999999" y2="369.3" stroke="#7d848a" stroke-width="0.5" stroke-linecap="butt" stroke-dasharray="4 4" opacity="1"/>
+<line x1="102.80000000000001" y1="403.4" x2="859.1999999999999" y2="403.4" stroke="#7d848a" stroke-width="0.5" stroke-linecap="butt" stroke-dasharray="4 4" opacity="1"/>
+<line x1="102.80000000000001" y1="437.5" x2="859.1999999999999" y2="437.5" stroke="#7d848a" stroke-width="0.5" stroke-linecap="butt" stroke-dasharray="4 4" opacity="1"/>
+<line x1="102.80000000000001" y1="471.6" x2="859.1999999999999" y2="471.6" stroke="#7d848a" stroke-width="0.5" stroke-linecap="butt" stroke-dasharray="4 4" opacity="1"/>
+<line x1="102.80000000000001" y1="505.7" x2="859.1999999999999" y2="505.7" stroke="#7d848a" stroke-width="0.5" stroke-linecap="butt" stroke-dasharray="4 4" opacity="1"/>
+<line x1="102.80000000000001" y1="539.8" x2="859.1999999999999" y2="539.8" stroke="#7d848a" stroke-width="0.5" stroke-linecap="butt" stroke-dasharray="4 4" opacity="1"/>
+<line x1="102.80000000000001" y1="573.9" x2="859.1999999999999" y2="573.9" stroke="#7d848a" stroke-width="0.5" stroke-linecap="butt" stroke-dasharray="4 4" opacity="1"/>
+<line x1="102.80000000000001" y1="608" x2="859.1999999999999" y2="608" stroke="#7d848a" stroke-width="0.5" stroke-linecap="butt" stroke-dasharray="4 4" opacity="1"/>
+<line x1="164.8" y1="232.9" x2="164.8" y2="639" stroke="rgba(80,90,95,.18)" stroke-width="0.4" stroke-linecap="butt" opacity="1"/>
+<line x1="226.8" y1="232.9" x2="226.8" y2="639" stroke="rgba(80,90,95,.18)" stroke-width="0.4" stroke-linecap="butt" opacity="1"/>
+<line x1="288.79999999999995" y1="232.9" x2="288.79999999999995" y2="639" stroke="rgba(80,90,95,.18)" stroke-width="0.4" stroke-linecap="butt" opacity="1"/>
+<line x1="350.79999999999995" y1="232.9" x2="350.79999999999995" y2="639" stroke="rgba(80,90,95,.18)" stroke-width="0.4" stroke-linecap="butt" opacity="1"/>
+<line x1="412.8" y1="232.9" x2="412.8" y2="639" stroke="rgba(80,90,95,.18)" stroke-width="0.4" stroke-linecap="butt" opacity="1"/>
+<line x1="474.8" y1="232.9" x2="474.8" y2="639" stroke="rgba(80,90,95,.18)" stroke-width="0.4" stroke-linecap="butt" opacity="1"/>
+<line x1="536.8" y1="232.9" x2="536.8" y2="639" stroke="rgba(80,90,95,.18)" stroke-width="0.4" stroke-linecap="butt" opacity="1"/>
+<line x1="598.8" y1="232.9" x2="598.8" y2="639" stroke="rgba(80,90,95,.18)" stroke-width="0.4" stroke-linecap="butt" opacity="1"/>
+<line x1="660.8000000000001" y1="232.9" x2="660.8000000000001" y2="639" stroke="rgba(80,90,95,.18)" stroke-width="0.4" stroke-linecap="butt" opacity="1"/>
+<line x1="722.8000000000001" y1="232.9" x2="722.8000000000001" y2="639" stroke="rgba(80,90,95,.18)" stroke-width="0.4" stroke-linecap="butt" opacity="1"/>
+<line x1="784.8000000000001" y1="232.9" x2="784.8000000000001" y2="639" stroke="rgba(80,90,95,.18)" stroke-width="0.4" stroke-linecap="butt" opacity="1"/>
+<line x1="846.8000000000001" y1="232.9" x2="846.8000000000001" y2="639" stroke="rgba(80,90,95,.18)" stroke-width="0.4" stroke-linecap="butt" opacity="1"/>
+<line x1="106.52" y1="232.9" x2="106.52" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="143.72" y1="232.9" x2="143.72" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="180.92" y1="232.9" x2="180.92" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="218.12" y1="232.9" x2="218.12" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="255.32" y1="232.9" x2="255.32" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="292.52" y1="232.9" x2="292.52" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="329.72" y1="232.9" x2="329.72" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="366.91999999999996" y1="232.9" x2="366.91999999999996" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="404.12" y1="232.9" x2="404.12" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="441.31999999999994" y1="232.9" x2="441.31999999999994" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="478.5199999999999" y1="232.9" x2="478.5199999999999" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="515.7199999999999" y1="232.9" x2="515.7199999999999" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="552.9199999999998" y1="232.9" x2="552.9199999999998" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="590.1199999999999" y1="232.9" x2="590.1199999999999" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="627.3199999999999" y1="232.9" x2="627.3199999999999" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="664.5199999999999" y1="232.9" x2="664.5199999999999" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="701.7199999999998" y1="232.9" x2="701.7199999999998" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="738.9199999999998" y1="232.9" x2="738.9199999999998" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="776.1199999999998" y1="232.9" x2="776.1199999999998" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="813.3199999999997" y1="232.9" x2="813.3199999999997" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<line x1="850.5199999999998" y1="232.9" x2="850.5199999999998" y2="639" stroke="rgba(120,90,60,.35)" stroke-width="1.1" stroke-linecap="butt" opacity="1"/>
+<rect x="102.80000000000001" y="330.1" width="756.4" height="4" fill="rgba(160,90,40,.55)" stroke="#191714" stroke-width="1" rx="0" opacity="1"/>
+<text x="112.80000000000001" y="326.1" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.5" font-weight="400" fill="#a9693a" text-anchor="start" opacity="1" letter-spacing="0">прогон LVL 300×51</text>
+<rect x="102.80000000000001" y="447.9" width="756.4" height="4" fill="rgba(160,90,40,.55)" stroke="#191714" stroke-width="1" rx="0" opacity="1"/>
+<text x="112.80000000000001" y="443.9" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.5" font-weight="400" fill="#a9693a" text-anchor="start" opacity="1" letter-spacing="0">прогон LVL 300×51</text>
+<line x1="580.2" y1="521.2" x2="580.2" y2="322.8" stroke="#22262a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<polygon points="580.2,329 571.2,360 589.2,360" fill="#22262a" stroke="none" stroke-width="1" opacity="1"/>
+<text x="592.2" y="446.79999999999995" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">уклон 9,8°</text>
+<text x="592.2" y="435.64" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">1:5,8</text>
+<text x="133.8" y="248.9" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="600" fill="#a9693a" text-anchor="start" opacity="1" letter-spacing="0">+2,61</text>
+<text x="133.8" y="631" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="600" fill="#a9693a" text-anchor="start" opacity="1" letter-spacing="0">+3,73</text>
+<line x1="102.80000000000001" y1="222.9" x2="859.1999999999999" y2="222.9" stroke="#7d848a" stroke-width="2.4" stroke-linecap="butt" opacity="1"/>
+<line x1="102.80000000000001" y1="222.9" x2="102.80000000000001" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="133.8" y1="222.9" x2="133.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="164.8" y1="222.9" x2="164.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="195.8" y1="222.9" x2="195.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="226.8" y1="222.9" x2="226.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="257.8" y1="222.9" x2="257.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="288.79999999999995" y1="222.9" x2="288.79999999999995" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="319.79999999999995" y1="222.9" x2="319.79999999999995" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="350.79999999999995" y1="222.9" x2="350.79999999999995" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="381.79999999999995" y1="222.9" x2="381.79999999999995" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="412.8" y1="222.9" x2="412.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="443.8" y1="222.9" x2="443.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="474.8" y1="222.9" x2="474.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="505.8" y1="222.9" x2="505.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="536.8" y1="222.9" x2="536.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="567.8" y1="222.9" x2="567.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="598.8" y1="222.9" x2="598.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="629.8" y1="222.9" x2="629.8" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="660.8000000000001" y1="222.9" x2="660.8000000000001" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="691.8000000000001" y1="222.9" x2="691.8000000000001" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="722.8000000000001" y1="222.9" x2="722.8000000000001" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="753.8000000000001" y1="222.9" x2="753.8000000000001" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="784.8000000000001" y1="222.9" x2="784.8000000000001" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="815.8000000000001" y1="222.9" x2="815.8000000000001" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="846.8000000000001" y1="222.9" x2="846.8000000000001" y2="226.9" stroke="#7d848a" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<text x="481" y="214.9" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#6d6a63" text-anchor="middle" opacity="1" letter-spacing="0">желоб 125 — по низкой стороне (ось Д)</text>
+<circle cx="147.44" cy="222.9" r="5" fill="#7d848a" stroke="none" stroke-width="1"/>
+<line x1="147.44" y1="220.9" x2="147.44" y2="192.9" stroke="#7d848a" stroke-width="2.4" stroke-linecap="butt" opacity="1"/>
+<text x="156.44" y="198.9" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">труба 90</text>
+<circle cx="814.5600000000001" cy="222.9" r="5" fill="#7d848a" stroke="none" stroke-width="1"/>
+<line x1="814.5600000000001" y1="220.9" x2="814.5600000000001" y2="192.9" stroke="#7d848a" stroke-width="2.4" stroke-linecap="butt" opacity="1"/>
+<text x="823.5600000000001" y="198.9" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">труба 90</text>
+<rect x="657.6999999999999" y="418.9" width="16.12" height="22.32" fill="#f2f0ea" stroke="#3a4045" stroke-width="1.4" rx="0" opacity="1"/>
+<text x="684.36" y="430.06000000000006" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#a9693a" text-anchor="start" opacity="1" letter-spacing="0">дымоход ⌀ 150, сталь</text>
+<line x1="133.8" y1="611.0999999999999" x2="164.8" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<line x1="189.6" y1="611.0999999999999" x2="220.60000000000002" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<line x1="245.4" y1="611.0999999999999" x2="276.4" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<line x1="301.20000000000005" y1="611.0999999999999" x2="332.20000000000005" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<line x1="357" y1="611.0999999999999" x2="388" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<line x1="412.8" y1="611.0999999999999" x2="443.8" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<line x1="468.6" y1="611.0999999999999" x2="499.6" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<line x1="524.4000000000001" y1="611.0999999999999" x2="555.4000000000001" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<line x1="580.2" y1="611.0999999999999" x2="611.2" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<line x1="636.0000000000001" y1="611.0999999999999" x2="667.0000000000001" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<line x1="691.8000000000002" y1="611.0999999999999" x2="722.8000000000002" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<line x1="747.6000000000001" y1="611.0999999999999" x2="778.6000000000001" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<line x1="803.4000000000002" y1="611.0999999999999" x2="834.4000000000002" y2="611.0999999999999" stroke="#7d848a" stroke-width="1.6" stroke-linecap="butt" opacity="1"/>
+<text x="847.1999999999999" y="600.56" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.5" font-weight="400" fill="#6d6a63" text-anchor="end" opacity="1" letter-spacing="0">снегозадержатели</text>
+<line x1="140" y1="172.9" x2="140" y2="673" stroke="#c2bbae" stroke-width="0.8" stroke-linecap="butt" stroke-dasharray="12 4 3 4" opacity="1"/>
+<circle cx="140" cy="154.9" r="10" fill="#fff" stroke="#191714" stroke-width="1"/>
+<text x="140" y="158.9" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#191714" text-anchor="middle" opacity="1" letter-spacing="0">1</text>
+<line x1="388" y1="172.9" x2="388" y2="673" stroke="#c2bbae" stroke-width="0.8" stroke-linecap="butt" stroke-dasharray="12 4 3 4" opacity="1"/>
+<circle cx="388" cy="154.9" r="10" fill="#fff" stroke="#191714" stroke-width="1"/>
+<text x="388" y="158.9" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#191714" text-anchor="middle" opacity="1" letter-spacing="0">2</text>
+<line x1="636" y1="172.9" x2="636" y2="673" stroke="#c2bbae" stroke-width="0.8" stroke-linecap="butt" stroke-dasharray="12 4 3 4" opacity="1"/>
+<circle cx="636" cy="154.9" r="10" fill="#fff" stroke="#191714" stroke-width="1"/>
+<text x="636" y="158.9" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#191714" text-anchor="middle" opacity="1" letter-spacing="0">3</text>
+<line x1="729" y1="172.9" x2="729" y2="673" stroke="#c2bbae" stroke-width="0.8" stroke-linecap="butt" stroke-dasharray="12 4 3 4" opacity="1"/>
+<circle cx="729" cy="154.9" r="10" fill="#fff" stroke="#191714" stroke-width="1"/>
+<text x="729" y="158.9" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#191714" text-anchor="middle" opacity="1" letter-spacing="0">4</text>
+<line x1="822" y1="172.9" x2="822" y2="673" stroke="#c2bbae" stroke-width="0.8" stroke-linecap="butt" stroke-dasharray="12 4 3 4" opacity="1"/>
+<circle cx="822" cy="154.9" r="10" fill="#fff" stroke="#191714" stroke-width="1"/>
+<text x="822" y="158.9" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#191714" text-anchor="middle" opacity="1" letter-spacing="0">5</text>
+<circle cx="78.80000000000001" cy="236" r="10" fill="#fff" stroke="#191714" stroke-width="1"/>
+<text x="78.80000000000001" y="240" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#191714" text-anchor="middle" opacity="1" letter-spacing="0">Д</text>
+<circle cx="78.80000000000001" cy="314.74" r="10" fill="#fff" stroke="#191714" stroke-width="1"/>
+<text x="78.80000000000001" y="318.74" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#191714" text-anchor="middle" opacity="1" letter-spacing="0">Г</text>
+<circle cx="78.80000000000001" cy="395.34000000000003" r="10" fill="#fff" stroke="#191714" stroke-width="1"/>
+<text x="78.80000000000001" y="399.34000000000003" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#191714" text-anchor="middle" opacity="1" letter-spacing="0">В</text>
+<circle cx="78.80000000000001" cy="546" r="10" fill="#fff" stroke="#191714" stroke-width="1"/>
+<text x="78.80000000000001" y="550" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#191714" text-anchor="middle" opacity="1" letter-spacing="0">Б</text>
+<circle cx="78.80000000000001" cy="639" r="10" fill="#fff" stroke="#191714" stroke-width="1"/>
+<text x="78.80000000000001" y="643" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#191714" text-anchor="middle" opacity="1" letter-spacing="0">А</text>
+<line x1="102.80000000000001" y1="661" x2="102.80000000000001" y2="669" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><line x1="859.1999999999999" y1="661" x2="859.1999999999999" y2="669" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><line x1="102.80000000000001" y1="665" x2="859.1999999999999" y2="665" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><rect x="456.54" y="652.75" width="48.92" height="14.850000000000001" fill="#ffffff"/><text x="481" y="661" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#6d6a63" text-anchor="middle" opacity="1" letter-spacing="0">12 200</text>
+<line x1="140" y1="691" x2="140" y2="699" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><line x1="388" y1="691" x2="388" y2="699" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><line x1="140" y1="695" x2="388" y2="695" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><rect x="242.95" y="682.75" width="42.1" height="14.850000000000001" fill="#ffffff"/><text x="264" y="691" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#6d6a63" text-anchor="middle" opacity="1" letter-spacing="0">4 000</text>
+<line x1="388" y1="691" x2="388" y2="699" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><line x1="636" y1="691" x2="636" y2="699" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><line x1="388" y1="695" x2="636" y2="695" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><rect x="490.95" y="682.75" width="42.1" height="14.850000000000001" fill="#ffffff"/><text x="512" y="691" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#6d6a63" text-anchor="middle" opacity="1" letter-spacing="0">4 000</text>
+<line x1="636" y1="691" x2="636" y2="699" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><line x1="729" y1="691" x2="729" y2="699" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><line x1="636" y1="695" x2="729" y2="695" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><rect x="661.45" y="682.75" width="42.1" height="14.850000000000001" fill="#ffffff"/><text x="682.5" y="691" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#6d6a63" text-anchor="middle" opacity="1" letter-spacing="0">1 500</text>
+<line x1="729" y1="691" x2="729" y2="699" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><line x1="822" y1="691" x2="822" y2="699" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><line x1="729" y1="695" x2="822" y2="695" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><rect x="754.45" y="682.75" width="42.1" height="14.850000000000001" fill="#ffffff"/><text x="775.5" y="691" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#6d6a63" text-anchor="middle" opacity="1" letter-spacing="0">1 500</text>
+<line x1="883.1999999999999" y1="232.9" x2="891.1999999999999" y2="232.9" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><line x1="883.1999999999999" y1="639" x2="891.1999999999999" y2="639" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><line x1="887.1999999999999" y1="232.9" x2="887.1999999999999" y2="639" stroke="#6d6a63" stroke-width="1" stroke-linecap="butt" opacity="1"/><rect x="871.65" y="414.9" width="15.399999999999999" height="42.1" fill="#ffffff" transform="rotate(-90 883.1999999999999 435.95)"/><text x="883.1999999999999" y="435.95" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#6d6a63" text-anchor="middle" opacity="1" letter-spacing="0" transform="rotate(-90 883.1999999999999 435.95)">6 550</text>
+<text x="918" y="128" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">ЭЛЕМЕНТЫ КРОВЛИ</text>
+<rect x="918" y="142" width="292" height="26" fill="#fff" stroke="#ded7c9" stroke-width="0.7" rx="0" opacity="1"/>
+<text x="925" y="153" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.2" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">Металлочерепица</text>
+<text x="925" y="163" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.2" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">RAL 7021, 0,45</text>
+<text x="1203" y="158" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.4" font-weight="600" fill="#191714" text-anchor="end" opacity="1" letter-spacing="0">81,1 м²</text>
+<rect x="918" y="168" width="292" height="26" fill="#fff" stroke="#ded7c9" stroke-width="0.7" rx="0" opacity="1"/>
+<text x="925" y="179" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.2" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">Стропила 50×200</text>
+<text x="925" y="189" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.2" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">L = 6 600</text>
+<text x="1203" y="184" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.4" font-weight="600" fill="#191714" text-anchor="end" opacity="1" letter-spacing="0">21 шт.</text>
+<rect x="918" y="194" width="292" height="26" fill="#fff" stroke="#ded7c9" stroke-width="0.7" rx="0" opacity="1"/>
+<text x="925" y="205" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.2" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">Прогон LVL 300×51</text>
+<text x="925" y="215" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.2" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">L = 12 200</text>
+<text x="1203" y="210" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.4" font-weight="600" fill="#191714" text-anchor="end" opacity="1" letter-spacing="0">2 шт.</text>
+<rect x="918" y="220" width="292" height="26" fill="#fff" stroke="#ded7c9" stroke-width="0.7" rx="0" opacity="1"/>
+<text x="925" y="231" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.2" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">Обрешётка 25×100</text>
+<text x="925" y="241" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.2" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">шаг 350</text>
+<text x="1203" y="236" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.4" font-weight="600" fill="#191714" text-anchor="end" opacity="1" letter-spacing="0">≈ 240 м</text>
+<rect x="918" y="246" width="292" height="26" fill="#fff" stroke="#ded7c9" stroke-width="0.7" rx="0" opacity="1"/>
+<text x="925" y="257" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.2" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">Контробрешётка 40×40</text>
+<text x="925" y="267" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.2" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">по стропилам</text>
+<text x="1203" y="262" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.4" font-weight="600" fill="#191714" text-anchor="end" opacity="1" letter-spacing="0">≈ 90 м</text>
+<rect x="918" y="272" width="292" height="26" fill="#fff" stroke="#ded7c9" stroke-width="0.7" rx="0" opacity="1"/>
+<text x="925" y="283" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.2" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">Утеплитель кровли</text>
+<text x="925" y="293" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.2" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">вата 200</text>
+<text x="1203" y="288" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.4" font-weight="600" fill="#191714" text-anchor="end" opacity="1" letter-spacing="0">16,2 м³</text>
+<rect x="918" y="298" width="292" height="26" fill="#fff" stroke="#ded7c9" stroke-width="0.7" rx="0" opacity="1"/>
+<text x="925" y="309" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.2" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">Подшив вагонкой</text>
+<text x="925" y="319" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.2" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">16 мм</text>
+<text x="1203" y="314" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.4" font-weight="600" fill="#191714" text-anchor="end" opacity="1" letter-spacing="0">68,9 м²</text>
+<rect x="918" y="324" width="292" height="26" fill="#fff" stroke="#ded7c9" stroke-width="0.7" rx="0" opacity="1"/>
+<text x="925" y="335" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.2" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">Желоб + трубы</text>
+<text x="925" y="345" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="7.2" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">125 / 90</text>
+<text x="1203" y="340" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.4" font-weight="600" fill="#191714" text-anchor="end" opacity="1" letter-spacing="0">26 м + 2</text>
+<text x="918" y="370" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">УЗЛЫ И ПРИМЕЧАНИЯ</text>
+<text x="918" y="386" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">Стропила опираются на обвязку 150×150 по</text>
+<text x="918" y="398.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">осям Д и Б, пролёт разбит прогонами LVL.</text>
+<text x="918" y="411" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">Свесы: 600 по осям 1 и 5, 50 — по скату.</text>
+<text x="918" y="423.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">Кровля вентилируемая: зазор 40 мм от</text>
+<text x="918" y="436" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">контробрешётки, выход воздуха у карниза.</text>
+<text x="918" y="448.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">Металлочерепица крепится в прогиб волны,</text>
+<text x="918" y="461" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">саморезы с ЭПДМ-шайбой, шаг 350.</text>
+<text x="918" y="473.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">Дымоход — сэндвич ⌀150, проход через кровлю</text>
+<text x="918" y="486" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">с разделкой 260×360 и фартуком.</text>
+<text x="918" y="498.5" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">Кровля террасы — продолжение общего ската,</text>
+<text x="918" y="511" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" fill="#3d3a34" text-anchor="start" opacity="1" letter-spacing="0">подшив вагонкой по стропилам.</text>
+<text x="36" y="839" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9" font-weight="400" fill="#7a766d" text-anchor="start" opacity="1" letter-spacing="0">Высокий борт — по оси А (над террасой), низкий — по оси Д. Площадь кровли с учётом свесов — см.</text><text x="36" y="852" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="9" font-weight="400" fill="#7a766d" text-anchor="start" opacity="1" letter-spacing="0">показатели.</text>
+<rect x="792" y="777" width="430" height="82" fill="#fff" stroke="#191714" stroke-width="1.2"/>
+<line x1="792" y1="801" x2="1222" y2="801" stroke="#191714" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="1024" y1="801" x2="1024" y2="859" stroke="#191714" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<line x1="792" y1="829" x2="1222" y2="829" stroke="#191714" stroke-width="1" stroke-linecap="butt" opacity="1"/>
+<text x="804" y="794" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">БАНЯ «ПАЛОМА» 11,0 × 6,5 + терраса</text>
+<text x="804" y="819" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">План кровли</text>
+<text x="804" y="843" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Односкатная кровля: скат, прогоны, водосток,</text>
+<text x="804" y="854" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">дымоход</text>
+<text x="1038" y="819" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">1:50</text>
+<text x="1038" y="843" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Лист 5 из 7</text>
+<text x="1038" y="854" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Версия 1.1 · 11.2026</text>
+</svg>
