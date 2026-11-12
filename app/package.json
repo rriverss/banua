@@ -1,14 +1,16 @@
 {
-  "name": "banua-margo",
+  "name": "margo-projects",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "Баня «Марго» 6,0×4,5 с террасой — интерактивный проект: 3D-модель, схемы, ведомость материалов",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5173",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0 --port 4173",
-    "schemes": "node tools/export-schemes.mjs"
+    "schemes": "node tools/export-schemes.mjs",
+    "schemes:6x45": "node tools/export-schemes.mjs margo-6x45",
+    "sheets": "node tools/preview-schemes.mjs"
   },
   "dependencies": {
     "marked": "^15.0.7",

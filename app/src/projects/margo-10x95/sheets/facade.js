@@ -1,5 +1,5 @@
-import { sheet, txt, line, rect, poly, path, circle, dimH, dimV, INK } from './svg.js'
-import { project as P, openings, gable, glazing } from '../model/project.js'
+import { sheet, txt, line, rect, poly, path, circle, dimH, dimV, INK } from '../../../schematics/svg.js'
+import { project as P, openings, gable, glazing } from '../project.js'
 
 const DIM = '#6d6a63'
 const ACCENT = '#a9693a'

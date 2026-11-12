@@ -27,7 +27,7 @@
 <rect width="1240" height="877" fill="#fdfcf9"/>
 <rect x="18" y="18" width="1204" height="841" fill="none" stroke="#191714" stroke-width="1.6"/>
 <text x="36" y="52" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="19" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="1.2">УЗЛЫ КОНСТРУКЦИЙ</text>
-<text x="36" y="76" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Шесть узлов, которые определяют долговечность дома: фундамент, стена, карниз, конёк, проём, дымоход</text>
+<text x="36" y="76" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Шесть узлов, которые определяют долговечность бани: фундамент, стена, карниз, конёк, проём, дымоход</text>
 
   <g>
     <rect x="36" y="94" width="380" height="310" fill="#fffdf9" stroke="#cfc7b8" stroke-width="1" rx="0" opacity="1"/>
@@ -93,11 +93,11 @@
 <line x1="792" y1="801" x2="1222" y2="801" stroke="#191714" stroke-width="1" stroke-linecap="butt" opacity="1"/>
 <line x1="1024" y1="801" x2="1024" y2="859" stroke="#191714" stroke-width="1" stroke-linecap="butt" opacity="1"/>
 <line x1="792" y1="829" x2="1222" y2="829" stroke="#191714" stroke-width="1" stroke-linecap="butt" opacity="1"/>
-<text x="804" y="794" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">БАРНХАУС «МАРГО» 10,0 × 9,5 + терраса</text>
+<text x="804" y="794" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">БАНЯ «МАРГО» 6,0 × 4,5 + терраса 2,5</text>
 <text x="804" y="819" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">Узлы 1–6</text>
 <text x="804" y="843" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Для монтажа и контроля качества. Не заменяют</text>
 <text x="804" y="854" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">рабочую документацию</text>
 <text x="1038" y="819" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#191714" text-anchor="start" opacity="1" letter-spacing="0">б/м</text>
 <text x="1038" y="843" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Лист 7 из 7</text>
-<text x="1038" y="854" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Версия 1.0 · 11.2026</text>
+<text x="1038" y="854" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6d6a63" text-anchor="start" opacity="1" letter-spacing="0">Версия 1.1 · 11.2026</text>
 </svg>

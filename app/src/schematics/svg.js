@@ -138,6 +138,13 @@ function wrapText(text, maxChars) {
   return lines
 }
 
+let STAMP = 'БАРНХАУС «МАРГО» 10,0 × 9,5 + терраса'
+
+/** Штамп в правом нижнем углу: название проекта и габарит. Выставляет проект перед отрисовкой. */
+export function setStamp(text) {
+  STAMP = text
+}
+
 export function sheet({ w = 1240, h = 877, title, subtitle, scale, body, note, num, of }) {
   const m = 18
   const tbW = 430
@@ -156,12 +163,12 @@ ${note ? wrapText(note, 100).slice(0, 2).map((l, i) => txt(m + 18, h - m - 20 + 
 ${line(tbX, tbY + 24, tbX + tbW, tbY + 24, { stroke: INK, w: 1 })}
 ${line(col2, tbY + 24, col2, tbY + tbH, { stroke: INK, w: 1 })}
 ${line(tbX, tbY + 52, tbX + tbW, tbY + 52, { stroke: INK, w: 1 })}
-${txt(tbX + 12, tbY + 17, 'БАРНХАУС «МАРГО» 10,0 × 9,5 + терраса', { size: 11.5, weight: 700 })}
+${txt(tbX + 12, tbY + 17, STAMP, { size: 11.5, weight: 700 })}
 ${txt(tbX + 12, tbY + 42, title, { size: 11, weight: 600 })}
 ${txt(tbX + 12, tbY + 66, subLines[0] || '', { size: 8.5, fill: DIM })}
 ${txt(tbX + 12, tbY + 77, subLines[1] || '', { size: 8.5, fill: DIM })}
 ${txt(col2 + 14, tbY + 42, scale || '1:50', { size: 12, weight: 600 })}
 ${txt(col2 + 14, tbY + 66, num ? `Лист ${num} из ${of || 7}` : 'Лист 1 из 1', { size: 8.5, fill: DIM })}
-${txt(col2 + 14, tbY + 77, 'Версия 1.0 · 11.2026', { size: 8.5, fill: DIM })}
+${txt(col2 + 14, tbY + 77, 'Версия 1.1 · 11.2026', { size: 8.5, fill: DIM })}
 </svg>`
 }

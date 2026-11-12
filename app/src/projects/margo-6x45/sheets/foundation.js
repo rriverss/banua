@@ -1,35 +1,22 @@
-import { sheet, txt, line, rect, circle, poly, dimH, dimV, axisMark, callout, INK, DIM, ACCENT } from './svg.js'
-import { project as P, pilePositions, girders } from '../model/project.js'
+import { sheet, txt, line, rect, circle, poly, dimH, dimV, axisMark, callout, INK, DIM, ACCENT } from '../../../schematics/svg.js'
+import { project as P, pilePositions, girders } from '../project.js'
 import { mm } from './plan.js'
 
-const S = 60
-const OX = 195
-const OY = 136
+const S = 74
+const OX = 285
+const OY = 205
 const X = (x) => OX + x * S
 const Y = (z) => OY + z * S
 
 export function foundationSheet() {
   const b = []
-  b.push(txt(OX, 40, 'ПЛАН ФУНДАМЕНТА. ВИНТОВЫЕ СВАИ', { size: 19, weight: 700, letter: 1.2 }))
-  b.push(txt(OX, 62, `${pilePositions.length} свай ⌀108×2500 с оголовками 200×200, ростверк из бруса 150×150`, { size: 11, fill: DIM }))
+  b.push(txt(OX, 60, 'ПЛАН ФУНДАМЕНТА. ВИНТОВЫЕ СВАИ', { size: 19, weight: 700, letter: 1.2 }))
+  b.push(txt(OX, 84, '20 свай ⌀108×2500 с оголовками 200×200, ростверк из бруса 150×150', { size: 11, fill: DIM }))
 
-  // контуры: тёплый блок + Г-образная терраса
-  b.push(poly([[X(P.dims.x0), Y(0)], [X(P.dims.W), Y(0)], [X(P.dims.W), Y(P.dims.depth)], [X(P.dims.x0), Y(P.dims.depth)]], { fill: '#fbf8f2', stroke: INK, sw: 1.2 }))
-  b.push(
-    poly(
-      [
-        [X(0), Y(4.5)],
-        [X(P.dims.x0), Y(4.5)],
-        [X(P.dims.x0), Y(P.dims.depth)],
-        [X(P.dims.W), Y(P.dims.depth)],
-        [X(P.dims.W), Y(P.dims.D)],
-        [X(0), Y(P.dims.D)],
-      ],
-      { fill: '#f5efe4', stroke: '#8b8579', sw: 1, dash: '6 4' }
-    )
-  )
-  b.push(txt(X(5.6), Y(8.3), 'ТЕРРАСА', { size: 10, anchor: 'middle', fill: DIM, letter: 2 }))
-  b.push(txt(X(6.0), Y(4.3), 'ТЁПЛЫЙ БЛОК', { size: 9, anchor: 'middle', fill: DIM, letter: 1.5 }))
+  // контур здания
+  b.push(rect(X(0), Y(0), 6 * S, 4.5 * S, { fill: '#fbf8f2', stroke: INK, sw: 1.2 }))
+  b.push(rect(X(0), Y(4.5), 6 * S, 2.5 * S, { fill: '#f5efe4', stroke: '#8b8579', sw: 1, dash: '6 4' }))
+  b.push(txt(X(3), Y(5.7), 'ТЕРРАСА', { size: 10, anchor: 'middle', fill: DIM, letter: 2 }))
 
   // ростверк
   for (const g of girders) {
@@ -50,32 +37,31 @@ export function foundationSheet() {
   }
 
   // оси
-  const ax = [[0, '1'], [2, '2'], [4.5, '3'], [5.7, '4'], [7, '5'], [10, '6']]
-  for (const [a, l] of ax) {
-    b.push(line(X(a), Y(-0.4), X(a), Y(P.dims.D + 0.6), { stroke: '#c2bbae', w: 0.8, dash: '12 4 3 4' }))
-    b.push(axisMark(X(a), Y(-0.7), l))
+  for (const a of [0, 3, 6]) {
+    b.push(line(X(a), Y(-0.55), X(a), Y(7.5), { stroke: '#c2bbae', w: 0.8, dash: '12 4 3 4' }))
+    b.push(axisMark(X(a), Y(-0.95), String(a === 0 ? 1 : a === 3 ? 2 : 3)))
   }
-  for (const [z, l] of [[0, 'А'], [2.65, 'Б'], [3.4, 'В'], [7, 'Г'], [9.5, 'Д']]) {
-    b.push(line(X(-0.6), Y(z), X(10.6), Y(z), { stroke: '#c2bbae', w: 0.8, dash: '12 4 3 4' }))
-    b.push(axisMark(X(-1.25), Y(z), l))
+  for (const [z, l] of [[0, 'А'], [2.2, 'Б'], [4.5, 'В']]) {
+    b.push(line(X(-0.55), Y(z), X(6.55), Y(z), { stroke: '#c2bbae', w: 0.8, dash: '12 4 3 4' }))
+    b.push(axisMark(X(-1.95), Y(z), l))
   }
 
   // размеры по сваям
   const xs = P.piles.xs
   const zs = P.piles.zs
   for (let i = 0; i < xs.length - 1; i++) {
-    b.push(dimH(X(xs[i]), X(xs[i + 1]), Y(P.dims.D) + 44, mm(xs[i + 1] - xs[i])))
+    b.push(dimH(X(xs[i]), X(xs[i + 1]), Y(6.85) + 40, mm(xs[i + 1] - xs[i])))
   }
-  b.push(dimH(X(xs[0]), X(xs[xs.length - 1]), Y(P.dims.D) + 80, mm(xs[xs.length - 1] - xs[0])))
+  b.push(dimH(X(xs[0]), X(xs[xs.length - 1]), Y(6.85) + 76, mm(xs[xs.length - 1] - xs[0])))
   for (let i = 0; i < zs.length - 1; i++) {
     b.push(dimV(Y(zs[i]), Y(zs[i + 1]), X(0) - 40, mm(zs[i + 1] - zs[i])))
   }
   b.push(dimV(Y(zs[0]), Y(zs[zs.length - 1]), X(0) - 80, mm(zs[zs.length - 1] - zs[0])))
 
-  
-  b.push(dimV(Y(0), Y(P.dims.D), X(10) + 40, mm(P.dims.D)))
+  b.push(dimH(X(0), X(6), Y(7.4) + 34, mm(6)))
+  b.push(dimV(Y(0), Y(4.5), X(6) + 42, mm(4.5)))
 
-  b.push(callout(X(9.85), Y(9.3), 1, X(10.4), Y(9.75)))
+  b.push(callout(X(5.85), Y(6.85), 1, X(6.45), Y(7.15)))
 
   // примечания
   const tx = 860
@@ -83,11 +69,11 @@ export function foundationSheet() {
   b.push(txt(tx, ty, 'СПЕЦИФИКАЦИЯ', { size: 11.5, weight: 700 }))
   ty += 12
   const rows = [
-    ['Свая винтовая ⌀108×2500', `${pilePositions.length} шт`],
-    ['Оголовок 200×200×6', `${pilePositions.length} шт`],
-    ['Брус обвязки 150×150', '14 шт × 6 м'],
-    ['Анкеровка М12', `${pilePositions.length * 4} компл.`],
-    ['Песчано-гравийная подсыпка', '0,8 м³'],
+    ['Свая винтовая ⌀108×2500', '20 шт'],
+    ['Оголовок 200×200×6', '20 шт'],
+    ['Брус обвязки 150×150', '8 шт × 6 м'],
+    ['Анкеровка М12', '80 компл.'],
+    ['Песчано-гравийная подсыпка', '0,4 м³'],
   ]
   b.push(rect(tx, ty, 340, 26, { fill: '#f1ece2', stroke: INK, sw: 1 }))
   b.push(txt(tx + 8, ty + 17, 'Наименование', { size: 9.5, weight: 700 }))
@@ -109,7 +95,7 @@ export function foundationSheet() {
     'после монтажа заполнить стволы ЦПС, обрезать по нивелиру.',
     'Ростверк 150×150 — антисептированный, анкеровка 4×М12',
     'к каждому оголовку, стыки — вразбежку на 1,5 м.',
-    'Терраса — по сваям 4,6/7,0/9,3 м, стойки 120×120 на оголовках.',
+    'Терраса — по сваям 6,85 м, стойки 100×100 на оголовках.',
     'Уклон участка под баней — отвод воды от пятна застройки.',
   ]
   ty += 18

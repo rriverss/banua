@@ -1,20 +1,13 @@
-import { createViewer } from '../scene/viewer.js'
-import { LAYERS } from '../scene/materials.js'
-import { stats, bom } from '../model/bom.js'
-import { totalArea, terraceArea, roofArea, project } from '../model/project.js'
+import { loadScene } from '../projects/index.js'
 
-const CAMERAS = [
-  ['general', 'Общий вид'],
-  ['front', 'Главный фасад'],
-  ['back', 'Задний фасад'],
-  ['side', 'Боковой фасад'],
-  ['top', 'Сверху'],
-  ['terrace', 'Терраса'],
-  ['inside', 'Гостиная'],
-  ['steam', 'Сауна'],
-]
+/** 3D-вкладка проекта: модель, слои, разрезы, камеры. */
+export async function renderViewer(host, P) {
+  const { createViewer } = await import('../scene/viewer.js')
+  const { LAYERS } = await import('../scene/materials.js')
+  const { stats, bom } = P
+  const { project, totalArea, terraceArea, roofArea } = P.model
+  const CAMERAS = P.cameraNames
 
-export function renderViewer(host) {
   host.innerHTML = `
     <section class="viewer-shell">
       <div id="canvas-host"></div>
@@ -40,7 +33,7 @@ export function renderViewer(host) {
 
       <div class="viewer-tag">
         <b>${project.title} · ${project.subtitle}</b>
-        <span>Каркас 45×195, шаг 600 · утепление 195 мм<br />Винтовые сваи 20 шт. · кровля 30°</span>
+        <span>Каркас 45×195, шаг 600 · утепление 195 мм<br />Винтовые сваи ${stats.piles} шт. · кровля ${project.roof.pitch}°</span>
       </div>
 
       <div class="vpanel vpanel-bottom">
@@ -55,7 +48,12 @@ export function renderViewer(host) {
   `
 
   const canvasHost = host.querySelector('#canvas-host')
-  const viewer = createViewer(canvasHost)
+  const scene = await loadScene(P.id)
+  const viewer = createViewer(canvasHost, {
+    build: scene.buildBanya,
+    cameras: P.cameras,
+    dims: project.dims,
+  })
 
   const layersBox = host.querySelector('#layers')
   layersBox.innerHTML = LAYERS.map(

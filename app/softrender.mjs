@@ -13,7 +13,10 @@ const ctx = new Proxy({}, {
 globalThis.document = { createElement: () => ({ width: 256, height: 256, getContext: () => ctx }) }
 
 const THREE = await import('three')
-const { buildBanya } = await import('./src/scene/build.js')
+const projectArg = process.argv.find((a) => a.startsWith('--project='))
+const projectId = projectArg ? projectArg.split('=')[1] : 'margo-10x95'
+const projectScene = await import(`./src/projects/${projectId}/scene.js`)
+const buildBanya = projectScene.buildBanya
 const { M } = await import('./src/scene/materials.js')
 
 const palette = {
@@ -70,15 +73,14 @@ const push = (mesh) => {
 root.traverse((o) => { if (o.isMesh && o.visible) push(o) })
 console.log('triangles', tris.length)
 
-const views = {
-  front: { pos: [6, 3.4, 24], target: [6, 2.6, 8], fov: 26 },
-  corner: { pos: [19, 9.5, 21], target: [5.5, 2.4, 4.8], fov: 28 },
-  cornerBack: { pos: [16, 9.0, -12], target: [5.5, 2.6, 4.0], fov: 28 },
-  inside: { pos: [4.0, 1.75, 4.3], target: [7.6, 2.1, 10], fov: 62 },
-  side: { pos: [22, 4.6, 4.5], target: [5.0, 2.4, 4.5], fov: 26 },
-  terrace: { pos: [2.5, 1.9, 13.5], target: [6.0, 1.8, 8.0], fov: 40 },
-  top: { pos: [5, 26, 5], target: [5, 0, 4.7], fov: 26 },
+const proj = (await import('./src/projects/index.js')).getProject(projectId)
+const FOV = { inside: 62, steam: 62, terrace: 42, general: 30 }
+const views = {}
+for (const [k, v] of Object.entries(proj.cameras)) {
+  views[k] = { pos: v.pos, target: v.target, fov: FOV[k] || 28 }
 }
+views.corner = views.corner || { pos: proj.cameras.general.pos, target: proj.cameras.general.target, fov: 28 }
+
 const only = process.argv[4]
 const cam = new THREE.PerspectiveCamera(30, W / H, 0.1, 200)
 
