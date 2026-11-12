@@ -271,6 +271,7 @@ export function createTabs(P) {
     { file: '04-schedule-budget.md', title: '4. График, бюджет, риски' },
     { file: '05-safety-acceptance.md', title: '5. Пожарная безопасность и приёмка' },
     { file: '06-open-questions.md', title: '6. Что уточнить до начала' },
+    { file: '07-samostoyatelno.md', title: '7. Строим сами: план по этапам' },
   ]
 
   function renderGuide(host) {
