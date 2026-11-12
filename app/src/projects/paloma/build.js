@@ -343,8 +343,8 @@ function buildCeiling(layers) {
   for (let x = xa; x < xb - 0.001; x += segX) {
     const xx = Math.min(xb, x + segX)
     const g = new THREE.BufferGeometry()
-    const y0 = ceilingY(za) - 0.0
-    const y1 = ceilingY(zb) - 0.0
+    const y0 = ceilingY(za) - 0.006
+    const y1 = ceilingY(zb) - 0.006
     const verts = new Float32Array([x, y0, za, xx, y0, za, xx, y1, zb, x, y0, za, xx, y1, zb, x, y1, zb])
     const uv = new Float32Array([0, 0, xx - x, 0, xx - x, zb - za, 0, 0, xx - x, zb - za, 0, zb - za])
     g.setAttribute('position', new THREE.BufferAttribute(verts, 3))
@@ -358,7 +358,7 @@ function buildCeiling(layers) {
     new THREE.BoxGeometry(xb - xa - 0.05, 0.2, zb - za - 0.05),
     M.insulation
   )
-  ins.position.set((xa + xb) / 2, ceilingY((za + zb) / 2) + 0.1, (za + zb) / 2)
+  ins.position.set((xa + xb) / 2, ceilingY((za + zb) / 2) + 0.12, (za + zb) / 2)
   ins.rotation.x = -Math.atan(R.slope)
   layers.insulation.add(ins)
 }
