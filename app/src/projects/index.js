@@ -33,3 +33,9 @@ export async function loadScene(id) {
   const loader = SCENES[id] || SCENES[DEFAULT_ID]
   return loader()
 }
+
+/** Площадь застройки: в новых моделях — buildArea, в старых считаем по габариту. */
+export function buildAreaOf(p) {
+  const d = p.model.project.dims
+  return p.model.buildArea || (d.W ?? d.L) * (d.D ?? d.depth)
+}

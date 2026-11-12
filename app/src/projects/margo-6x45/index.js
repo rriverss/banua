@@ -10,7 +10,7 @@ export const badge = 'баня'
 export const order = 2
 
 export const cameras = {
-  general: { pos: [13.4, 7.4, 15.2], target: [3, 1.7, 2.9] },
+  general: { pos: [14.8, 8.2, 16.6], target: [3, 1.55, 2.6] },
   front: { pos: [3, 3.0, 16.8], target: [3, 2.2, 4.0] },
   back: { pos: [3, 3.4, -10.2], target: [3, 1.8, 1.5] },
   side: { pos: [16.8, 3.4, 3.2], target: [3, 1.8, 3.0] },

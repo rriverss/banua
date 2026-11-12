@@ -44,9 +44,9 @@ export function createTabs(P) {
       <div class="wrap">
         <div class="eyebrow">Рабочие чертежи</div>
         <h1 class="h1">Схемы для строительства</h1>
-        <p class="lead">Шесть листов, которых достаточно, чтобы собрать баню: план, свайное поле, разрез,
-        схема каркаса стены, стропильная система и узлы. Все размеры выведены из 3D-модели — расхождений
-        между «картинкой» и чертежом нет.</p>
+        <p class="lead">${sheetsCount} листов — ${project.title}, ${project.subtitle}: план, свайное
+        поле, разрез, схема каркаса стены, стропильная система, главный фасад и узлы. Все размеры выведены
+        из 3D-модели — расхождений между «картинкой» и чертежом нет.</p>
         <div class="row" style="margin-bottom:18px">
           <span class="pill">М 1:50</span><span class="pill">Размеры в мм</span>
           <span class="pill">Каркас 45×195</span><span class="pill">Сваи ⌀108</span>
@@ -338,7 +338,7 @@ export function createTabs(P) {
             </p>
             <div class="meta">
               <div><span>Площадь тёплого контура</span><b>${totalArea.toFixed(1).replace('.', ',')} м²</b></div>
-              <div><span>Площадь застройки</span><b>${(P.model.buildArea || project.dims.W * project.dims.D).toFixed(1).replace('.', ',')} м²</b></div>
+              <div><span>Площадь застройки</span><b>${(P.model.buildArea || (project.dims.W ?? project.dims.L) * (project.dims.D ?? project.dims.depth)).toFixed(1).replace('.', ',')} м²</b></div>
               <div><span>Фундамент</span><b>${stats.piles} свай</b></div>
               <div><span>Смета</span><b>${(bom.total / 1e6).toFixed(2).replace('.', ',')} млн ₽</b></div>
             </div>

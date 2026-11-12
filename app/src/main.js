@@ -1,5 +1,5 @@
 import './styles.css'
-import { PROJECTS, projectFromUrl, rememberProject } from './projects/index.js'
+import { PROJECTS, projectFromUrl, rememberProject, buildAreaOf } from './projects/index.js'
 import { createTabs } from './ui/tabs.js'
 import { renderViewer } from './ui/viewerTab.js'
 
@@ -58,7 +58,7 @@ function renderProjects(host) {
     ['Габарит', (p) => p.size],
     ['Площадь тёплого контура', (p) => `${num(p.summary.heated)} м²`],
     ['Терраса', (p) => `${num(p.summary.terrace)} м²`],
-    ['Площадь застройки', (p) => `${num(p.model.buildArea || p.model.project.dims.W * p.model.project.dims.D)} м²`],
+    ['Площадь застройки', (p) => `${num(buildAreaOf(p))} м²`],
     ['Кровля', (p) => `${num(p.summary.roof, 0)} м², ${p.model.project.roof.pitch}°`],
     ['Свай', (p) => `${p.summary.piles} шт.`],
     ['Материалы', (p) => money(p.summary.materials)],
