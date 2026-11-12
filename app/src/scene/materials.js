@@ -129,6 +129,46 @@ const tex = {
       }
     }
   }),
+  // горизонтальная имитация бруса (фасад бани «Палома»)
+  timber: canvasTex((ctx, s) => {
+    const boards = 6
+    const h = s / boards
+    ctx.fillStyle = '#b08050'
+    ctx.fillRect(0, 0, s, s)
+    for (let i = 0; i < boards; i++) {
+      const k = 0.9 + ((i * 29) % 17) / 100
+      ctx.fillStyle = `rgb(${Math.round(176 * k)}, ${Math.round(128 * k)}, ${Math.round(82 * k)})`
+      ctx.fillRect(0, i * h + 1.5, s, h - 3)
+      ctx.fillStyle = 'rgba(58, 34, 18, .55)'
+      ctx.fillRect(0, i * h, s, 2)
+      ctx.fillStyle = 'rgba(255, 240, 214, .16)'
+      ctx.fillRect(0, i * h + 2, s, 1)
+      // продольные волокна
+      for (let j = 0; j < 3; j++) {
+        ctx.fillStyle = `rgba(120, 82, 46, ${0.05 + (j % 2) * 0.05})`
+        ctx.fillRect(0, i * h + 4 + j * 5, s, 0.8)
+      }
+    }
+  }),
+  // металлочерепица: волна 350 мм, тёмный графит
+  metalTile: canvasTex((ctx, s) => {
+    const ribs = 3
+    const w = s / ribs
+    ctx.fillStyle = '#33383c'
+    ctx.fillRect(0, 0, s, s)
+    for (let i = 0; i < ribs; i++) {
+      const g = ctx.createLinearGradient(i * w, 0, (i + 1) * w, 0)
+      g.addColorStop(0, '#2a2f33')
+      g.addColorStop(0.3, '#474e54')
+      g.addColorStop(0.5, '#3d4348')
+      g.addColorStop(0.72, '#31363a')
+      g.addColorStop(1, '#282c30')
+      ctx.fillStyle = g
+      ctx.fillRect(i * w, 0, w, s)
+      ctx.fillStyle = 'rgba(200, 216, 230, .07)'
+      ctx.fillRect(i * w + w * 0.3, 0, 2, s)
+    }
+  }),
   roof: canvasTex((ctx, s) => {
     const ribs = 4
     const w = s / ribs
@@ -166,6 +206,8 @@ export const M = {
   roofEdge: std('#23272b', { roughness: 0.42, metalness: 0.45 }),
   plinth: std('#ffffff', { roughness: 0.9, map: tex.plinth }),
   sidingDark: std('#ffffff', { roughness: 0.75, map: tex.sidingDark }),
+  timber: std('#ffffff', { roughness: 0.8, map: tex.timber }),
+  metalTile: std('#ffffff', { roughness: 0.42, metalness: 0.4, map: tex.metalTile, side: THREE.DoubleSide }),
   gableWood: std('#ffffff', { roughness: 0.78, map: tex.larch }),
   metal: std('#3a3f43', { roughness: 0.45, metalness: 0.6 }),
   metalLight: std('#9aa3a8', { roughness: 0.35, metalness: 0.7 }),

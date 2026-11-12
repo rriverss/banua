@@ -1,8 +1,9 @@
 import * as p10 from './margo-10x95/index.js'
 import * as p6 from './margo-6x45/index.js'
+import * as pal from './paloma/index.js'
 
 /** Все проекты в порядке показа. Каждый — самостоятельная модель + смета + листы. */
-export const PROJECTS = [p10, p6].sort((a, b) => a.order - b.order)
+export const PROJECTS = [p10, p6, pal].sort((a, b) => a.order - b.order)
 export const DEFAULT_ID = PROJECTS[0].id
 
 export function getProject(id) {
@@ -27,6 +28,7 @@ export function rememberProject(id) {
 const SCENES = {
   'margo-10x95': () => import('./margo-10x95/scene.js'),
   'margo-6x45': () => import('./margo-6x45/scene.js'),
+  paloma: () => import('./paloma/scene.js'),
 }
 
 export async function loadScene(id) {
